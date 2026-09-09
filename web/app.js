@@ -1,6 +1,6 @@
 /**
- * AppleSupport AI Support Agent — Internal Operations Dashboard
- * Frontend Application Logic (Strict Zero-Mock Policy)
+ * AppleSupport AI Support Agent — Professional Operations UI & Visual AI Workflow
+ * Client Controller (Strict Zero-Mock Policy, 100% Real Backend Data)
  */
 
 // Global State
@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
   checkBackendStatus();
   fetchBenchmarkData();
   fetchFailureModes();
-  
-  // Set up tab navigation
+
+  // Set up tab navigation from URL hash
   const hash = window.location.hash.replace('#', '');
   if (hash === 'evaluation') {
     switchView('eval');
@@ -77,23 +77,29 @@ async function checkBackendStatus() {
 
     dot.className = 'status-dot online';
     text.textContent = 'Backend: Online';
-    pill.title = `Backend online. Dataset: ${data.dataset || 'AppleSupport'}`;
+    pill.title = `Backend online. Knowledge bank: ${data.train_retrieval_total || 10000} pairs.`;
 
-    // Update Header metadata if available
     if (data.dataset) {
       document.getElementById('header-dataset').textContent = data.dataset;
+      const metaDataset = document.getElementById('eval-meta-dataset');
+      if (metaDataset) metaDataset.textContent = data.dataset;
     }
     if (data.golden_total) {
       document.getElementById('header-holdout').textContent = `Frozen (N=${data.golden_total})`;
+      const metaFinalSize = document.getElementById('eval-meta-final-size');
+      if (metaFinalSize) metaFinalSize.textContent = `N = ${data.golden_total}`;
+    }
+    if (data.validation_total) {
+      const metaValSize = document.getElementById('eval-meta-val-size');
+      if (metaValSize) metaValSize.textContent = `N = ${data.validation_total}`;
     }
 
-    // Update Methodological Integrity Panel in Evaluation View
     updateIntegrityPanel(data);
 
   } catch (err) {
     dot.className = 'status-dot offline';
     text.textContent = 'Backend: Offline';
-    pill.title = 'Backend unavailable. Ensure Python API server is running on http://127.0.0.1:8000';
+    pill.title = 'Backend unavailable. Run: python web_api.py';
   }
 }
 
@@ -119,17 +125,17 @@ function updateIntegrityPanel(status) {
   if (overallBadge) {
     if (status.leakage_status === 'PASS') {
       overallBadge.className = 'panel-tag integrity-pass-tag';
-      overallBadge.textContent = '✓ 0 Data Leakage (Verified)';
+      overallBadge.textContent = '✓ 0 Overlap (Mathematically Disjoint)';
     } else {
       overallBadge.className = 'panel-tag';
       overallBadge.style.color = 'var(--status-escalate-text)';
-      overallBadge.textContent = '⚠ Leakage Warning';
+      overallBadge.textContent = '⚠ Leakage Detected';
     }
   }
 }
 
 // ==========================================================================
-// Live Agent Interaction & Analysis
+// Live Agent Workflow & Pipeline Execution
 // ==========================================================================
 function fillExampleQuery(idx) {
   const query = REAL_TWCS_EXAMPLES[idx];
@@ -140,8 +146,9 @@ function fillExampleQuery(idx) {
 }
 
 function clearComposer() {
-  document.getElementById('customer-message-input').value = '';
-  document.getElementById('customer-message-input').focus();
+  const textarea = document.getElementById('customer-message-input');
+  textarea.value = '';
+  textarea.focus();
 }
 
 async function handleAnalyzeSubmit(event) {
@@ -152,9 +159,7 @@ async function handleAnalyzeSubmit(event) {
   if (!message) return;
 
   lastAnalyzedMessage = message;
-
-  // Update UI to loading state
-  setLoadingState(true);
+  setWorkflowState('loading');
 
   try {
     const response = await fetch('/api/analyze', {
@@ -165,23 +170,20 @@ async function handleAnalyzeSubmit(event) {
 
     if (!response.ok) {
       const errData = await response.json().catch(() => ({ detail: `HTTP ${response.status}` }));
-      throw new Error(errData.detail || `Server returned HTTP ${response.status}`);
+      throw new Error(errData.detail || `Server error HTTP ${response.status}`);
     }
 
     const result = await response.json();
     currentAuditData = result;
 
-    // Render results
-    renderAnalysisResult(result);
-    setResultsState('content');
+    renderWorkflowResults(result);
+    setWorkflowState('results');
 
   } catch (error) {
-    console.error('Analysis error:', error);
+    console.error('Analysis execution error:', error);
     document.getElementById('error-message-text').textContent = 
-      error.message || 'Failed to connect to Python backend. Ensure web_api.py is running.';
-    setResultsState('error');
-  } finally {
-    setLoadingState(false);
+      error.message || 'Failed to connect to Python backend. Ensure python web_api.py is running on http://127.0.0.1:8000.';
+    setWorkflowState('error');
   }
 }
 
@@ -192,139 +194,195 @@ function retryLastAnalysis() {
   }
 }
 
-function setLoadingState(isLoading) {
+function setWorkflowState(state) {
   const btn = document.getElementById('analyze-btn');
   const btnText = document.getElementById('btn-text');
-  
-  if (isLoading) {
-    btn.disabled = true;
-    btn.classList.add('loading');
-    btnText.textContent = 'Analyzing…';
-    setResultsState('loading');
-  } else {
-    btn.disabled = false;
-    btn.classList.remove('loading');
-    btnText.textContent = 'Analyze Message';
-  }
-}
-
-function setResultsState(state) {
   const elEmpty = document.getElementById('results-empty');
   const elLoading = document.getElementById('results-loading');
   const elError = document.getElementById('results-error');
-  const elContent = document.getElementById('results-content');
+  const elWorkflow = document.getElementById('results-workflow');
 
-  elEmpty.style.display = state === 'empty' ? 'block' : 'none';
-  elLoading.style.display = state === 'loading' ? 'block' : 'none';
-  elError.style.display = state === 'error' ? 'block' : 'none';
-  elContent.style.display = state === 'content' ? 'block' : 'none';
+  if (state === 'loading') {
+    btn.disabled = true;
+    btn.classList.add('loading');
+    btnText.textContent = 'Analyzing…';
+    elEmpty.style.display = 'none';
+    elLoading.style.display = 'block';
+    elError.style.display = 'none';
+    elWorkflow.style.display = 'none';
+  } else if (state === 'results') {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+    btnText.textContent = 'Analyze Message';
+    elEmpty.style.display = 'none';
+    elLoading.style.display = 'none';
+    elError.style.display = 'none';
+    elWorkflow.style.display = 'flex';
+  } else if (state === 'error') {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+    btnText.textContent = 'Analyze Message';
+    elEmpty.style.display = 'none';
+    elLoading.style.display = 'none';
+    elError.style.display = 'block';
+    elWorkflow.style.display = 'none';
+  } else {
+    // empty
+    btn.disabled = false;
+    btn.classList.remove('loading');
+    btnText.textContent = 'Analyze Message';
+    elEmpty.style.display = 'block';
+    elLoading.style.display = 'none';
+    elError.style.display = 'none';
+    elWorkflow.style.display = 'none';
+  }
 }
 
-function renderAnalysisResult(result) {
-  // 1. Meta Tags (Latency & Top Retrieval Score)
-  const latencyTag = document.getElementById('latency-tag');
-  const retrievalScoreTag = document.getElementById('retrieval-score-tag');
+function renderWorkflowResults(result) {
+  // Telemetry Bar
+  const elLatency = document.getElementById('telemetry-latency');
+  const elTopSim = document.getElementById('telemetry-retrieval-score');
+  elLatency.textContent = `Latency: ${result.latency_ms !== undefined ? result.latency_ms : '--'} ms`;
+  elTopSim.textContent = `Top Cosine Sim: ${result.retrieval_score !== undefined ? result.retrieval_score.toFixed(4) : '--'}`;
 
-  latencyTag.textContent = `Latency: ${result.latency_ms !== undefined ? result.latency_ms : '--'} ms`;
-  retrievalScoreTag.textContent = `Retrieval Sim: ${result.retrieval_score !== undefined ? result.retrieval_score.toFixed(4) : '--'}`;
-
-  // 2. Intent Card
-  const elIntent = document.getElementById('result-intent');
-  const elIntentConf = document.getElementById('result-intent-conf');
-  const elIntentConfBar = document.getElementById('result-intent-conf-bar');
-
-  elIntent.textContent = result.intent || 'UNKNOWN';
-  const confPct = result.intent_confidence !== undefined ? Math.round(result.intent_confidence * 100) : 0;
-  elIntentConf.textContent = `${confPct}%`;
-  elIntentConfBar.style.width = `${Math.min(100, Math.max(5, confPct))}%`;
-
-  // 3. Escalation Card
-  const elEscBadge = document.getElementById('result-escalation-badge');
-  const elEscReason = document.getElementById('result-escalation-reason');
-
-  const isEscalate = result.escalation_decision === 'ESCALATE';
-  elEscBadge.textContent = isEscalate ? '⚠ ESCALATE' : '✓ AUTO_HANDLE';
-  elEscBadge.className = `escalation-badge ${isEscalate ? 'escalate' : 'auto-handle'}`;
-  elEscReason.textContent = result.escalation_reason || 'Standard self-serve resolution guidance.';
-
-  // 4. Draft Reply
-  const elReply = document.getElementById('result-drafted-reply');
-  const elCharPill = document.getElementById('char-count-pill');
-  const draftedText = result.drafted_reply || '';
-
-  elReply.textContent = draftedText;
-  const charLen = draftedText.length;
-  elCharPill.textContent = `${charLen} / 280 chars`;
-
-  if (charLen <= 280) {
-    elCharPill.className = 'char-count-pill compliant';
+  // STAGE 1: Customer Message
+  document.getElementById('stage1-raw-query').textContent = result.input_text || lastAnalyzedMessage;
+  const cleanedText = result.cleaned_text || '';
+  const cleanedWrap = document.getElementById('stage1-cleaned-wrap');
+  if (cleanedText && cleanedText !== result.input_text) {
+    cleanedWrap.style.display = 'block';
+    document.getElementById('stage1-cleaned-query').textContent = cleanedText;
   } else {
-    elCharPill.className = 'char-count-pill exceeded';
+    cleanedWrap.style.display = 'none';
   }
 
-  // 5. Historical Evidence Cards
-  const evidenceList = document.getElementById('evidence-list');
-  evidenceList.innerHTML = '';
+  // STAGE 2: Intent Classification
+  const elIntentBadge = document.getElementById('stage2-intent-badge');
+  const elConfText = document.getElementById('stage2-confidence-text');
+  const elConfBar = document.getElementById('stage2-confidence-bar');
+  
+  elIntentBadge.textContent = result.intent || 'UNKNOWN';
+  const confPct = result.intent_confidence !== undefined ? Math.round(result.intent_confidence * 100) : 0;
+  elConfText.textContent = `${confPct}%`;
+  elConfBar.style.width = `${Math.min(100, Math.max(5, confPct))}%`;
 
+  // Intent Distribution Chips
+  const distContainer = document.getElementById('stage2-dist-chips');
+  distContainer.innerHTML = '';
+  if (result.intent_distribution) {
+    const sortedIntents = Object.entries(result.intent_distribution)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 4);
+
+    sortedIntents.forEach(([intentName, prob]) => {
+      const chip = document.createElement('span');
+      const isTop = intentName === result.intent;
+      chip.className = `dist-chip ${isTop ? 'top-intent' : ''}`;
+      chip.textContent = `${intentName}: ${(prob * 100).toFixed(1)}%`;
+      distContainer.appendChild(chip);
+    });
+  }
+
+  // STAGE 3: Historical Retrieval
   const contexts = result.retrieved_contexts || [];
+  document.getElementById('stage3-evidence-count-tag').textContent = `${contexts.length} Evidence Pairs Retrieved`;
+  document.getElementById('stage3-top-sim').textContent = result.retrieval_score !== undefined ? result.retrieval_score.toFixed(4) : '--';
+
+  const evidenceStream = document.getElementById('stage3-evidence-stream');
+  evidenceStream.innerHTML = '';
+
   if (contexts.length === 0) {
-    evidenceList.innerHTML = '<div class="empty-hint">No historical evidence retrieved from knowledge bank.</div>';
+    evidenceStream.innerHTML = '<div class="retrieval-summary-banner">No historical resolution evidence retrieved.</div>';
   } else {
-    contexts.forEach((ctx, index) => {
+    contexts.forEach((ctx, idx) => {
       const card = document.createElement('div');
       card.className = 'evidence-card';
-
-      const tweetIdStr = ctx.tweet_id ? `Tweet #${ctx.tweet_id}` : `Evidence #${index + 1}`;
-      const simScore = ctx.similarity_score !== undefined ? ctx.similarity_score.toFixed(4) : '--';
+      const idStr = ctx.tweet_id ? `Tweet #${ctx.tweet_id}` : `Resolution Pair #${idx + 1}`;
+      const simStr = ctx.similarity_score !== undefined ? ctx.similarity_score.toFixed(4) : '--';
 
       card.innerHTML = `
         <div class="evidence-card-header">
-          <span class="evidence-id-badge">${escapeHtml(tweetIdStr)}</span>
-          <span class="evidence-sim-badge">Cosine Sim: ${simScore}</span>
+          <span class="evidence-id-badge">${escapeHtml(idStr)}</span>
+          <span class="evidence-sim-badge">Cosine Similarity: ${simStr}</span>
         </div>
         <div class="evidence-query-block">
           <span class="evidence-query-label">Historical Customer Query:</span>
           <p class="evidence-query-text">"${escapeHtml(ctx.customer_text || '')}"</p>
         </div>
         <div class="evidence-response-block">
-          <span class="evidence-response-label">AppleSupport Resolution:</span>
+          <span class="evidence-response-label">AppleSupport Verified Resolution:</span>
           <p class="evidence-response-text">${escapeHtml(ctx.apple_reply || '')}</p>
         </div>
       `;
-      evidenceList.appendChild(card);
+      evidenceStream.appendChild(card);
     });
   }
 
-  // 6. Audit Record & Raw JSON
-  document.getElementById('audit-input-raw').textContent = result.input_text || lastAnalyzedMessage;
-  document.getElementById('audit-input-cleaned').textContent = result.cleaned_text || '--';
-  document.getElementById('audit-intent-conf').textContent = `${result.intent} (${result.intent_confidence})`;
-  document.getElementById('audit-escalation-dec').textContent = `${result.escalation_decision} — ${result.escalation_reason}`;
-  document.getElementById('audit-evidence-ids').textContent = (result.evidence_ids && result.evidence_ids.length > 0) 
-    ? result.evidence_ids.join(', ') 
-    : 'None';
-  document.getElementById('audit-latency').textContent = `${result.latency_ms} ms`;
+  // STAGE 4: Safety & Escalation Triage
+  const elDecisionBadge = document.getElementById('stage4-decision-badge');
+  const elDecisionSub = document.getElementById('stage4-decision-sub');
+  const elReasonText = document.getElementById('stage4-reason-text');
+
+  const isEscalate = result.escalation_decision === 'ESCALATE';
+  elDecisionBadge.textContent = isEscalate ? '⚠ ESCALATE' : '✓ AUTO_HANDLE';
+  elDecisionBadge.className = `decision-badge ${isEscalate ? 'escalate' : 'auto-handle'}`;
+  elDecisionSub.textContent = isEscalate ? 'Routing to Human Senior Specialist' : 'Automated Diagnostic Resolution Safe';
+  elReasonText.textContent = result.escalation_reason || 'Standard automated self-serve guidance.';
+
+  // STAGE 5: Grounded Response Generator
+  const elReplyText = document.getElementById('stage5-reply-text');
+  const elCharPill = document.getElementById('stage5-char-count');
+  const draftedReply = result.drafted_reply || '';
+
+  elReplyText.textContent = draftedReply;
+  const replyLen = draftedReply.length;
+  elCharPill.textContent = `${replyLen} / 280 chars`;
+  elCharPill.className = replyLen <= 280 ? 'char-pill compliant' : 'char-pill exceeded';
+
+  // STAGE 6: Auditable Record
+  document.getElementById('audit-val-intent').textContent = result.intent;
+  document.getElementById('audit-val-conf').textContent = `${(result.intent_confidence * 100).toFixed(1)}%`;
+  document.getElementById('audit-val-decision').textContent = `${result.escalation_decision} (${result.escalation_reason})`;
+  document.getElementById('audit-val-retrieval').textContent = result.retrieval_score !== undefined ? result.retrieval_score.toFixed(4) : '--';
+  document.getElementById('audit-val-evidence').textContent = (result.evidence_ids && result.evidence_ids.length > 0) ? result.evidence_ids.join(', ') : 'None';
+  document.getElementById('audit-val-latency').textContent = `${result.latency_ms} ms`;
   document.getElementById('audit-raw-json').textContent = JSON.stringify(result, null, 2);
+
+  // Sequential Visual Reveal (50ms stagger across stages 1 through 6)
+  const stages = [
+    document.getElementById('stage-1'),
+    document.getElementById('stage-2'),
+    document.getElementById('stage-3'),
+    document.getElementById('stage-4'),
+    document.getElementById('stage-5'),
+    document.getElementById('stage-6')
+  ];
+
+  stages.forEach(s => s && s.classList.remove('revealed'));
+  stages.forEach((stage, idx) => {
+    if (!stage) return;
+    setTimeout(() => {
+      stage.classList.add('revealed');
+    }, idx * 50);
+  });
 }
 
 // Copy Utilities
 function copyDraftReply() {
-  const replyText = document.getElementById('result-drafted-reply').textContent;
-  if (!replyText || replyText === '--') return;
+  const text = document.getElementById('stage5-reply-text').textContent;
+  if (!text || text === '--') return;
 
-  navigator.clipboard.writeText(replyText).then(() => {
+  navigator.clipboard.writeText(text).then(() => {
     const toast = document.getElementById('copy-toast');
     toast.style.display = 'block';
     setTimeout(() => { toast.style.display = 'none'; }, 2000);
-  }).catch(err => {
-    console.error('Clipboard copy failed:', err);
-  });
+  }).catch(err => console.error('Clipboard copy failed:', err));
 }
 
 function copyAuditJson() {
   if (!currentAuditData) return;
   navigator.clipboard.writeText(JSON.stringify(currentAuditData, null, 2)).then(() => {
-    alert('Audit JSON copied to clipboard.');
+    alert('Audit payload copied to clipboard.');
   });
 }
 
@@ -342,6 +400,19 @@ async function fetchBenchmarkData() {
       if (data.final.human_judge_agreement) {
         updateCalibrationStats(data.final.human_judge_agreement);
       }
+      
+      // Update Generalization Card Final numbers
+      const finalAgent = data.final['Proposed System: Grounded AI Agent'];
+      if (finalAgent) {
+        const genIntentFinal = document.getElementById('gen-intent-final');
+        const genEscFinal = document.getElementById('gen-esc-final');
+        if (genIntentFinal && finalAgent.intent?.accuracy !== undefined) {
+          genIntentFinal.textContent = `${(finalAgent.intent.accuracy * 100).toFixed(1)}%`;
+        }
+        if (genEscFinal && finalAgent.escalation?.accuracy !== undefined) {
+          genEscFinal.textContent = `${(finalAgent.escalation.accuracy * 100).toFixed(1)}%`;
+        }
+      }
     } else {
       document.getElementById('tbody-final-benchmark').innerHTML = 
         `<tr><td colspan="5" class="table-loading">Failed to load reports/benchmark_results.json: ${data.final_error || 'Unknown error'}</td></tr>`;
@@ -349,6 +420,19 @@ async function fetchBenchmarkData() {
 
     if (data.validation) {
       renderBenchmarkTable('tbody-val-benchmark', data.validation, 'validation');
+
+      // Update Generalization Card Validation numbers
+      const valAgent = data.validation['Proposed System: Grounded AI Agent'];
+      if (valAgent) {
+        const genIntentVal = document.getElementById('gen-intent-val');
+        const genEscVal = document.getElementById('gen-esc-val');
+        if (genIntentVal && valAgent.intent?.accuracy !== undefined) {
+          genIntentVal.textContent = `${(valAgent.intent.accuracy * 100).toFixed(1)}%`;
+        }
+        if (genEscVal && valAgent.escalation?.accuracy !== undefined) {
+          genEscVal.textContent = `${(valAgent.escalation.accuracy * 100).toFixed(1)}%`;
+        }
+      }
     } else {
       document.getElementById('tbody-val-benchmark').innerHTML = 
         `<tr><td colspan="5" class="table-loading">Failed to load reports/benchmark_results_validation.json: ${data.validation_error || 'Unknown error'}</td></tr>`;
@@ -371,7 +455,6 @@ function renderBenchmarkTable(tbodyId, benchData, splitType) {
   const m2 = benchData['Baseline 2: Simple (TF-IDF/Keyword)'] || {};
   const agent = benchData['Proposed System: Grounded AI Agent'] || {};
 
-  // Define structured metric definitions
   const rows = [
     {
       name: "Intent Accuracy",
@@ -501,7 +584,7 @@ function renderBenchmarkTable(tbodyId, benchData, splitType) {
       v1: `${formatNum(m1.avg_latency_ms)} ms`,
       v2: `${formatNum(m2.avg_latency_ms)} ms`,
       v3: `${formatNum(agent.avg_latency_ms)} ms`,
-      impact: `<span class="impact-badge impact-good">Real-time capable (<15ms)</span>`
+      impact: `<span class="impact-badge impact-good">Real-time (<15ms)</span>`
     }
   ];
 
@@ -513,7 +596,7 @@ function renderBenchmarkTable(tbodyId, benchData, splitType) {
       </td>
       <td class="tabular-nums">${r.v1}</td>
       <td class="tabular-nums">${r.v2}</td>
-      <td class="tabular-nums td-agent">${r.v3}</td>
+      <td class="tabular-nums td-agent-highlight">${r.v3}</td>
       <td>${r.impact}</td>
     </tr>
   `).join('');
@@ -547,20 +630,20 @@ async function fetchFailureModes() {
 }
 
 function renderFailureModes(failures) {
-  const container = document.getElementById('failures-list');
+  const container = document.getElementById('failures-stream');
   if (!container || !failures || failures.length === 0) return;
 
   container.innerHTML = failures.map(item => `
-    <div class="failure-item">
-      <div class="failure-header">
+    <div class="failure-card">
+      <div class="failure-top">
         <span class="failure-title">Failure Mode ${item.id}: ${escapeHtml(item.title)}</span>
-        <span class="failure-id">Observed in TWCS Holdout</span>
+        <span class="failure-origin">Observed in TWCS Holdout</span>
       </div>
-      <div class="failure-example-block">
+      <div class="failure-example">
         <span class="failure-example-label">Real Holdout Query:</span>
         <p class="failure-example-text">"${escapeHtml(item.example)}"</p>
       </div>
-      <div class="failure-details-grid">
+      <div class="failure-trio-grid">
         <div class="failure-col">
           <span class="failure-col-label">Observed Behavior</span>
           <p class="failure-col-text">${escapeHtml(item.observed)}</p>
@@ -578,9 +661,7 @@ function renderFailureModes(failures) {
   `).join('');
 }
 
-// ==========================================================================
 // Formatting Helpers
-// ==========================================================================
 function formatPct(val) {
   if (val === undefined || val === null) return '--';
   return (val * 100).toFixed(1) + '%';

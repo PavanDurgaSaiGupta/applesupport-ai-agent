@@ -74,7 +74,7 @@ class TestWebApi(unittest.TestCase):
         # Root index.html
         res_index = self.client.get("/")
         self.assertEqual(res_index.status_code, 200)
-        self.assertIn("AppleSupport AI Console", res_index.text)
+        self.assertIn("AppleSupport AI Support Agent", res_index.text)
         
         # CSS
         res_css = self.client.get("/style.css")
