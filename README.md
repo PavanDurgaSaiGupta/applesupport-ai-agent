@@ -7,14 +7,25 @@ An end-to-end, production-ready AI customer-support agent built for **`@AppleSup
 
 ---
 
+## 🌐 Live Production Deployment
+
+The entire system is deployed live and accessible directly in your browser:
+
+- 🚀 **Interactive Operations Console (GitHub Pages)**: **[https://pavandurgasaigupta.github.io/applesupport-ai-agent/](https://pavandurgasaigupta.github.io/applesupport-ai-agent/)**  
+  *A modern, self-explanatory technical operations console visualizing the 6-stage AI pipeline (Customer Message $\to$ Intent $\to$ Historical Retrieval $\to$ Safety Escalation $\to$ Grounded Reply $\to$ Audit Trace) and the complete scientific Evaluation Dashboard with zero-leakage metrics.*
+- ⚡ **Production Backend API (Render)**: **[https://applesupport-agent-api.onrender.com](https://applesupport-agent-api.onrender.com)**  
+  *FastAPI service running the real Python 3.11 inference engine with live endpoints (`/api/analyze`, `/api/benchmark`, `/api/status`, `/api/failures`, `/api/health`).*
+
+---
+
 ## ⚡ Quickstart: Reproduce Headline Numbers in Under 15 Minutes
 
 The entire benchmark suite runs locally in **~10.4 seconds** with zero external API dependencies:
 
 ```bash
 # 1. Clone repository & navigate to folder
-git clone <your-repo-link>
-cd "sde intern task"
+git clone https://github.com/PavanDurgaSaiGupta/applesupport-ai-agent.git
+cd applesupport-ai-agent
 
 # 2. Install dependencies (pandas, scikit-learn, scipy, rouge-score, nltk)
 pip install -r requirements.txt
@@ -36,7 +47,7 @@ python interactive_demo.py
 ```
 
 ### 🖥️ Launch the Web Operations & Evaluation Console
-Launch the unified internal operations dashboard (FastAPI + Modern Web UI):
+You can access the live deployed console at **[https://pavandurgasaigupta.github.io/applesupport-ai-agent/](https://pavandurgasaigupta.github.io/applesupport-ai-agent/)**, or run it locally:
 ```bash
 python -m uvicorn web_api:app --host 127.0.0.1 --port 8000
 ```
