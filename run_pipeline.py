@@ -14,7 +14,7 @@ import sys
 import json
 import time
 import argparse
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 
 from src.data_processor import extract_apple_conversation_pairs
 from src.build_real_dataset_split import build_real_datasets
@@ -35,20 +35,30 @@ def print_banner(text: str):
     print("=" * 80)
 
 
-def run_benchmark(golden_path: str = "data/golden_set/golden_eval_set_200.jsonl", fast_mode: bool = False):
+def run_benchmark(dataset_path: Optional[str] = None, mode: str = "final", fast_mode: bool = False):
     t_start = time.time()
-    print_banner("HIVER SDE INTERN TAKE-HOME: @AppleSupport AI AGENT BENCHMARK")
+    if dataset_path is None:
+        if mode == "validation":
+            dataset_path = "data/splits/val_set.jsonl"
+        else:
+            dataset_path = "data/splits/final_test_200.jsonl"
 
-    # 1. Ensure Data & Golden Set are Ready
-    if not os.path.exists(golden_path) or not os.path.exists("data/processed/apple_pairs_sampled.jsonl"):
-        print("[1/5] Building authentic real-data split with ZERO leakage...")
-        build_real_datasets()
-    else:
-        print("[1/5] Loaded 200-case Golden Evaluation Set from real TWCS data.")
+    print_banner(f"HIVER SDE INTERN TAKE-HOME: @AppleSupport AI AGENT BENCHMARK [{mode.upper()} MODE]")
 
-    # Load Golden Records
+    # 1. Ensure Data & Evaluation Set are Ready
+    if not os.path.exists(dataset_path):
+        if mode == "validation":
+            from scripts.create_validation_split import extract_validation_set
+            extract_validation_set(output_path=dataset_path)
+        else:
+            from src.build_real_dataset_split import build_real_datasets
+            build_real_datasets()
+
+    print(f"[1/5] Loaded {mode.upper()} Evaluation Set from {dataset_path}.")
+
+    # Load Evaluation Records
     golden_records = []
-    with open(golden_path, "r", encoding="utf-8") as f:
+    with open(dataset_path, "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if line:
@@ -164,7 +174,8 @@ def run_benchmark(golden_path: str = "data/golden_set/golden_eval_set_200.jsonl"
 
     # Save to file
     os.makedirs("reports", exist_ok=True)
-    report_file = "reports/benchmark_results.json"
+    report_file = f"reports/benchmark_results_{mode}.json" if mode == "validation" else "reports/benchmark_results.json"
+    results["eval_mode"] = mode
     with open(report_file, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
     print(f"\nSaved full benchmark results to {report_file}")
@@ -221,6 +232,7 @@ def run_benchmark(golden_path: str = "data/golden_set/golden_eval_set_200.jsonl"
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", choices=["validation", "final"], default="final", help="Evaluation mode: validation (tuning set) or final (frozen holdout test set)")
     parser.add_argument("--fast", action="store_true", help="Run in fast mode with subsampled retrieval index")
     args = parser.parse_args()
-    run_benchmark(fast_mode=args.fast)
+    run_benchmark(mode=args.mode, fast_mode=args.fast)

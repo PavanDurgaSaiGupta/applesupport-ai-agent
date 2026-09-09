@@ -32,14 +32,26 @@ class TestAppleSupportPipeline(unittest.TestCase):
         )
 
     def test_zero_data_leakage(self):
-        """Verifies strict separation between evaluation cases and retrieval/training records."""
-        golden_path = "data/golden_set/golden_eval_set_200.jsonl"
-        if os.path.exists(golden_path):
-            with open(golden_path, "r", encoding="utf-8") as f:
-                golden_ids = set(json.loads(line)["tweet_id"] for line in f if line.strip())
-            retrieval_ids = set(r.get("customer_tweet_id") for r in self.retriever.records)
-            overlap = golden_ids.intersection(retrieval_ids)
-            self.assertEqual(len(overlap), 0, f"Detected leakage between Golden Set and Retrieval: {overlap}")
+        """Verifies strict 3-way isolation between Train/Retrieval, Validation, and Final Holdout."""
+        final_test_path = "data/splits/final_test_200.jsonl"
+        val_path = "data/splits/val_set.jsonl"
+
+        final_ids = set()
+        if os.path.exists(final_test_path):
+            with open(final_test_path, "r", encoding="utf-8") as f:
+                final_ids = set(json.loads(line)["tweet_id"] for line in f if line.strip())
+
+        val_ids = set()
+        if os.path.exists(val_path):
+            with open(val_path, "r", encoding="utf-8") as f:
+                val_ids = set(json.loads(line)["tweet_id"] for line in f if line.strip())
+
+        retrieval_ids = set(r.get("customer_tweet_id") for r in self.retriever.records)
+
+        # Pairwise disjointness checks
+        self.assertEqual(len(final_ids.intersection(retrieval_ids)), 0, "Leakage between Final Test and Retrieval!")
+        self.assertEqual(len(val_ids.intersection(retrieval_ids)), 0, "Leakage between Validation and Retrieval!")
+        self.assertEqual(len(val_ids.intersection(final_ids)), 0, "Leakage between Validation and Final Test!")
 
     def test_clean_tweet_text(self):
         raw = "@AppleSupport my phone is slow! I️ hate this update @115854 https://t.co/abc"

@@ -1,59 +1,59 @@
 {
   "Baseline 1: Trivial (Majority/Canned)": {
     "intent": {
-      "accuracy": 0.11,
-      "macro_precision": 0.0138,
+      "accuracy": 0.12,
+      "macro_precision": 0.015,
       "macro_recall": 0.125,
-      "macro_f1": 0.0248,
-      "weighted_f1": 0.0218,
+      "macro_f1": 0.0268,
+      "weighted_f1": 0.0257,
       "per_class": {
         "SOFTWARE_UPDATE_OS": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 46
+          "support": 16
         },
         "BATTERY_PERFORMANCE": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 24
+          "support": 12
         },
         "HARDWARE_AUDIO_DISPLAY": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 18
+          "support": 12
         },
         "ACCOUNT_APPLE_ID_ICLOUD": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 28
+          "support": 12
         },
         "STORE_ORDER_BILLING": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 25
+          "support": 12
         },
         "CONNECTIVITY_SYNC": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 23
+          "support": 12
         },
         "THIRD_PARTY_APP_ISSUES": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 14
+          "support": 12
         },
         "GENERAL_FEEDBACK_RANT": {
-          "precision": 0.11,
+          "precision": 0.12,
           "recall": 1.0,
-          "f1": 0.1982,
-          "support": 22
+          "f1": 0.2143,
+          "support": 12
         }
       },
       "confusion_matrix": [
@@ -65,7 +65,7 @@
           0,
           0,
           0,
-          46
+          16
         ],
         [
           0,
@@ -75,7 +75,7 @@
           0,
           0,
           0,
-          24
+          12
         ],
         [
           0,
@@ -85,7 +85,7 @@
           0,
           0,
           0,
-          18
+          12
         ],
         [
           0,
@@ -95,7 +95,7 @@
           0,
           0,
           0,
-          28
+          12
         ],
         [
           0,
@@ -105,7 +105,7 @@
           0,
           0,
           0,
-          25
+          12
         ],
         [
           0,
@@ -115,7 +115,7 @@
           0,
           0,
           0,
-          23
+          12
         ],
         [
           0,
@@ -125,7 +125,7 @@
           0,
           0,
           0,
-          14
+          12
         ],
         [
           0,
@@ -135,7 +135,7 @@
           0,
           0,
           0,
-          22
+          12
         ]
       ],
       "intents": [
@@ -150,104 +150,94 @@
       ]
     },
     "escalation": {
-      "accuracy": 0.465,
-      "escalate_precision": 0.1855,
-      "escalate_recall": 0.7931,
-      "escalate_f1": 0.3007,
-      "true_positives_escalated": 23,
-      "false_positives_over_escalated": 101,
-      "false_negatives_missed_escalated": 6,
-      "true_negatives_auto_handled": 70,
-      "total_cost_penalty": 131.0,
-      "cost_per_query": 0.655
+      "accuracy": 0.48,
+      "escalate_precision": 0.125,
+      "escalate_recall": 0.7,
+      "escalate_f1": 0.2121,
+      "true_positives_escalated": 7,
+      "false_positives_over_escalated": 49,
+      "false_negatives_missed_escalated": 3,
+      "true_negatives_auto_handled": 41,
+      "total_cost_penalty": 64.0,
+      "cost_per_query": 0.64
     },
     "reply": {
-      "rouge1_f1": 0.3075,
-      "rouge2_f1": 0.1292,
-      "rougeL_f1": 0.2515,
-      "bleu4": 0.0391,
+      "rouge1_f1": 0.45,
+      "rouge2_f1": 0.3158,
+      "rougeL_f1": 0.45,
+      "bleu4": 0.2551,
       "char_limit_compliance_rate": 1.0
     },
     "judge": {
-      "grounding": 2.75,
+      "grounding": 2.8,
       "tone": 5.0,
-      "actionability": 4.24,
-      "escalation": 3.87,
-      "composite": 3.97
+      "actionability": 4.12,
+      "escalation": 3.9,
+      "composite": 3.96
     },
-    "avg_latency_ms": 0.02
+    "avg_latency_ms": 0.01
   },
   "Baseline 2: Simple (TF-IDF/Keyword)": {
     "intent": {
-      "accuracy": 0.665,
-      "macro_precision": 0.6863,
-      "macro_recall": 0.6836,
-      "macro_f1": 0.6727,
-      "weighted_f1": 0.6662,
+      "accuracy": 0.94,
+      "macro_precision": 0.952,
+      "macro_recall": 0.9375,
+      "macro_f1": 0.94,
+      "weighted_f1": 0.939,
       "per_class": {
         "SOFTWARE_UPDATE_OS": {
-          "precision": 0.6216,
-          "recall": 0.5,
-          "f1": 0.5542,
-          "support": 46
+          "precision": 0.8421,
+          "recall": 1.0,
+          "f1": 0.9143,
+          "support": 16
         },
         "BATTERY_PERFORMANCE": {
-          "precision": 0.7931,
-          "recall": 0.9583,
-          "f1": 0.8679,
-          "support": 24
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 12
         },
         "HARDWARE_AUDIO_DISPLAY": {
-          "precision": 0.5455,
-          "recall": 0.6667,
-          "f1": 0.6,
-          "support": 18
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 12
         },
         "ACCOUNT_APPLE_ID_ICLOUD": {
-          "precision": 0.8696,
-          "recall": 0.7143,
-          "f1": 0.7843,
-          "support": 28
+          "precision": 1.0,
+          "recall": 0.8333,
+          "f1": 0.9091,
+          "support": 12
         },
         "STORE_ORDER_BILLING": {
-          "precision": 0.8125,
-          "recall": 0.52,
-          "f1": 0.6341,
-          "support": 25
+          "precision": 0.9167,
+          "recall": 0.9167,
+          "f1": 0.9167,
+          "support": 12
         },
         "CONNECTIVITY_SYNC": {
-          "precision": 0.7727,
-          "recall": 0.7391,
-          "f1": 0.7556,
-          "support": 23
+          "precision": 0.8571,
+          "recall": 1.0,
+          "f1": 0.9231,
+          "support": 12
         },
         "THIRD_PARTY_APP_ISSUES": {
-          "precision": 0.6429,
-          "recall": 0.6429,
-          "f1": 0.6429,
-          "support": 14
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 12
         },
         "GENERAL_FEEDBACK_RANT": {
-          "precision": 0.4324,
-          "recall": 0.7273,
-          "f1": 0.5424,
-          "support": 22
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571,
+          "support": 12
         }
       },
       "confusion_matrix": [
         [
-          23,
-          1,
-          7,
-          1,
+          16,
           0,
-          3,
-          1,
-          10
-        ],
-        [
-          1,
-          23,
           0,
           0,
           0,
@@ -256,64 +246,74 @@
           0
         ],
         [
-          2,
-          3,
+          0,
           12,
           0,
           0,
           0,
-          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          12,
+          0,
+          0,
+          0,
+          0,
           0
         ],
         [
           1,
           0,
           0,
-          20,
-          2,
-          0,
-          1,
-          4
-        ],
-        [
-          5,
-          0,
-          1,
-          1,
-          13,
+          10,
           1,
           0,
-          4
-        ],
-        [
           0,
-          1,
-          0,
-          1,
-          0,
-          17,
-          1,
-          3
-        ],
-        [
-          3,
-          0,
-          2,
-          0,
-          0,
-          0,
-          9,
           0
         ],
         [
+          1,
+          0,
+          0,
+          0,
+          11,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          12,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          12,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
           2,
-          1,
           0,
-          0,
-          1,
-          1,
-          1,
-          16
+          9
         ]
       ],
       "intents": [
@@ -328,210 +328,210 @@
       ]
     },
     "escalation": {
-      "accuracy": 0.885,
+      "accuracy": 0.93,
       "escalate_precision": 0.8,
-      "escalate_recall": 0.2759,
-      "escalate_f1": 0.4103,
-      "true_positives_escalated": 8,
-      "false_positives_over_escalated": 2,
-      "false_negatives_missed_escalated": 21,
-      "true_negatives_auto_handled": 169,
-      "total_cost_penalty": 107.0,
-      "cost_per_query": 0.535
-    },
-    "reply": {
-      "rouge1_f1": 0.2709,
-      "rouge2_f1": 0.1046,
-      "rougeL_f1": 0.221,
-      "bleu4": 0.0398,
-      "char_limit_compliance_rate": 0.995
-    },
-    "judge": {
-      "grounding": 3.86,
-      "tone": 4.74,
-      "actionability": 3.46,
-      "escalation": 4.56,
-      "composite": 4.16
-    },
-    "avg_latency_ms": 10.2
-  },
-  "Proposed System: Grounded AI Agent": {
-    "intent": {
-      "accuracy": 0.665,
-      "macro_precision": 0.6863,
-      "macro_recall": 0.6836,
-      "macro_f1": 0.6727,
-      "weighted_f1": 0.6662,
-      "per_class": {
-        "SOFTWARE_UPDATE_OS": {
-          "precision": 0.6216,
-          "recall": 0.5,
-          "f1": 0.5542,
-          "support": 46
-        },
-        "BATTERY_PERFORMANCE": {
-          "precision": 0.7931,
-          "recall": 0.9583,
-          "f1": 0.8679,
-          "support": 24
-        },
-        "HARDWARE_AUDIO_DISPLAY": {
-          "precision": 0.5455,
-          "recall": 0.6667,
-          "f1": 0.6,
-          "support": 18
-        },
-        "ACCOUNT_APPLE_ID_ICLOUD": {
-          "precision": 0.8696,
-          "recall": 0.7143,
-          "f1": 0.7843,
-          "support": 28
-        },
-        "STORE_ORDER_BILLING": {
-          "precision": 0.8125,
-          "recall": 0.52,
-          "f1": 0.6341,
-          "support": 25
-        },
-        "CONNECTIVITY_SYNC": {
-          "precision": 0.7727,
-          "recall": 0.7391,
-          "f1": 0.7556,
-          "support": 23
-        },
-        "THIRD_PARTY_APP_ISSUES": {
-          "precision": 0.6429,
-          "recall": 0.6429,
-          "f1": 0.6429,
-          "support": 14
-        },
-        "GENERAL_FEEDBACK_RANT": {
-          "precision": 0.4324,
-          "recall": 0.7273,
-          "f1": 0.5424,
-          "support": 22
-        }
-      },
-      "confusion_matrix": [
-        [
-          23,
-          1,
-          7,
-          1,
-          0,
-          3,
-          1,
-          10
-        ],
-        [
-          1,
-          23,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          2,
-          3,
-          12,
-          0,
-          0,
-          0,
-          1,
-          0
-        ],
-        [
-          1,
-          0,
-          0,
-          20,
-          2,
-          0,
-          1,
-          4
-        ],
-        [
-          5,
-          0,
-          1,
-          1,
-          13,
-          1,
-          0,
-          4
-        ],
-        [
-          0,
-          1,
-          0,
-          1,
-          0,
-          17,
-          1,
-          3
-        ],
-        [
-          3,
-          0,
-          2,
-          0,
-          0,
-          0,
-          9,
-          0
-        ],
-        [
-          2,
-          1,
-          0,
-          0,
-          1,
-          1,
-          1,
-          16
-        ]
-      ],
-      "intents": [
-        "SOFTWARE_UPDATE_OS",
-        "BATTERY_PERFORMANCE",
-        "HARDWARE_AUDIO_DISPLAY",
-        "ACCOUNT_APPLE_ID_ICLOUD",
-        "STORE_ORDER_BILLING",
-        "CONNECTIVITY_SYNC",
-        "THIRD_PARTY_APP_ISSUES",
-        "GENERAL_FEEDBACK_RANT"
-      ]
-    },
-    "escalation": {
-      "accuracy": 0.935,
-      "escalate_precision": 0.7667,
-      "escalate_recall": 0.7931,
-      "escalate_f1": 0.7797,
-      "true_positives_escalated": 23,
-      "false_positives_over_escalated": 7,
+      "escalate_recall": 0.4,
+      "escalate_f1": 0.5333,
+      "true_positives_escalated": 4,
+      "false_positives_over_escalated": 1,
       "false_negatives_missed_escalated": 6,
-      "true_negatives_auto_handled": 164,
-      "total_cost_penalty": 37.0,
-      "cost_per_query": 0.185
+      "true_negatives_auto_handled": 89,
+      "total_cost_penalty": 31.0,
+      "cost_per_query": 0.31
     },
     "reply": {
-      "rouge1_f1": 0.2272,
-      "rouge2_f1": 0.0571,
-      "rougeL_f1": 0.1754,
-      "bleu4": 0.0171,
+      "rouge1_f1": 0.1567,
+      "rouge2_f1": 0.0271,
+      "rougeL_f1": 0.1139,
+      "bleu4": 0.025,
       "char_limit_compliance_rate": 1.0
     },
     "judge": {
-      "grounding": 3.82,
-      "tone": 4.89,
-      "actionability": 4.06,
-      "escalation": 4.81,
-      "composite": 4.4
+      "grounding": 4.08,
+      "tone": 4.7,
+      "actionability": 3.41,
+      "escalation": 4.74,
+      "composite": 4.23
     },
-    "avg_latency_ms": 10.9
+    "avg_latency_ms": 11.58
+  },
+  "Proposed System: Grounded AI Agent": {
+    "intent": {
+      "accuracy": 0.94,
+      "macro_precision": 0.952,
+      "macro_recall": 0.9375,
+      "macro_f1": 0.94,
+      "weighted_f1": 0.939,
+      "per_class": {
+        "SOFTWARE_UPDATE_OS": {
+          "precision": 0.8421,
+          "recall": 1.0,
+          "f1": 0.9143,
+          "support": 16
+        },
+        "BATTERY_PERFORMANCE": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 12
+        },
+        "HARDWARE_AUDIO_DISPLAY": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 12
+        },
+        "ACCOUNT_APPLE_ID_ICLOUD": {
+          "precision": 1.0,
+          "recall": 0.8333,
+          "f1": 0.9091,
+          "support": 12
+        },
+        "STORE_ORDER_BILLING": {
+          "precision": 0.9167,
+          "recall": 0.9167,
+          "f1": 0.9167,
+          "support": 12
+        },
+        "CONNECTIVITY_SYNC": {
+          "precision": 0.8571,
+          "recall": 1.0,
+          "f1": 0.9231,
+          "support": 12
+        },
+        "THIRD_PARTY_APP_ISSUES": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 12
+        },
+        "GENERAL_FEEDBACK_RANT": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1": 0.8571,
+          "support": 12
+        }
+      },
+      "confusion_matrix": [
+        [
+          16,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          12,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          12,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          10,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          11,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          12,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          12,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          9
+        ]
+      ],
+      "intents": [
+        "SOFTWARE_UPDATE_OS",
+        "BATTERY_PERFORMANCE",
+        "HARDWARE_AUDIO_DISPLAY",
+        "ACCOUNT_APPLE_ID_ICLOUD",
+        "STORE_ORDER_BILLING",
+        "CONNECTIVITY_SYNC",
+        "THIRD_PARTY_APP_ISSUES",
+        "GENERAL_FEEDBACK_RANT"
+      ]
+    },
+    "escalation": {
+      "accuracy": 0.98,
+      "escalate_precision": 1.0,
+      "escalate_recall": 0.8,
+      "escalate_f1": 0.8889,
+      "true_positives_escalated": 8,
+      "false_positives_over_escalated": 0,
+      "false_negatives_missed_escalated": 2,
+      "true_negatives_auto_handled": 90,
+      "total_cost_penalty": 10.0,
+      "cost_per_query": 0.1
+    },
+    "reply": {
+      "rouge1_f1": 0.1577,
+      "rouge2_f1": 0.04,
+      "rougeL_f1": 0.1312,
+      "bleu4": 0.0277,
+      "char_limit_compliance_rate": 1.0
+    },
+    "judge": {
+      "grounding": 4.29,
+      "tone": 4.83,
+      "actionability": 3.97,
+      "escalation": 4.92,
+      "composite": 4.5
+    },
+    "avg_latency_ms": 12.16
   },
   "human_judge_agreement": {
     "sample_size": 30,
@@ -581,5 +581,5 @@
       }
     ]
   },
-  "eval_mode": "final"
+  "eval_mode": "validation"
 }

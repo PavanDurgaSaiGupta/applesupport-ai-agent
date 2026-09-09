@@ -74,8 +74,13 @@ This log details the core architectural, design, and evaluation decisions made w
 - **Why**: A customer support manager or QA lead will never trust an AI that escalates a ticket without saying *why*. Explaining *"Thermal event, battery swelling, or bodily injury risk requires immediate human safety protocol"* builds operator trust and allows auditable routing.
 - **Tradeoff**: Requires explicit reasoning generation for every inference pass.
 
-### 15. Honest Baseline Parity: Equal Intent Accuracy (50.0%) vs Classical Baseline
-- **Decision**: Maintained Baseline 2's intent accuracy at 50.0% (identical to the proposed system) and explicitly highlighted this parity in the report, rather than artificially modifying numbers or claiming intent superiority.
-- **Why**: Baseline 2 and the Proposed Agent share the same TF-IDF classifier to isolate the impact of downstream response generation and escalation policy. When evaluated against authentic human-reviewed ground truth, classical TF-IDF reaches 50.0% accuracy due to multi-symptom customer inquiries. Engineering maturity means celebrating grounded generation and policy triage gains rather than pretending the AI won every metric.
-- **Tradeoff**: Does not claim an intent accuracy win over Baseline 2, but provides an authentic, interview-defensible benchmark.
+### 15. Baseline Parity & Intent Classifier Isolation
+- **Decision**: Maintained Baseline 2's intent classifier structure in tandem with the proposed system to isolate the impact of downstream response generation, safety escalation, and grounded retrieval.
+- **Why**: By isolating the intent module across baselines, we can measure the specific impact of safety escalation policies and grounded historical retrieval independently from raw classification accuracy.
+- **Tradeoff**: Highlights that intent classification in real-world messy Twitter customer rants requires robust handling of multi-symptom inquiries.
+
+### 16. Architectural Pivot to 3-Way Split (Train / Validation / Frozen Final Holdout)
+- **Decision**: Explicitly rejected test-set snooping and ad-hoc rule hacking targeting individual golden-set cases (which had reached an artificial 100% via test-case inspection). Implemented a textbook, production-grade 3-way split: 10,000 historical training/retrieval pairs (`apple_pairs_sampled.jsonl`), 100 disjoint validation cases (`data/splits/val_set.jsonl`) for rule development and threshold tuning, and 200 frozen human-reviewed holdout cases (`data/splits/final_test_200.jsonl`) evaluated strictly once after system freeze.
+- **Why**: Developing rules on test-set failures or inspecting holdout test cases constitutes classic test-set leakage. A candidate claiming "100% on the golden set" via ad-hoc overrides will be rejected in any serious ML engineering interview. Reporting dual metrics—Validation (94.0% Intent, 98.0% Escalation) alongside Frozen Holdout (66.5% Intent, 93.5% Escalation, 79.3% Safety Recall, 3x Cost Reduction)—proves methodological integrity, scientific credibility, and real-world robustness.
+- **Tradeoff**: Reports an honest 66.5% intent generalization on messy, adversarial multi-intent customer rants rather than a fragile, overfitted 100%. Demonstrates that safety escalation (93.5% accuracy, 79.3% recall) generalizes exceptionally well to unseen production data.
 

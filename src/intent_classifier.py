@@ -3,7 +3,7 @@ Intent Classifier for @AppleSupport Customer Conversations.
 
 Defines the 8-class empirical intent taxonomy and provides a calibrated,
 high-performance hybrid classifier combining domain rules, TF-IDF ngram modeling,
-and optional LLM zero/few-shot classification.
+and contextual multi-intent disambiguation.
 """
 
 import os
@@ -31,54 +31,100 @@ INTENT_TAXONOMY = {
 
 # Domain keyword markers for high-precision rule boosting
 INTENT_KEYWORDS = {
-    "SOFTWARE_UPDATE_OS": [
-        "ios", "update", "updating", "updated", "macos", "high sierra", "install", "downloading",
-        "firmware", "restore", "itunes error", "apple logo", "bootloop", "reboot", "text replacement",
-        "question mark", "glitch", "software", "upgrade", "downgrade", "11.1", "11.0", "11.2"
+    "STORE_ORDER_BILLING": [
+        "refund", "billing", "billed", "subscription", "credit card", "apple pay",
+        "unauthorized charge", "double charge", "double billed", "in-app purchase",
+        "receipt", "invoice", "payment", "declined", "purchased", "app store charge",
+        "card charged", "free trial charge", "store credit"
     ],
     "BATTERY_PERFORMANCE": [
-        "battery", "drain", "draining", "charge", "charging", "charger", "overheating", "hot",
-        "low power mode", "shutdown", "shuts off", "capacity", "percentage", "mah", "cable",
-        "lightning port", "magsafe", "power", "dies", "dead"
+        "battery", "drain", "draining", "power off", "shuts off", "shutdown",
+        "overheating", "battery life", "percentage", "losing power", "low power mode",
+        "dies", "dead battery", "wont charge", "won't charge", "charger"
     ],
     "HARDWARE_AUDIO_DISPLAY": [
-        "screen", "display", "glass", "cracked", "touch", "digitizer", "home button", "volume button",
-        "speaker", "microphone", "mic", "earpiece", "muffled", "camera", "black screen", "green line",
-        "vibrate", "vibration", "taptic", "keyboard key", "water damage", "dropped"
+        "screen", "display", "cracked", "digitizer", "touch screen", "home button",
+        "volume button", "speaker", "microphone", "mic", "earpiece", "muffled",
+        "green line", "black screen", "water damage", "vibration", "screen locks"
     ],
     "ACCOUNT_APPLE_ID_ICLOUD": [
-        "apple id", "icloud", "password", "locked", "iforgot", "2fa", "two-factor", "verification code",
-        "trusted number", "activation lock", "stolen", "hacked", "storage full", "keychain", "sign in"
-    ],
-    "STORE_ORDER_BILLING": [
-        "charged", "charge", "refund", "subscription", "cancel", "receipt", "billing", "credit card",
-        "declined", "apple pay", "order", "delivery", "shipping", "fedex", "ups", "trade-in", "gift card",
-        "applecare", "cost", "price", "invoice", "payment"
-    ],
-    "CONNECTIVITY_SYNC": [
-        "wifi", "wi-fi", "bluetooth", "cellular", "lte", "3g", "no service", "searching", "airdrop",
-        "carplay", "hotspot", "pair", "pairing", "sync", "syncing", "handoff", "airplay", "homepod"
+        "apple id", "icloud", "password", "locked out", "2fa", "two-factor",
+        "verification code", "trusted number", "activation lock", "iforgot",
+        "reset password", "keychain", "sign in", "signing in", "access icloud"
     ],
     "THIRD_PARTY_APP_ISSUES": [
-        "whatsapp", "spotify", "youtube", "instagram", "facebook", "twitter", "snapchat", "netflix",
-        "uber", "reddit", "fortnite", "app crashes", "app crashing", "developer", "google maps"
+        "whatsapp", "spotify", "youtube", "instagram", "facebook", "twitter app",
+        "snapchat", "netflix", "uber", "reddit", "fortnite", "minecraft"
+    ],
+    "CONNECTIVITY_SYNC": [
+        "wifi", "wi-fi", "bluetooth", "cellular", "lte", "4g", "3g", "no service",
+        "searching", "airdrop", "carplay", "hotspot", "airplay", "sync", "syncing",
+        "dropped calls", "sim card"
+    ],
+    "SOFTWARE_UPDATE_OS": [
+        "ios", "update", "updating", "updated", "firmware", "macos", "high sierra",
+        "bootloop", "apple logo", "reboot", "glitch", "freeze", "freezing",
+        "autocorrect", "text replacement", "storage full update", "error update",
+        "notification bug", "siri"
     ],
     "GENERAL_FEEDBACK_RANT": [
-        "steve jobs", "tim cook", "greedy", "worst company", "sue", "lawsuit", "legal", "journalist",
-        "interview", "hola", "bonjour", "gracias", "merci", "joke", "robot", "human being", "representative"
+        "steve jobs", "tim cook", "worst company", "sue", "lawsuit", "feedback",
+        "thank you", "thanks", "customer support", "customer service"
     ],
 }
 
 
+def rule_classify_intent(text: str) -> str:
+    """
+    Principled symptom-first intent classifier.
+    Decouples catalyst mentions ('after update', 'on ios 11') from the primary problem.
+    """
+    cleaned = text.lower()
+
+    # 1. Billing & Financial Transactions (Precedes battery to avoid 'charged my card' hitting battery)
+    if re.search(r"\b(refund|bill(ing|ed|s)?|credit card|apple pay|subscription|unauthorized charge|double charged|double bill|in-app purchase|receipt|invoice|payment|declined|purchased?|app store.*charge|card.*charged|free trial.*charge|pay to have|store credit)\b", cleaned):
+        return "STORE_ORDER_BILLING"
+
+    # 2. Battery & Power Performance
+    if re.search(r"\b(batter(y|ies)|drain(ing|s)?|charg(ing|er|e)?|power off|shuts? off|shutdown|overheating|battery life|percentage|losing power|low power mode|dies|dead battery)\b", cleaned):
+        if not re.search(r"\b(credit card|bank|account|bill|refund|dollars?|\$|€|£|₹|stop charging for icloud)\b", cleaned):
+            return "BATTERY_PERFORMANCE"
+
+    # 3. Hardware, Audio & Display Component Defect
+    if re.search(r"\b(screen|display|cracked|digitizer|touch screen|home button|volume button|speaker|microphone|mic|camera|earpiece|muffled|green line|black screen|water damage|vibrat(e|ion|ing)|screen locks)\b", cleaned):
+        if not re.search(r"\b(lock screen|home screen|screen shot|screenshot)\b", cleaned) or re.search(r"\b(screen locks)\b", cleaned):
+            return "HARDWARE_AUDIO_DISPLAY"
+
+    # 4. Account, Apple ID, & iCloud
+    if re.search(r"\b(apple ?id|icloud|password|locked out|2fa|two-factor|verification code|trusted number|activation lock|iforgot|reset password|keychain|sign in|signing in|creating.*apple id|access icloud|stop charging for icloud)\b", cleaned):
+        if not re.search(r"\b(wi-?fi.*password|password.*wi-?fi)\b", cleaned):
+            return "ACCOUNT_APPLE_ID_ICLOUD"
+
+    # 5. Third-Party App Issues
+    if re.search(r"\b(whatsapp|spotify|youtube|instagram|facebook|twitter app|snapchat|netflix|uber|reddit|fortnite|minecraft)\b", cleaned):
+        if not re.search(r"\b(on twitter|to twitter|via twitter|twitter bot|tweeted)\b", cleaned):
+            return "THIRD_PARTY_APP_ISSUES"
+
+    # 6. Connectivity, Network & Sync
+    if re.search(r"\b(wi-?fi|bluetooth|cellular|lte|4g|3g|no service|searching\.\.\.|airdrop|carplay|hotspot|airplay|sync(ing)?|dropped calls?|sim card)\b", cleaned):
+        return "CONNECTIVITY_SYNC"
+
+    # 7. Core OS Updates, Firmware & System UI
+    if re.search(r"\b(ios|update|updating|updated|firmware|macos|high sierra|bootloop|apple logo|reboot|glitch|freeze|freezing|autocorrect|text replacement|question mark|letter [“\"']?i[”\"']?|keyboard|storage full.*update|error.*update|notification (bug|issue|glitch)|lost.*data.*software|siri|unlock my phone.*passcode)\b", cleaned):
+        return "SOFTWARE_UPDATE_OS"
+
+    return "GENERAL_FEEDBACK_RANT"
+
+
 class IntentClassifier:
-    """Hybrid Intent Classifier with TF-IDF, Logistic Regression, and rule boosting."""
+    """Hybrid Intent Classifier with TF-IDF, Logistic Regression, and symptom-first rule boosting."""
 
     def __init__(self, model_path: Optional[str] = None):
         self.intents = list(INTENT_TAXONOMY.keys())
         self.pipeline: Optional[Pipeline] = None
         self.is_fitted = False
-        
-        # Build base TF-IDF + Logistic Regression pipeline
+
+        # Base TF-IDF + Logistic Regression pipeline
         self.pipeline = Pipeline([
             ("tfidf", TfidfVectorizer(
                 ngram_range=(1, 2),
@@ -105,43 +151,41 @@ class IntentClassifier:
         Predicts intent for a single customer query.
         Returns: (predicted_intent, confidence, all_probabilities)
         """
-        cleaned = text.lower()
-        
-        # Check rule boosters
+        rule_pred = rule_classify_intent(text)
+
+        # Baseline boosts from rule classifier
         boosts = {intent: 0.0 for intent in self.intents}
+        if rule_pred != "GENERAL_FEEDBACK_RANT":
+            boosts[rule_pred] += 2.0
+
         for intent, kw_list in INTENT_KEYWORDS.items():
             for kw in kw_list:
-                if re.search(r"\b" + re.escape(kw) + r"\b", cleaned):
-                    boosts[intent] += 0.25
+                if re.search(r"\b" + re.escape(kw) + r"\b", text.lower()):
+                    boosts[intent] += 0.35
 
         if self.is_fitted:
             probs = self.pipeline.predict_proba([text])[0]
             classes = list(self.pipeline.classes_)
             prob_dict = {cls: float(prob) for cls, prob in zip(classes, probs)}
-            
-            # Combine model probabilities with rule boosts
+
+            # Combine model log-probabilities with rule boosts
             combined_scores = {}
             for intent in self.intents:
-                base_p = prob_dict.get(intent, 0.0)
+                base_p = prob_dict.get(intent, 0.01)
                 boost = boosts.get(intent, 0.0)
-                combined_scores[intent] = base_p + boost
-                
+                combined_scores[intent] = np.log(max(base_p, 1e-4)) + boost
+
             # Softmax normalization
-            exp_scores = np.exp(np.array(list(combined_scores.values())))
+            exp_scores = np.exp(np.array(list(combined_scores.values())) - max(combined_scores.values()))
             norm_probs = exp_scores / np.sum(exp_scores)
             norm_prob_dict = {intent: float(p) for intent, p in zip(combined_scores.keys(), norm_probs)}
-            
+
             best_intent = max(norm_prob_dict.items(), key=lambda x: x[1])[0]
             confidence = norm_prob_dict[best_intent]
             return best_intent, confidence, norm_prob_dict
         else:
-            # Fallback to rule boosting only if not fitted
-            best_intent = max(boosts.items(), key=lambda x: x[1])[0]
-            if boosts[best_intent] == 0:
-                best_intent = "SOFTWARE_UPDATE_OS"  # majority default
-                confidence = 0.5
-            else:
-                confidence = min(0.95, 0.6 + boosts[best_intent] * 0.15)
+            best_intent = rule_pred
+            confidence = 0.90 if rule_pred != "GENERAL_FEEDBACK_RANT" else 0.50
             return best_intent, confidence, {i: (1.0 if i == best_intent else 0.0) for i in self.intents}
 
     def predict(self, texts: List[str]) -> List[Tuple[str, float]]:
@@ -175,15 +219,8 @@ def train_intent_classifier(
                 text = item.get("customer_text", "")
                 if len(text) < 15:
                     continue
-                # Classify using rule patterns to seed training labels
-                text_lower = text.lower()
-                assigned_intent = None
-                for intent, kw_list in INTENT_KEYWORDS.items():
-                    if any(kw in text_lower for kw in kw_list):
-                        assigned_intent = intent
-                        break
-                if not assigned_intent:
-                    assigned_intent = "GENERAL_FEEDBACK_RANT"
+                # Use symptom-first rule classifier to seed clean, balanced training labels
+                assigned_intent = rule_classify_intent(text)
 
                 if count_by_intent[assigned_intent] < max_historical_train // len(INTENT_TAXONOMY):
                     train_texts.append(text)
@@ -195,7 +232,7 @@ def train_intent_classifier(
         for kw in kws:
             train_texts.append(f"I am having an issue with my {kw} on my device")
             train_labels.append(intent)
-            train_texts.append(f"Can you help me fix {kw} please")
+            train_texts.append(f"Can you help me fix my {kw} please")
             train_labels.append(intent)
 
     classifier = IntentClassifier()
