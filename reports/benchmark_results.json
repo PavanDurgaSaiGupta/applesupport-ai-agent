@@ -175,7 +175,7 @@
       "escalation": 3.96,
       "composite": 3.94
     },
-    "avg_latency_ms": 0.0
+    "avg_latency_ms": 0.03
   },
   "Baseline 2: Simple (TF-IDF/Keyword)": {
     "intent": {
@@ -353,7 +353,7 @@
       "escalation": 4.93,
       "composite": 4.39
     },
-    "avg_latency_ms": 3.51
+    "avg_latency_ms": 16.74
   },
   "Proposed System: Grounded AI Agent": {
     "intent": {
@@ -531,7 +531,7 @@
       "escalation": 4.86,
       "composite": 4.46
     },
-    "avg_latency_ms": 3.54
+    "avg_latency_ms": 14.67
   },
   "human_judge_agreement": {
     "sample_size": 30,

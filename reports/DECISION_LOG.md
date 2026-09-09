@@ -1,4 +1,4 @@
-# Decision Log: 14 Non-Obvious Engineering Decisions & Tradeoffs
+# Decision Log: 15 Non-Obvious Engineering Decisions & Tradeoffs
 
 This log details the core architectural, design, and evaluation decisions made while building the `@AppleSupport` AI Support Agent, along with the rejected alternatives and explicit engineering tradeoffs.
 
@@ -9,10 +9,10 @@ This log details the core architectural, design, and evaluation decisions made w
 - **Why**: Apple Support operates at extreme volume (~100k tweets in TWCS) with an unambiguous, highly formalized triaging workflow (device diagnostics -> OS version verification -> DM referral for private hardware/billing checks). Unlike airlines where support queries are mostly volatile flight delay complaints, tech hardware support has concrete, verifiable ground truth procedures (Settings pathways, force restart combinations, hardware recalls).
 - **Tradeoff**: Apple has strict public-to-private boundary policies (moving to DM very early), which biases conversational depth in public tweets.
 
-### 2. Intent Taxonomy: 8 Empirical Operational Classes instead of Banking77
-- **Decision**: Defined an 8-class taxonomy derived empirically from initial inbound customer tweets to `@AppleSupport`, rejecting the secondary Banking77 dataset.
-- **Why**: Banking77 is tailored to fintech transactions (card limits, ATM fees, overdrafts), completely misaligned with consumer electronics triage (thermal events, iOS boot loops, display digitizers). An 8-class taxonomy captures >95% of Apple customer support inquiries without suffering from the label dilution of a 77-class space.
-- **Tradeoff**: Requires custom annotation of training and golden sets rather than using off-the-shelf benchmarks.
+### 2. Intent Taxonomy: Exploratory Analysis & Rule-Assisted Quantification over Banking77 / Clustering
+- **Decision**: Defined an 8-class candidate taxonomy derived from exploratory domain review of Apple Support issues and quantified class prevalence across 20,000 authentic tweets using rule-assisted keyword labeling, rather than claiming unsupervised clustering or adopting Banking77.
+- **Why**: Banking77 is tailored to fintech transactions (card limits, ATM fees, overdrafts), completely misaligned with consumer electronics triage (thermal events, iOS boot loops, display digitizers). An 8-class taxonomy captures >95% of Apple customer support inquiries. We avoided claiming "unsupervised clustering" because the taxonomy was rule-assisted and exploratory rather than machine-clustered.
+- **Tradeoff**: Requires rule maintenance and explicit disambiguation boundaries across overlapping domains.
 
 ### 3. Reconstructing Customer-Agent Conversation Pairs via Inverted Index
 - **Decision**: Streamed `twcs.csv` in chunks to index outbound `@AppleSupport` tweets, then mapped them back to inbound customer tweets using `in_response_to_tweet_id`.
@@ -35,7 +35,7 @@ This log details the core architectural, design, and evaluation decisions made w
 - **Tradeoff**: Slight bias toward over-escalation on ambiguous border queries.
 
 ### 7. Grounding Generation via Historical Retrieval (RAG) rather than Freeform LLM
-- **Decision**: Grounded reply drafting strictly in historical AppleSupport resolutions and verified Settings pathways (`Settings > General > About`) rather than letting an LLM generate arbitrary text.
+- **Decision**: Grounded reply drafting strictly in historical AppleSupport resolutions and documented Settings pathways (`Settings > General > About`) rather than letting an LLM generate arbitrary text.
 - **Why**: LLMs are notorious for hallucinating non-existent warranties, promising free replacements at Genius Bars, or inventing incorrect settings toggles. Retrieval-grounded generation ensures every response is anchored in real Apple procedures.
 - **Tradeoff**: Response variety is constrained to historically validated solution templates.
 
@@ -44,9 +44,9 @@ This log details the core architectural, design, and evaluation decisions made w
 - **Why**: Enterprise Twitter support bots that post 4-tweet threads look spammy and fail customer engagement tests. True Apple Support tweets are crisp, empathetic, and direct.
 - **Tradeoff**: Cannot explain full complex multi-step repairs directly in the tweet; must focus on immediate triage step or DM transition.
 
-### 9. Real-Data Stratified Golden Set with Strict Conversation-Level Isolation
-- **Decision**: Sampled 200 real customer tweets directly from `twcs.csv` across the 8 empirical intents, and enforced strict conversation-level exclusion so that zero evaluation IDs exist in the training or retrieval index.
-- **Why**: Evaluating on synthetic data or allowing evaluation conversations into the training/retrieval bank causes severe train-eval leakage. Sourcing real tweet IDs and strictly isolating the conversation threads ensures an uncompromised, interview-defensible evaluation.
+### 9. Real-Data Stratified Evaluation Set with Strict Conversation-Level Isolation & Provenance Audit
+- **Decision**: Sampled 200 real customer tweets directly from `twcs.csv` across the 8 empirical intents, enforced strict conversation-level exclusion (0 overlapping IDs in retrieval bank), preserved labels as provisional rule-assisted ground truth, and provided a clean review spreadsheet (`annotation_template_200.csv`) and guidelines (`annotation_guidelines.md`) for full human review.
+- **Why**: Evaluating on synthetic data or allowing evaluation conversations into the training/retrieval bank causes severe train-eval leakage. We audited all 5 label fields and explicitly avoided describing them as "hand-labelled" prior to complete manual verification.
 - **Tradeoff**: Real tweets are noisier, full of emojis and colloquial syntax, reducing trivial model accuracy from an artificial 97.5% to a realistic 89.0%.
 
 ### 10. Inclusion of 20% Hard / Adversarial Edge Cases in Evaluation Set
@@ -57,19 +57,24 @@ This log details the core architectural, design, and evaluation decisions made w
 ### 11. Multi-Dimensional LLM Judge Rubric over Raw BLEU/Perplexity
 - **Decision**: Evaluated reply quality across 4 explicit axes (Grounding, Tone, Actionability, Escalation Appropriateness) on a 1-5 scale rather than relying solely on BLEU or ROUGE.
 - **Why**: BLEU and ROUGE penalize paraphrasing and reward exact string overlaps. A support tweet can have 0% BLEU overlap with a human reference while being technically superior and more helpful.
-- **Tradeoff**: Requires calibration against human annotations to prove judge validity.
+- **Tradeoff**: Requires calibration against human annotations to examine judge validity.
 
-### 12. Empirical Measurement of the "High-Agreement Paradox"
-- **Decision**: Explicitly calculated and reported both continuous correlation (Pearson $r$) and discrete agreement (Cohen's Kappa $\kappa$) alongside Mean Absolute Error (MAE) on human calibration cases.
-- **Why**: When raters agree closely on high-performing systems (both human and judge rating between 4.5 and 5.0), variance approaches zero, causing Pearson's $r$ and Cohen's $\kappa$ to mathematically collapse despite low MAE (0.27). We openly documented this phenomenon rather than hiding it.
-- **Tradeoff**: Forces a nuanced discussion of statistical limitations in the final report.
+### 12. Empirical Measurement of the "High-Agreement Paradox" & Judge Reliability Limitations
+- **Decision**: Explicitly calculated and reported Pearson $r$ (-0.2431) and Cohen's Kappa $\kappa$ (0.0) alongside MAE (0.2377) on 30 cases calibrated by the Candidate Author Reviewer.
+- **Why**: When raters agree closely on high-performing systems (both human and judge rating between 4.5 and 5.0), variance approaches zero, causing Pearson's $r$ and Cohen's $\kappa$ to mathematically collapse despite low MAE (0.24). We openly documented that low MAE with collapsed correlation statistics provides weak evidence of judge reliability due to restricted rating variance and small sample size.
+- **Tradeoff**: Forces an honest discussion of statistical limitations in the final report.
 
 ### 13. Sublinear In-Memory TF-IDF Indexing for <15 Minute Reproduction
 - **Decision**: Pre-indexed 10,000 historical resolution pairs using sublinear TF-IDF vectors in Python memory.
-- **Why**: Heavy neural vector databases (Pinecone, Weaviate, Milvus) require Docker containers, external API keys, or long embedding downloads that violate the 15-minute reproduction guarantee. Our pipeline reproduces in **under 2 seconds**.
+- **Why**: Heavy neural vector databases (Pinecone, Weaviate, Milvus) require Docker containers, external API keys, or long embedding downloads that violate the 15-minute reproduction guarantee. Our pipeline reproduces in **under 3 seconds**.
 - **Tradeoff**: Semantic paraphrase retrieval is bounded by character/word n-gram overlap rather than deep contextual embeddings.
 
 ### 14. Mandating Explicit "Stated Reason" on All Escalation Outputs
 - **Decision**: Made `escalation_reason` a mandatory output attribute alongside the binary `decision`.
 - **Why**: A customer support manager or QA lead will never trust an AI that escalates a ticket without saying *why*. Explaining *"Thermal event, battery swelling, or bodily injury risk requires immediate human safety protocol"* builds operator trust and allows auditable routing.
 - **Tradeoff**: Requires explicit reasoning generation for every inference pass.
+
+### 15. Honest Baseline Parity: Equal Intent Accuracy (89.0%) vs Classical Baseline
+- **Decision**: Maintained Baseline 2's intent accuracy at 89.0% (identical to the proposed system) and explicitly highlighted this parity in the report, rather than artificially modifying numbers or claiming intent superiority.
+- **Why**: Baseline 2 and the Proposed Agent share the same TF-IDF classifier to isolate the impact of downstream response generation and escalation policy. For broad 8-class classification, classical TF-IDF is already at the performance ceiling. Engineering maturity means celebrating grounded generation and policy triage gains rather than pretending the AI won every metric.
+- **Tradeoff**: Does not claim an intent accuracy win over Baseline 2, but provides an authentic, interview-defensible benchmark.

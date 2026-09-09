@@ -4,8 +4,8 @@ Builds Authentic Dataset Split from TWCS Kaggle Data with Zero Leakage.
 1. Identifies linked customer-Apple conversation threads in twcs/twcs.csv.
 2. Samples 200 REAL, authentic customer queries across the 8 empirical intents.
 3. Creates:
-   - data/golden_set/golden_eval_set_200.jsonl (200 real Kaggle tweets with expert annotations)
-   - data/golden_set/human_annotations_sample.json (30 cases annotated by author)
+   - data/golden_set/golden_eval_set_200.jsonl (200 real Kaggle tweets with provisional rule-assisted labels)
+   - data/golden_set/human_annotations_sample.json (30 cases calibrated by Candidate Author Reviewer)
    - data/processed/apple_pairs_sampled.jsonl (retrieval knowledge base with STRICT exclusion of golden IDs)
 4. Enforces strict conversation-level separation:
    Zero evaluation tweet IDs or parent/child thread IDs can exist in the retrieval bank.
@@ -178,10 +178,14 @@ def build_real_datasets(
                 "customer_query": item["customer_text"],
                 "ground_truth_intent": item["intent"],
                 "ground_truth_escalation": item["escalation"],
+                "provisional_intent": item["intent"],
+                "provisional_escalation": item["escalation"],
                 "escalation_reason": item["escalation_reason"],
                 "ground_truth_resolution": item["apple_reply"] if item["apple_reply"] else "Direct diagnostic assistance or DM handoff.",
                 "difficulty": difficulty,
-                "annotator": "Author_Annotated_Review",
+                "annotator": "provisional_rule_assisted",
+                "label_provenance": "rule_assisted_heuristics",
+                "manual_review_status": "pending_candidate_manual_review",
                 "is_real_kaggle_tweet": True
             })
 
@@ -198,10 +202,14 @@ def build_real_datasets(
                 "customer_query": item["customer_text"],
                 "ground_truth_intent": item["intent"],
                 "ground_truth_escalation": item["escalation"],
+                "provisional_intent": item["intent"],
+                "provisional_escalation": item["escalation"],
                 "escalation_reason": item["escalation_reason"],
                 "ground_truth_resolution": item["apple_reply"],
                 "difficulty": "Medium",
-                "annotator": "Author_Annotated_Review",
+                "annotator": "provisional_rule_assisted",
+                "label_provenance": "rule_assisted_heuristics",
+                "manual_review_status": "pending_candidate_manual_review",
                 "is_real_kaggle_tweet": True
             })
 

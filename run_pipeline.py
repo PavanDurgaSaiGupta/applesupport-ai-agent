@@ -209,7 +209,7 @@ def run_benchmark(golden_path: str = "data/golden_set/golden_eval_set_200.jsonl"
     print("\n" + "=" * 80)
     print("  HUMAN-JUDGE RELIABILITY CALIBRATION (N = 30 Human Evaluated Cases)")
     print("=" * 80)
-    print(f"Cohen's Kappa (κ):           {agreement_metrics['cohen_kappa']} (Substantial Agreement)")
+    print(f"Cohen's Kappa (κ):           {agreement_metrics['cohen_kappa']} (Weak agreement / restricted variance)")
     print(f"Pearson Correlation (r):     {agreement_metrics['pearson_r']} (p = {agreement_metrics['pearson_p_value']:.2e})")
     print(f"Spearman Rank (ρ):           {agreement_metrics['spearman_rho']}")
     print(f"Mean Absolute Error (MAE):   {agreement_metrics['mean_absolute_error']} / 5.0")

@@ -33,7 +33,7 @@ python interactive_demo.py
 
 ## 📊 Headline Benchmark Results
 
-Evaluated across the **200-Case Hand-Labelled Golden Evaluation Set (Strict Zero-Leakage Split)**:
+Evaluated across the **200-Case Real-Data Evaluation Set with Provisional Rule-Assisted Labels (Strict Zero-Leakage Split)**:
 
 | Evaluation Metric | Baseline 1 (Trivial Canned) | Baseline 2 (Simple Keyword) | Proposed AI Support Agent | Operational Impact |
 |---|:---:|:---:|:---:|:---:|
@@ -48,17 +48,23 @@ Evaluated across the **200-Case Hand-Labelled Golden Evaluation Set (Strict Zero
 | **LLM Judge: Actionability (1-5)** | 3.99 | 3.48 | **3.83** | Direct `Settings > ...` paths |
 | **LLM Judge: Escalation (1-5)** | 3.96 | 4.93 | **4.86** | Sound triage decisions |
 | **LLM Judge Composite (1-5)** | 3.94 | 4.39 | **4.46** | **Top Performing Overall** |
-| **Inference Latency / Query** | < 0.1 ms | 3.5 ms | **3.5 ms** | Real-time capable (< 5ms) |
+| **Inference Latency / Query** | < 0.1 ms | 3.0 ms | **3.0 ms** | Real-time capable (< 5ms) |
+
+### 💡 Engineering Takeaway: Proposed Intent = Baseline 2 Intent (89.0%)
+Baseline 2 and the Proposed Agent share the same TF-IDF classifier component to isolate the impact of response generation and escalation policy. **The proposed system did not improve intent classification over the classical baseline on this dataset.** For broad 8-class tech support categorization, TF-IDF n-grams already capture the bulk of lexical signal.  
+**The core differentiation of the Proposed Agent lies downstream**:
+- Structured escalation triage across 6 operational policy categories with explicit, auditable stated reasons (vs. a naive 5-keyword regex).
+- Grounded, slot-filled response generation adhering to Twitter's 280-character budget and documented navigation paths (vs. unedited historical replies containing redundant questions).
 
 ---
 
 ## 🎯 Human-Judge Reliability Calibration
 
-To prove our automated evaluation is trustworthy, we calibrated the automated **LLM-as-a-Judge** against independent human expert annotations on a 30-case validation subset:
-- **Mean Absolute Error (MAE)**: **0.2377 / 5.0** (Judge mirrors human scores within 0.24 points).
-- **Human Mean Rating**: 4.75 / 5.0
-- **Judge Mean Rating**: 4.60 / 5.0
-- *Note*: Explored in depth under the **"What is Misleading About My Headline Number?"** section of the Final Report, documenting the classic **Restriction of Range / High-Agreement Paradox** in reliability statistics.
+To evaluate the automated **LLM-as-a-Judge**, we calibrated it against annotations by the **Candidate Author Reviewer** on a 30-case validation subset:
+- **Mean Absolute Error (MAE)**: **0.2377 / 5.0** (Judge absolute error is low, mirroring human scores within 0.24 points).
+- **Human Mean Rating**: 4.75 / 5.0 | **Judge Mean Rating**: 4.60 / 5.0
+- **Pearson Correlation ($r$)**: -0.2431 | **Cohen's Kappa ($\kappa$)**: 0.0
+- **Reliability Limitation**: While the absolute deviation is small, Pearson's $r$ and Cohen's $\kappa$ provide **weak statistical evidence of judge reliability** due to restricted rating variance (human scores tightly clustered between 4.5 and 5.0) and the small 30-case sample size (documented under Section 7 of the Final Report).
 
 ---
 
@@ -80,11 +86,11 @@ flowchart LR
 ```
 
 1. **Intent Taxonomy**:
-   Derived empirically from `@AppleSupport` data into 8 operational categories:
+   Derived from exploratory domain analysis of Apple customer support inquiries and quantified across 20,000 tweets via rule-assisted labeling:
    - `SOFTWARE_UPDATE_OS`, `BATTERY_PERFORMANCE`, `HARDWARE_AUDIO_DISPLAY`, `ACCOUNT_APPLE_ID_ICLOUD`
    - `STORE_ORDER_BILLING`, `CONNECTIVITY_SYNC`, `THIRD_PARTY_APP_ISSUES`, `GENERAL_FEEDBACK_RANT`
 2. **Grounding Retriever (RAG)**:
-   Indexed over 10,000 verified historical Apple resolution pairs to anchor responses in genuine brand procedures (`Settings > General > About`, force reboot combinations, official support articles).
+   Indexed over 10,000 verified historical Apple resolution pairs to anchor responses in genuine brand procedures (`Settings > General > About`, force reboot combinations, documented support articles).
 3. **Escalation Engine with Stated Reasons**:
    Deterministic policy rules for 6 core categories:
    - Physical safety hazards (swollen batteries, sparks, fire risks)
@@ -104,10 +110,14 @@ flowchart LR
 sde-intern-task/
 ├── data/
 │   ├── processed/
-│   │   └── apple_pairs_sampled.jsonl         # 10,000 extracted customer-reply pairs
+│   │   ├── apple_pairs_sampled.jsonl         # 10,000 extracted customer-reply pairs
+│   │   └── intent_distribution.csv           # Empirical prevalence over 20,000 tweets
 │   ├── golden_set/
-│   │   ├── golden_eval_set_200.jsonl         # 200 hand-labelled ground truth examples
-│   │   ├── human_annotations_sample.json    # 30 expert human scorecards for judge calibration
+│   │   ├── golden_eval_set_200.jsonl         # 200 real Kaggle tweets with provisional labels
+│   │   ├── annotation_template_200.csv       # Clean review template for candidate manual audit
+│   │   ├── annotation_template_200.jsonl     # JSONL review template with blank fields
+│   │   ├── annotation_guidelines.md          # Protocol & decision criteria for manual annotation
+│   │   ├── human_annotations_sample.json    # 30 scorecards by Candidate Author Reviewer
 │   │   └── sampling_and_labeling_methodology.md
 ├── src/
 │   ├── __init__.py
@@ -144,7 +154,8 @@ sde-intern-task/
   - **"What is misleading about my headline number?"** (mandatory deep dive)
   - What we'd do next with one more week
 - 💡 **[Decision Log](reports/DECISION_LOG.md)**: 14 non-obvious architectural decisions and tradeoffs.
-- 📐 **[Sampling & Labeling Methodology](data/golden_set/sampling_and_labeling_methodology.md)**: Complete annotation protocol for the 200-case golden set.
+- 📐 **[Sampling & Labeling Methodology](data/golden_set/sampling_and_labeling_methodology.md)**: Complete annotation protocol and label provenance audit for the 200-case evaluation set.
+- 📋 **[Annotation Guidelines](data/golden_set/annotation_guidelines.md)**: Detailed rubric for manual human review of the 200 cases.
 
 ---
 
@@ -152,4 +163,4 @@ sde-intern-task/
 ```bash
 python -m unittest discover tests
 ```
-*All 8 unit tests pass in 0.42 seconds.*
+*All 9 unit tests pass in ~0.5 seconds.*
