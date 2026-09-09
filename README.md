@@ -174,17 +174,111 @@ sde-intern-task/
 │   ├── llm_judge.py                          # 4-dimensional evaluation rubric
 │   ├── evaluator.py                          # Automated metrics & cost penalty calculator
 │   └── human_agreement.py                    # Cohen's Kappa & Pearson r agreement
+├── render.yaml                               # Render Web Service Blueprint definition
+├── .github/
+│   └── workflows/
+│       └── deploy-pages.yml                  # GitHub Actions workflow for GitHub Pages
+├── web/
+│   ├── index.html                            # Visual AI Operations Console & Evaluation UI
+│   ├── style.css                             # Apple-style Light + Dark high-contrast styling
+│   ├── app.js                                # Client controller & zero-mock real-time streaming
+│   └── config.js                             # Configurable API URL for local & deployed Render backend
+├── web_api.py                                # Production-ready FastAPI backend adapter
 ├── reports/
 │   ├── FINAL_REPORT.md                       # Comprehensive 6-page technical report
 │   ├── DECISION_LOG.md                       # 15 non-obvious engineering decisions & tradeoffs
 │   └── benchmark_results.json                # Complete machine-readable benchmark dump
 ├── tests/
-│   └── test_pipeline.py                      # Complete unit test suite (All tests pass)
+│   ├── test_pipeline.py                      # Complete agent pipeline test suite
+│   └── test_web_api.py                       # FastAPI integration and endpoint tests
 ├── run_pipeline.py                           # Single-command runner (~12 seconds runtime)
 ├── interactive_demo.py                       # Interactive live testing CLI
-├── requirements.txt                          # Python dependencies
+├── requirements.txt                          # Pinned production dependencies
 └── README.md
 ```
+
+---
+
+## 🚀 Production Deployment
+
+### Architecture
+
+```text
+                    GitHub Repository
+                         │
+              ┌──────────┴──────────┐
+              │                     │
+              ▼                     ▼
+       GitHub Pages               Render
+       (Static Web UI)         (FastAPI Backend)
+       HTML/CSS/JS                  │
+              │       HTTPS         │
+              └────────────────────►│
+                                    ▼
+                            AppleSupportAgent
+                                    │
+                         ┌──────────┼──────────┐
+                         ▼          ▼          ▼
+                       Intent   Retrieval  Escalation
+                                    │
+                                    ▼
+                              Draft Response
+```
+
+### 1. Deploy Backend to Render
+
+1. **Log in to Render**:
+   - Open [dashboard.render.com](https://dashboard.render.com).
+2. **Create Web Service via GitHub or Blueprint**:
+   - **Option A (Blueprint)**: Click **New +** $\to$ **Blueprint**, connect your GitHub repository, and Render will automatically read [`render.yaml`](file:///c:/Users/Lenovo/Downloads/sde%20intern%20task/render.yaml).
+   - **Option B (Manual Web Service)**:
+     - Click **New +** $\to$ **Web Service**, select your repository.
+     - **Runtime**: `Python`
+     - **Build Command**: `pip install -r requirements.txt`
+     - **Start Command**: `uvicorn web_api:app --host 0.0.0.0 --port $PORT`
+3. **Configure Environment Variables**:
+   - `PYTHON_VERSION`: `3.11.9`
+   - `FRONTEND_ORIGIN`: `https://YOUR_GITHUB_USERNAME.github.io` (permits secure cross-origin requests from your GitHub Pages frontend).
+4. **Deploy**:
+   - Click **Deploy Web Service**.
+   - Once deployed, copy your Render service URL (e.g. `https://applesupport-agent-api.onrender.com`).
+5. **Verify API Endpoints**:
+   - Status check: `curl https://YOUR_SERVICE.onrender.com/api/status`
+   - Benchmark check: `curl https://YOUR_SERVICE.onrender.com/api/benchmark`
+
+---
+
+### 2. Deploy Frontend to GitHub Pages
+
+1. **Set API URL**:
+   - In [`web/config.js`](file:///c:/Users/Lenovo/Downloads/sde%20intern%20task/web/config.js), set `API_BASE_URL` to your live Render backend URL:
+     ```javascript
+     window.APP_CONFIG = {
+       API_BASE_URL: "https://applesupport-agent-api.onrender.com"
+     };
+     ```
+2. **Commit and Push**:
+   ```bash
+   git add web/config.js
+   git commit -m "chore: configure frontend API base URL for Render deployment"
+   git push origin main
+   ```
+3. **Enable GitHub Pages**:
+   - In your GitHub repository, navigate to **Settings** $\to$ **Pages**.
+   - Under **Build and deployment** $\to$ **Source**, choose **GitHub Actions**.
+4. **Automatic Deployment**:
+   - The included workflow [`.github/workflows/deploy-pages.yml`](file:///c:/Users/Lenovo/Downloads/sde%20intern%20task/.github/workflows/deploy-pages.yml) will automatically build and publish the `web/` directory to GitHub Pages.
+   - Access your live frontend at `https://YOUR_GITHUB_USERNAME.github.io/YOUR_REPOSITORY/`.
+
+---
+
+## 🧪 Verification & Testing Suite
+
+Run all automated unit and integration tests (18 tests):
+```bash
+python -X utf8 -m unittest discover tests
+```
+*All 18 unit tests pass in ~1.5s with zero mock data and zero external dependencies.*
 
 ---
 
@@ -200,11 +294,5 @@ sde-intern-task/
 - 📐 **[Sampling & Labeling Methodology](data/golden_set/sampling_and_labeling_methodology.md)**: Complete annotation protocol and label provenance audit for the 200-case evaluation set.
 - 📋 **[Annotation Guidelines](data/golden_set/annotation_guidelines.md)**: Detailed rubric for blind human review of the 200 cases.
 - 🔄 **[Reconciliation Tool](scripts/reconcile_annotations.py)**: Automated analysis comparing human annotations against provisional machine labels.
-
----
-
-## 🧪 Running Unit Tests
-```bash
-python -m unittest discover tests
-```
-*All 9 unit tests pass in ~2 seconds.*
+- 🌐 **[Render Deployment Blueprint](render.yaml)**: Complete infrastructure-as-code specification for Python backend.
+- ⚙️ **[GitHub Pages Workflow](.github/workflows/deploy-pages.yml)**: Continuous deployment workflow for static web console.

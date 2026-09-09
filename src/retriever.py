@@ -10,6 +10,7 @@ import json
 import logging
 from typing import List, Dict, Any, Tuple
 import numpy as np
+from pathlib import Path
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -34,7 +35,14 @@ class HistoricalRetriever:
 
     def _build_index(self):
         """Loads pairs and fits TF-IDF matrix."""
-        if not os.path.exists(self.knowledge_base_path):
+        kb_path = self.knowledge_base_path
+        if not os.path.exists(kb_path):
+            alt_path = Path(__file__).resolve().parent.parent / self.knowledge_base_path
+            if alt_path.exists():
+                kb_path = str(alt_path)
+                self.knowledge_base_path = kb_path
+
+        if not os.path.exists(kb_path):
             logger.warning(f"Knowledge base file not found at {self.knowledge_base_path}. Using fallback grounding.")
             return
 

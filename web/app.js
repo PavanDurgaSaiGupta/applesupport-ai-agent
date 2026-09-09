@@ -16,8 +16,50 @@ const REAL_TWCS_EXAMPLES = [
   "My phone is extremely hot to touch and the battery casing feels swollen and warped."
 ];
 
+// API URL Helper (Configurable via web/config.js for Render deployment)
+function getApiUrl(path) {
+  const baseUrl = (window.APP_CONFIG && typeof window.APP_CONFIG.API_BASE_URL === 'string')
+    ? window.APP_CONFIG.API_BASE_URL.replace(/\/+$/, '')
+    : '';
+  return `${baseUrl}${path}`;
+}
+
+// Apple-Style Theme Management (Light / Dark)
+function setTheme(mode) {
+  const root = document.documentElement;
+  const lightBtn = document.getElementById('theme-light-btn');
+  const darkBtn = document.getElementById('theme-dark-btn');
+
+  if (mode === 'light') {
+    root.setAttribute('data-theme', 'light');
+    localStorage.setItem('apple_agent_theme', 'light');
+    if (lightBtn) lightBtn.classList.add('active');
+    if (darkBtn) darkBtn.classList.remove('active');
+  } else {
+    root.setAttribute('data-theme', 'dark');
+    localStorage.setItem('apple_agent_theme', 'dark');
+    if (darkBtn) darkBtn.classList.add('active');
+    if (lightBtn) lightBtn.classList.remove('active');
+  }
+}
+
+function initTheme() {
+  const saved = localStorage.getItem('apple_agent_theme');
+  if (saved === 'light' || saved === 'dark') {
+    setTheme(saved);
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+    setTheme('light');
+  } else {
+    setTheme('dark');
+  }
+}
+
+// Immediate theme initialization to prevent flash
+initTheme();
+
 // Initialize on DOM Ready
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
   checkBackendStatus();
   fetchBenchmarkData();
   fetchFailureModes();
@@ -71,7 +113,7 @@ async function checkBackendStatus() {
   const pill = document.getElementById('backend-status-pill');
 
   try {
-    const res = await fetch('/api/status');
+    const res = await fetch(getApiUrl('/api/status'));
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
 
@@ -162,7 +204,7 @@ async function handleAnalyzeSubmit(event) {
   setWorkflowState('loading');
 
   try {
-    const response = await fetch('/api/analyze', {
+    const response = await fetch(getApiUrl('/api/analyze'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: message })
@@ -391,7 +433,7 @@ function copyAuditJson() {
 // ==========================================================================
 async function fetchBenchmarkData() {
   try {
-    const res = await fetch('/api/benchmark');
+    const res = await fetch(getApiUrl('/api/benchmark'));
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
 
@@ -620,7 +662,7 @@ function updateCalibrationStats(stats) {
 // Failure Modes Loading
 async function fetchFailureModes() {
   try {
-    const res = await fetch('/api/failures');
+    const res = await fetch(getApiUrl('/api/failures'));
     if (!res.ok) return;
     const failures = await res.json();
     renderFailureModes(failures);

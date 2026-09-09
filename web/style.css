@@ -4,59 +4,139 @@
    ========================================================================== */
 
 :root {
-  /* Surface Color Palette (Deep Operations Console) */
-  --bg-canvas: #090d16;
-  --bg-surface: #0d1117;
-  --bg-card: #161b22;
-  --bg-elevated: #21262d;
-  --bg-hover: #30363d;
-  
-  /* Borders */
-  --border-default: #30363d;
-  --border-subtle: #21262d;
-  --border-focus: #58a6ff;
-
-  /* Typography / Text Hierarchy (WCAG 4.5:1 Contrast) */
-  --text-primary: #f0f6fc;
-  --text-secondary: #8b949e;
-  --text-tertiary: #6e7681;
-  --text-inverse: #090d16;
-
-  /* Brand Accents */
-  --accent-blue: #388bfd;
-  --accent-blue-tint: rgba(56, 139, 253, 0.12);
-  --accent-blue-border: #1f6feb;
-  --accent-blue-glow: rgba(56, 139, 253, 0.2);
-
-  /* Semantic Status Colors (Double-Signaled) */
-  --status-safe-bg: rgba(46, 160, 67, 0.14);
-  --status-safe-border: #238636;
-  --status-safe-text: #3fb950;
-
-  --status-escalate-bg: rgba(248, 81, 73, 0.14);
-  --status-escalate-border: #da3633;
-  --status-escalate-text: #f85149;
-
-  --status-warn-bg: rgba(210, 153, 34, 0.14);
-  --status-warn-border: #9e6a03;
-  --status-warn-text: #d29922;
-
   /* Font Stacks */
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "SF Mono", "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", Courier, monospace;
 
   /* Spacing & Radii */
-  --radius-xs: 3px;
-  --radius-sm: 5px;
-  --radius-md: 7px;
-  --radius-lg: 10px;
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
   --radius-pill: 9999px;
 
-  /* Emil Kowalski Custom Motion Curves */
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  /* Apple Motion Curves */
+  --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-  --duration-fast: 140ms;
-  --duration-normal: 200ms;
+  --duration-fast: 150ms;
+  --duration-normal: 220ms;
+
+  /* Default Theme: Apple Space Dark */
+  --bg-canvas: #000000;
+  --bg-surface: #161617;
+  --bg-card: #1c1c1e;
+  --bg-elevated: #2c2c2e;
+  --bg-hover: #3a3a3c;
+  
+  --border-default: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-focus: #2997ff;
+
+  --text-primary: #f5f5f7;
+  --text-secondary: #d1d1d6;
+  --text-tertiary: #98989d;
+  --text-inverse: #000000;
+
+  --accent-blue: #2997ff;
+  --accent-blue-tint: rgba(41, 151, 255, 0.14);
+  --accent-blue-border: rgba(41, 151, 255, 0.35);
+  --accent-blue-glow: rgba(41, 151, 255, 0.25);
+
+  --status-safe-bg: rgba(52, 199, 89, 0.16);
+  --status-safe-border: #30d158;
+  --status-safe-text: #30d158;
+
+  --status-escalate-bg: rgba(255, 69, 58, 0.16);
+  --status-escalate-border: #ff453a;
+  --status-escalate-text: #ff453a;
+
+  --status-warn-bg: rgba(255, 159, 10, 0.16);
+  --status-warn-border: #ff9f0a;
+  --status-warn-text: #ff9f0a;
+
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --header-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ==========================================================================
+   Apple Light Theme — Crisp Cupertino Style (High WCAG Contrast)
+   ========================================================================== */
+[data-theme="light"] {
+  --bg-canvas: #f5f5f7;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-elevated: #f2f2f7;
+  --bg-hover: #e5e5ea;
+  
+  --border-default: rgba(0, 0, 0, 0.10);
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-focus: #0071e3;
+
+  --text-primary: #1d1d1f;
+  --text-secondary: #424245;
+  --text-tertiary: #6e6e73;
+  --text-inverse: #ffffff;
+
+  --accent-blue: #0071e3;
+  --accent-blue-tint: rgba(0, 113, 227, 0.08);
+  --accent-blue-border: rgba(0, 113, 227, 0.3);
+  --accent-blue-glow: rgba(0, 113, 227, 0.15);
+
+  --status-safe-bg: #e8f5e9;
+  --status-safe-border: #2e7d32;
+  --status-safe-text: #1b5e20;
+
+  --status-escalate-bg: #ffebee;
+  --status-escalate-border: #c62828;
+  --status-escalate-text: #b71c1c;
+
+  --status-warn-bg: #fff8e1;
+  --status-warn-border: #f57f17;
+  --status-warn-text: #b26a00;
+
+  --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+  --header-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* ==========================================================================
+   Apple Dark Theme — Deep Space Black Style
+   ========================================================================== */
+[data-theme="dark"] {
+  --bg-canvas: #000000;
+  --bg-surface: #161617;
+  --bg-card: #1c1c1e;
+  --bg-elevated: #2c2c2e;
+  --bg-hover: #3a3a3c;
+  
+  --border-default: rgba(255, 255, 255, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-focus: #2997ff;
+
+  --text-primary: #f5f5f7;
+  --text-secondary: #d1d1d6;
+  --text-tertiary: #98989d;
+  --text-inverse: #000000;
+
+  --accent-blue: #2997ff;
+  --accent-blue-tint: rgba(41, 151, 255, 0.14);
+  --accent-blue-border: rgba(41, 151, 255, 0.35);
+  --accent-blue-glow: rgba(41, 151, 255, 0.25);
+
+  --status-safe-bg: rgba(52, 199, 89, 0.16);
+  --status-safe-border: #30d158;
+  --status-safe-text: #30d158;
+
+  --status-escalate-bg: rgba(255, 69, 58, 0.16);
+  --status-escalate-border: #ff453a;
+  --status-escalate-text: #ff453a;
+
+  --status-warn-bg: rgba(255, 159, 10, 0.16);
+  --status-warn-border: #ff9f0a;
+  --status-warn-text: #ff9f0a;
+
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --header-shadow: 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 /* Base Reset */
@@ -197,11 +277,64 @@ p {
   display: none;
 }
 
-/* Header Status Pills */
+/* Header Status & Theme Switcher */
 .header-status {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+/* Apple-Style Segmented Theme Switcher */
+.theme-switch {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-pill);
+  padding: 2px;
+  gap: 2px;
+}
+
+.theme-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.theme-btn svg {
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.theme-btn:hover {
+  color: var(--text-primary);
+}
+
+.theme-btn:hover svg {
+  opacity: 1;
+}
+
+.theme-btn.active {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="light"] .theme-btn.active {
+  background-color: #ffffff;
+  color: #1d1d1f;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 0 1px rgba(0, 0, 0, 0.2);
 }
 
 .status-pill, .meta-pill {

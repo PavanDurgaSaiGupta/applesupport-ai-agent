@@ -8,6 +8,7 @@ backed by the real AppleSupportAgent pipeline and repository benchmark files.
 import os
 import json
 import logging
+from pathlib import Path
 from typing import Dict, Any, List, Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
@@ -25,11 +26,32 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Enable CORS for local development flexibility
+# Portable base directory anchor
+BASE_DIR = Path(__file__).resolve().parent
+
+# Configure CORS with FRONTEND_ORIGIN support for GitHub Pages
+frontend_origin_env = os.environ.get("FRONTEND_ORIGIN", "").strip()
+allowed_origins = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+    "http://localhost:3000",
+]
+if frontend_origin_env:
+    for o in frontend_origin_env.split(","):
+        o_clean = o.strip().rstrip("/")
+        if o_clean and o_clean not in allowed_origins:
+            allowed_origins.append(o_clean)
+    allow_wildcard = False
+else:
+    allowed_origins.append("*")
+    allow_wildcard = True
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=["*"] if allow_wildcard else allowed_origins,
+    allow_credentials=not allow_wildcard,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -39,12 +61,12 @@ logger.info("Initializing AppleSupportAgent instance...")
 agent = AppleSupportAgent()
 logger.info("AppleSupportAgent initialized successfully.")
 
-# Paths to data and benchmark files
-BENCHMARK_FINAL_PATH = os.path.join("reports", "benchmark_results.json")
-BENCHMARK_VAL_PATH = os.path.join("reports", "benchmark_results_validation.json")
-VAL_SET_PATH = os.path.join("data", "splits", "val_set.jsonl")
-FINAL_TEST_PATH = os.path.join("data", "splits", "final_test_200.jsonl")
-TRAIN_DATA_PATH = os.path.join("data", "processed", "apple_pairs_sampled.jsonl")
+# Paths to data and benchmark files (resolved portably relative to BASE_DIR)
+BENCHMARK_FINAL_PATH = BASE_DIR / "reports" / "benchmark_results.json"
+BENCHMARK_VAL_PATH = BASE_DIR / "reports" / "benchmark_results_validation.json"
+VAL_SET_PATH = BASE_DIR / "data" / "splits" / "val_set.jsonl"
+FINAL_TEST_PATH = BASE_DIR / "data" / "splits" / "final_test_200.jsonl"
+TRAIN_DATA_PATH = BASE_DIR / "data" / "processed" / "apple_pairs_sampled.jsonl"
 
 
 class AnalyzeRequest(BaseModel):
@@ -265,11 +287,15 @@ def get_failure_modes() -> List[Dict[str, Any]]:
 
 # Function to mount web static files once web directory exists
 def mount_static_app():
-    if os.path.exists("web"):
-        app.mount("/", StaticFiles(directory="web", html=True), name="web")
+    web_dir = BASE_DIR / "web"
+    if web_dir.exists():
+        app.mount("/", StaticFiles(directory=str(web_dir), html=True), name="web")
 
 mount_static_app()
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("web_api:app", host="127.0.0.1", port=8000, reload=False)
+    port = int(os.environ.get("PORT", 8000))
+    host = os.environ.get("HOST", "0.0.0.0")
+    logger.info(f"Starting server on {host}:{port}...")
+    uvicorn.run("web_api:app", host=host, port=port, reload=False)

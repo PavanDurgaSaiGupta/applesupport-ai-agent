@@ -10,6 +10,7 @@ import os
 import re
 import json
 import logging
+from pathlib import Path
 from typing import List, Dict, Tuple, Optional, Any
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -207,6 +208,11 @@ def train_intent_classifier(
     """
     train_texts = []
     train_labels = []
+
+    if not os.path.exists(historical_path):
+        alt_path = Path(__file__).resolve().parent.parent / historical_path
+        if alt_path.exists():
+            historical_path = str(alt_path)
 
     # 1. Load from historical training bank (Zero golden tweets present)
     if os.path.exists(historical_path):

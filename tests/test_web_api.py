@@ -86,6 +86,11 @@ class TestWebApi(unittest.TestCase):
         self.assertEqual(res_js.status_code, 200)
         self.assertIn("handleAnalyzeSubmit", res_js.text)
 
+        # Config JS
+        res_cfg = self.client.get("/config.js")
+        self.assertEqual(res_cfg.status_code, 200)
+        self.assertIn("window.APP_CONFIG", res_cfg.text)
+
     def test_analyze_query_1_battery(self):
         query = "My iPhone battery is draining very quickly since the latest update."
         res = self.client.post("/api/analyze", json={"message": query})
