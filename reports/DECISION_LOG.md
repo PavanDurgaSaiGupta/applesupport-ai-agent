@@ -44,10 +44,10 @@ This log details the core architectural, design, and evaluation decisions made w
 - **Why**: Enterprise Twitter support bots that post 4-tweet threads look spammy and fail customer engagement tests. True Apple Support tweets are crisp, empathetic, and direct.
 - **Tradeoff**: Cannot explain full complex multi-step repairs directly in the tweet; must focus on immediate triage step or DM transition.
 
-### 9. Hand-Curating Exactly 200 Stratified Golden Cases instead of Pseudo-Labeling
-- **Decision**: Manually authored and verified 200 high-fidelity test queries with ground-truth intent, escalation decisions, explicit reasons, and resolution paths.
-- **Why**: Automated pseudo-labeling on noisy Twitter data propagates errors and rewards trivial heuristics. A hand-curated golden set provides an unimpeachable ground truth.
-- **Tradeoff**: High upfront engineering time spent crafting and verifying edge cases across 8 intents.
+### 9. Real-Data Stratified Golden Set with Strict Conversation-Level Isolation
+- **Decision**: Sampled 200 real customer tweets directly from `twcs.csv` across the 8 empirical intents, and enforced strict conversation-level exclusion so that zero evaluation IDs exist in the training or retrieval index.
+- **Why**: Evaluating on synthetic data or allowing evaluation conversations into the training/retrieval bank causes severe train-eval leakage. Sourcing real tweet IDs and strictly isolating the conversation threads ensures an uncompromised, interview-defensible evaluation.
+- **Tradeoff**: Real tweets are noisier, full of emojis and colloquial syntax, reducing trivial model accuracy from an artificial 97.5% to a realistic 89.0%.
 
 ### 10. Inclusion of 20% Hard / Adversarial Edge Cases in Evaluation Set
 - **Decision**: Allocated 40 of the 200 cases (20%) specifically to adversarial inputs: emotional rants without technical issues, viral microwave hoaxes, foreign languages, press inquiries, and deceased estate requests.

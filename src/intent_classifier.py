@@ -153,26 +153,44 @@ class IntentClassifier:
         return results
 
 
-def train_intent_classifier_from_golden_and_historical(
-    golden_path: str = "data/golden_set/golden_eval_set_200.jsonl",
-    historical_path: str = "data/processed/apple_pairs_sampled.jsonl"
+def train_intent_classifier(
+    historical_path: str = "data/processed/apple_pairs_sampled.jsonl",
+    max_historical_train: int = 5000
 ) -> IntentClassifier:
     """
-    Creates and trains the intent classifier using the golden evaluation set
-    and pseudo-labelled high-confidence historical examples.
+    Trains the intent classifier strictly on historical training pairs
+    and domain patterns. ZERO LEAKAGE: NEVER touches the golden evaluation set.
     """
     train_texts = []
     train_labels = []
 
-    # 1. Load Golden Set
-    if os.path.exists(golden_path):
-        with open(golden_path, "r", encoding="utf-8") as f:
+    # 1. Load from historical training bank (Zero golden tweets present)
+    if os.path.exists(historical_path):
+        count_by_intent = {intent: 0 for intent in INTENT_TAXONOMY.keys()}
+        with open(historical_path, "r", encoding="utf-8") as f:
             for line in f:
+                if not line.strip():
+                    continue
                 item = json.loads(line)
-                train_texts.append(item["customer_query"])
-                train_labels.append(item["ground_truth_intent"])
+                text = item.get("customer_text", "")
+                if len(text) < 15:
+                    continue
+                # Classify using rule patterns to seed training labels
+                text_lower = text.lower()
+                assigned_intent = None
+                for intent, kw_list in INTENT_KEYWORDS.items():
+                    if any(kw in text_lower for kw in kw_list):
+                        assigned_intent = intent
+                        break
+                if not assigned_intent:
+                    assigned_intent = "GENERAL_FEEDBACK_RANT"
 
-    # 2. Enrich with domain patterns
+                if count_by_intent[assigned_intent] < max_historical_train // len(INTENT_TAXONOMY):
+                    train_texts.append(text)
+                    train_labels.append(assigned_intent)
+                    count_by_intent[assigned_intent] += 1
+
+    # 2. Enrich with canonical domain patterns
     for intent, kws in INTENT_KEYWORDS.items():
         for kw in kws:
             train_texts.append(f"I am having an issue with my {kw} on my device")
@@ -182,5 +200,5 @@ def train_intent_classifier_from_golden_and_historical(
 
     classifier = IntentClassifier()
     classifier.fit(train_texts, train_labels)
-    logger.info(f"Trained IntentClassifier on {len(train_texts)} samples across {len(set(train_labels))} intents.")
+    logger.info(f"Trained IntentClassifier (LEAK-FREE) on {len(train_texts)} samples across {len(set(train_labels))} intents.")
     return classifier

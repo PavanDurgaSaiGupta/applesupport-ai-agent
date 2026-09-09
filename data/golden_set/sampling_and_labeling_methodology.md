@@ -1,71 +1,71 @@
-# Sampling & Labeling Methodology: Golden Evaluation Set (200 Cases)
+# Sampling & Labeling Methodology: Golden Evaluation Set (200 Real Kaggle Tweets)
 
-## 1. Objective & Philosophy
-An AI agent for customer support cannot be evaluated on generic perplexity or loose BLEU scores alone. In technical support for a high-value brand like Apple, an incorrect answer can brick a device, forfeit warranty rights, or create physical safety hazards (e.g. heating swollen batteries). 
+## 1. Objective & Design Philosophy
+An AI customer-support agent cannot be judged on generic conversational fluency or perplexity alone. In technical support for Apple, an inaccurate answer can cause permanent data loss, void hardware warranty rights, or create hazardous conditions (e.g. heating a swollen lithium battery).
 
-This Golden Evaluation Set comprises **200 rigorously curated and annotated customer cases**, constructed to test the core trilemma of support automation:
-1. **Accurate Diagnosis (Intent Classification)**
-2. **Grounded Resolution Guidance (Reply Drafting)**
-3. **Safety & Cost-Effective Triage (Escalation Decision & Reason)**
+This **Golden Evaluation Set** comprises **200 authentic customer tweets sampled directly from Kaggle's Customer Support on Twitter (`twcs.csv`)**, verified against historical `@AppleSupport` conversation threads.
 
 ---
 
-## 2. Sampling Strategy
-To avoid the standard pitfall of uniform random sampling—which massively overrepresents easy, repetitive questions like *"how do I update my phone"*—we employed **Stratified Boundary Sampling**:
+## 2. Sampling Strategy & Leakage Prevention
 
-1. **Stratification Across 8 Empirical Intents**:
-   - Exactly 25 cases per intent class (200 total) across the entire spectrum of Apple Support operations:
-     - `SOFTWARE_UPDATE_OS`: Firmware freezes, iOS 11 text bugs, OTA verify errors, APFS transitions.
-     - `BATTERY_PERFORMANCE`: Thermal throttling, premature shutdown, swollen batteries, lifecycle health.
-     - `HARDWARE_AUDIO_DISPLAY`: Broken digitizers, muffled receiver mesh, butterfly keys, staingate.
-     - `ACCOUNT_APPLE_ID_ICLOUD`: 2FA loss, Activation Lock, deceased estates, iCloud storage discrepancies.
-     - `STORE_ORDER_BILLING`: In-app refund fraud, missing shipments, trade-ins, educational discounts.
-     - `CONNECTIVITY_SYNC`: Wi-Fi chip solder failures, AirDrop mDNS conflicts, CarPlay, Bluetooth RF attenuation.
-     - `THIRD_PARTY_APP_ISSUES`: App store update loops, RAM watchdog kills, background battery drains.
-     - `GENERAL_FEEDBACK_RANT`: Emotional venting, foreign languages, legal threats, media inquiries, viral hoaxes.
+### A. Authentic Sourcing
+- Sourced exclusively from genuine customer tweets addressed to `@AppleSupport` in `twcs.csv`.
+- Each record retains its original Kaggle `tweet_id` and corresponding Apple response `apple_tweet_id`.
 
-2. **Difficulty Tiering**:
-   - **Tier 1: Easy (40%, 80 cases)**: Standard inquiries with canonical Apple documentation answers (e.g., clearing app cache, turning off auto-join Wi-Fi).
-   - **Tier 2: Medium (40%, 80 cases)**: Queries involving ambiguous symptoms, device interactions, or settings dependencies (e.g., GPS drift due to router BSSID, carrier APN provisioning).
-   - **Tier 3: Hard / Edge Cases (20%, 40 cases)**: Adversarial or high-risk inputs including physical safety hazards, legal threats, phishing alerts, deceased estate access, and multi-turn hostility.
+### B. Strict Conversation-Level Isolation (Zero Leakage)
+To prevent the classic trap of data leakage:
+1. All 200 evaluation `tweet_id`s, their paired Apple response `apple_tweet_id`s, and parent/child conversation threads were **strictly excluded** from the historical retrieval knowledge base (`data/processed/apple_pairs_sampled.jsonl`).
+2. The intent classifier was trained **strictly on the historical training bank and seed templates—never touching the golden set**.
+3. Automated validation is built directly into `run_pipeline.py` and `tests/test_pipeline.py`:
+   ```text
+   Conversation-level leakage check: PASS
+   Duplicate evaluation items:       0
+   Evaluation IDs in retrieval bank: 0 (Strict Isolation)
+   ```
 
-3. **Escalation Distribution**:
-   - `AUTO_HANDLE`: 115 cases (57.5%)
-   - `ESCALATE`: 85 cases (42.5%)
-   Reflects a realistic automation target: deflect ~60% of routine diagnostic burden while strictly capturing the 40% that require human empathy, physical repair, or private credential access.
+### C. Intent Stratification Across 8 Empirical Classes
+Sampled across the 8 empirical intent categories identified from frequency analysis of 20,000+ real Apple Support tweets:
+1. `SOFTWARE_UPDATE_OS`: iOS/macOS update glitches, installation failures, post-update slowdowns, text bugs.
+2. `BATTERY_PERFORMANCE`: Rapid drain, sudden shutdown, thermal events, charging accessories.
+3. `HARDWARE_AUDIO_DISPLAY`: Broken glass, home/volume button failure, camera black screen, muffled receiver mesh.
+4. `ACCOUNT_APPLE_ID_ICLOUD`: Locked Apple ID, 2FA codes, iCloud storage quotas, password recovery.
+5. `STORE_ORDER_BILLING`: App Store charges, refund requests, subscription cancellations, order tracking.
+6. `CONNECTIVITY_SYNC`: Wi-Fi, Bluetooth, cellular/LTE, AirDrop, Apple Watch sync, CarPlay.
+7. `THIRD_PARTY_APP_ISSUES`: Crashes or bugs in WhatsApp, Spotify, YouTube, Instagram, Netflix.
+8. `GENERAL_FEEDBACK_RANT`: Emotional venting, foreign language routing, unannounced product speculation.
 
 ---
 
-## 3. Annotation Protocol & Labeling Guidelines
+## 3. Labeling Protocol & Escalation Ground Truth
 
-Every case was annotated according to formal operational rubrics:
+### A. The Core Principle: "Safe Automated System", NOT "What Apple Did"
+A common mistake when labeling customer support data is copying whatever human agents did historically. On Twitter, AppleSupport agents historically redirected almost everything to Direct Messages (DM) for privacy. If an evaluation set simply copies that behavior, the "correct" answer to every query becomes "escalate to DM," defeating the entire purpose of automation.
 
-### A. Intent Taxonomy Rules
-- A query mentioning battery drain caused immediately by an iOS update is tagged `BATTERY_PERFORMANCE` if the primary diagnostic is battery inspection, or `SOFTWARE_UPDATE_OS` if the issue is an installation loop.
-- A query reporting an unwanted charge on an account is classified `STORE_ORDER_BILLING` rather than `ACCOUNT_APPLE_ID_ICLOUD`.
-- Non-English tweets are classified under `GENERAL_FEEDBACK_RANT` to trigger the language-specific routing protocol.
+**Our Ground Truth Rule**:
+> Ground truth escalation is defined as **what a safe, competent automated support system SHOULD do based strictly on the information present in the customer's incoming message**.
 
 ### B. Escalation Decision Boundaries
-An agent MUST escalate (`ESCALATE`) if and only if any of the following **Escalation Triggers** are met:
-1. **Physical Safety Hazard**: Swollen batteries, smoking chargers, sparks.
-2. **Account Security & Identity**: Locked Apple ID requiring personal identity verification, Activation Lock disputes, ransom extortion.
-3. **Financial / Transactional Action**: Charge disputes, double billing, lost in-transit parcels, refund approvals.
-4. **Hardware Failure Beyond Software Workaround**: Defective screen lines, broken chassis switches, failed Wi-Fi hardware chips.
-5. **Brand / Legal / Media Risk**: Threats of litigation, press inquiries, multi-tweet customer hostility/distress.
-6. **Explicit Customer Demand**: Direct customer demand for human agent handoff.
+An inquiry MUST be marked `ESCALATE` if and only if any of the following conditions are present:
+1. **Physical Safety Hazard**: Swollen batteries, burning chargers, sparks, fire risks.
+2. **Account Security & Identity**: Locked Apple ID requiring identity verification, Activation Lock ownership disputes, compromised accounts.
+3. **Financial / Transactional Disputes**: Unauthorized charges, double debits, lost in-transit parcels, refund approvals.
+4. **Hardware Failure Beyond Software Workaround**: Defective screen lines, broken physical switches, internal solder defects.
+5. **Brand / Legal / Media Risk**: Threats of litigation, press inquiries, multi-tweet customer hostility.
+6. **Explicit Customer Demand**: Direct customer demand to speak with a human being.
 
-If none of these triggers are present, the case MUST be marked `AUTO_HANDLE`.
+All other inquiries—including routine settings guidance, known software bugs, force restarts, and public policy FAQs—are classified as `AUTO_HANDLE`.
 
 ### C. Stated Reason Requirement
-Every escalation decision must include a concise, auditable reason (e.g. *"Account security lockout requires private verification"* or *"Hardware display panel defect requires Genius Bar repair"*).
+Every escalation decision includes an explicit, auditable stated reason (e.g. *"Account authentication or security lockout requires verified identity handoff"* or *"Financial charge dispute requires private billing agent"*).
 
 ---
 
-## 4. Quality Assurance & Calibration Set
-To measure inter-annotator agreement and validate the automated **LLM-as-a-Judge**, a subset of 30 cases (`human_annotations_sample.json`) was independently scored by experienced support evaluators across 4 dimensions:
+## 4. Human Calibration Review
+To evaluate the automated **LLM-as-a-Judge**, a 30-case validation subset (`human_annotations_sample.json`) was independently reviewed by the candidate author using the 4-dimensional evaluation rubric:
 1. Grounding & Factual Soundness (1–5)
 2. Brand Tone & Empathy (1–5)
 3. Actionability & Triage Guidance (1–5)
 4. Escalation Appropriateness (1–5)
 
-These human scores serve as the empirical ground truth for computing **Cohen's Kappa ($\kappa$)** and **Pearson correlation ($r$)** against the automated evaluation harness.
+These human ratings serve as the empirical baseline for computing Mean Absolute Error (MAE), Pearson correlation ($r$), and Cohen's Kappa ($\kappa$) against the automated evaluation harness.

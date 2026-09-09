@@ -11,7 +11,7 @@ import logging
 from typing import Dict, Any, Optional
 
 from src.data_processor import clean_tweet_text
-from src.intent_classifier import IntentClassifier, train_intent_classifier_from_golden_and_historical
+from src.intent_classifier import IntentClassifier, train_intent_classifier
 from src.retriever import HistoricalRetriever, get_retriever
 from src.escalation_engine import EscalationEngine
 from src.response_generator import ResponseGenerator
@@ -30,7 +30,7 @@ class AppleSupportAgent:
         response_generator: Optional[ResponseGenerator] = None,
     ):
         if classifier is None:
-            self.classifier = train_intent_classifier_from_golden_and_historical()
+            self.classifier = train_intent_classifier()
         else:
             self.classifier = classifier
 
@@ -87,17 +87,21 @@ class AppleSupportAgent:
         )
 
         latency_ms = round((time.time() - t0) * 1000, 2)
+        top_score = retrieved_contexts[0]["similarity_score"] if retrieved_contexts else 0.0
+        evidence_ids = [ctx.get("tweet_id") for ctx in retrieved_contexts if ctx.get("tweet_id")]
 
         return {
-            "input_text": raw_customer_tweet,
-            "cleaned_text": cleaned_text,
             "intent": intent,
             "intent_confidence": round(intent_conf, 4),
-            "intent_distribution": {k: round(v, 4) for k, v in prob_dist.items()},
+            "retrieval_score": round(top_score, 4),
             "escalation_decision": escalation_res["decision"],
             "escalation_reason": escalation_res["reason"],
-            "escalation_confidence": round(escalation_res["confidence"], 4),
+            "evidence_ids": evidence_ids,
             "drafted_reply": drafted_reply,
+            "input_text": raw_customer_tweet,
+            "cleaned_text": cleaned_text,
+            "intent_distribution": {k: round(v, 4) for k, v in prob_dist.items()},
+            "escalation_confidence": round(escalation_res["confidence"], 4),
             "retrieved_contexts": retrieved_contexts,
             "latency_ms": latency_ms
         }

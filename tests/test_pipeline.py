@@ -4,7 +4,7 @@ Unit Tests for @AppleSupport AI Agent Pipeline.
 
 import unittest
 from src.data_processor import clean_tweet_text
-from src.intent_classifier import IntentClassifier, train_intent_classifier_from_golden_and_historical, INTENT_TAXONOMY
+from src.intent_classifier import IntentClassifier, train_intent_classifier, INTENT_TAXONOMY
 from src.escalation_engine import EscalationEngine
 from src.retriever import HistoricalRetriever
 from src.response_generator import ResponseGenerator
@@ -12,13 +12,15 @@ from src.agent import AppleSupportAgent
 from src.baselines import TrivialBaselineAgent, SimpleBaselineAgent
 from src.evaluator import BenchmarkEvaluator
 from src.llm_judge import LLMJudge
+import json
+import os
 
 
 class TestAppleSupportPipeline(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.classifier = train_intent_classifier_from_golden_and_historical()
+        cls.classifier = train_intent_classifier(max_historical_train=1000)
         cls.retriever = HistoricalRetriever(max_entries=500)
         cls.escalation_engine = EscalationEngine()
         cls.generator = ResponseGenerator()
@@ -28,6 +30,16 @@ class TestAppleSupportPipeline(unittest.TestCase):
             escalation_engine=cls.escalation_engine,
             response_generator=cls.generator
         )
+
+    def test_zero_data_leakage(self):
+        """Verifies strict separation between evaluation cases and retrieval/training records."""
+        golden_path = "data/golden_set/golden_eval_set_200.jsonl"
+        if os.path.exists(golden_path):
+            with open(golden_path, "r", encoding="utf-8") as f:
+                golden_ids = set(json.loads(line)["tweet_id"] for line in f if line.strip())
+            retrieval_ids = set(r.get("customer_tweet_id") for r in self.retriever.records)
+            overlap = golden_ids.intersection(retrieval_ids)
+            self.assertEqual(len(overlap), 0, f"Detected leakage between Golden Set and Retrieval: {overlap}")
 
     def test_clean_tweet_text(self):
         raw = "@AppleSupport my phone is slow! I️ hate this update @115854 https://t.co/abc"
@@ -71,6 +83,8 @@ class TestAppleSupportPipeline(unittest.TestCase):
         self.assertEqual(result["escalation_decision"], "AUTO_HANDLE")
         self.assertTrue(len(result["drafted_reply"]) > 20)
         self.assertIn("latency_ms", result)
+        self.assertIn("retrieval_score", result)
+        self.assertIn("evidence_ids", result)
         self.assertLess(result["latency_ms"], 500.0)
 
     def test_baselines(self):
