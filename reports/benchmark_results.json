@@ -1,35 +1,35 @@
 {
   "Baseline 1: Trivial (Majority/Canned)": {
     "intent": {
-      "accuracy": 0.125,
-      "macro_precision": 0.0156,
+      "accuracy": 0.11,
+      "macro_precision": 0.0138,
       "macro_recall": 0.125,
-      "macro_f1": 0.0278,
-      "weighted_f1": 0.0278,
+      "macro_f1": 0.0248,
+      "weighted_f1": 0.0218,
       "per_class": {
         "SOFTWARE_UPDATE_OS": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 25
+          "support": 46
         },
         "BATTERY_PERFORMANCE": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 25
+          "support": 24
         },
         "HARDWARE_AUDIO_DISPLAY": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 25
+          "support": 18
         },
         "ACCOUNT_APPLE_ID_ICLOUD": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 25
+          "support": 28
         },
         "STORE_ORDER_BILLING": {
           "precision": 0.0,
@@ -41,19 +41,19 @@
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 25
+          "support": 23
         },
         "THIRD_PARTY_APP_ISSUES": {
           "precision": 0.0,
           "recall": 0.0,
           "f1": 0.0,
-          "support": 25
+          "support": 14
         },
         "GENERAL_FEEDBACK_RANT": {
-          "precision": 0.125,
+          "precision": 0.11,
           "recall": 1.0,
-          "f1": 0.2222,
-          "support": 25
+          "f1": 0.1982,
+          "support": 22
         }
       },
       "confusion_matrix": [
@@ -65,7 +65,37 @@
           0,
           0,
           0,
-          25
+          46
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          24
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          18
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          28
         ],
         [
           0,
@@ -85,7 +115,7 @@
           0,
           0,
           0,
-          25
+          23
         ],
         [
           0,
@@ -95,7 +125,7 @@
           0,
           0,
           0,
-          25
+          14
         ],
         [
           0,
@@ -105,37 +135,7 @@
           0,
           0,
           0,
-          25
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          25
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          25
-        ],
-        [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          25
+          22
         ]
       ],
       "intents": [
@@ -150,16 +150,16 @@
       ]
     },
     "escalation": {
-      "accuracy": 0.41,
-      "escalate_precision": 0.0968,
-      "escalate_recall": 0.6667,
-      "escalate_f1": 0.169,
-      "true_positives_escalated": 12,
-      "false_positives_over_escalated": 112,
+      "accuracy": 0.465,
+      "escalate_precision": 0.1855,
+      "escalate_recall": 0.7931,
+      "escalate_f1": 0.3007,
+      "true_positives_escalated": 23,
+      "false_positives_over_escalated": 101,
       "false_negatives_missed_escalated": 6,
       "true_negatives_auto_handled": 70,
-      "total_cost_penalty": 142.0,
-      "cost_per_query": 0.71
+      "total_cost_penalty": 131.0,
+      "cost_per_query": 0.655
     },
     "reply": {
       "rouge1_f1": 0.3075,
@@ -169,85 +169,85 @@
       "char_limit_compliance_rate": 1.0
     },
     "judge": {
-      "grounding": 2.79,
+      "grounding": 2.75,
       "tone": 5.0,
       "actionability": 4.24,
-      "escalation": 3.76,
-      "composite": 3.95
+      "escalation": 3.87,
+      "composite": 3.97
     },
     "avg_latency_ms": 0.03
   },
   "Baseline 2: Simple (TF-IDF/Keyword)": {
     "intent": {
-      "accuracy": 0.66,
-      "macro_precision": 0.7696,
-      "macro_recall": 0.66,
-      "macro_f1": 0.6723,
-      "weighted_f1": 0.6723,
+      "accuracy": 0.5,
+      "macro_precision": 0.5343,
+      "macro_recall": 0.4771,
+      "macro_f1": 0.4943,
+      "weighted_f1": 0.5058,
       "per_class": {
         "SOFTWARE_UPDATE_OS": {
-          "precision": 0.3582,
-          "recall": 0.96,
-          "f1": 0.5217,
-          "support": 25
+          "precision": 0.3731,
+          "recall": 0.5435,
+          "f1": 0.4425,
+          "support": 46
         },
         "BATTERY_PERFORMANCE": {
-          "precision": 0.8235,
-          "recall": 0.56,
-          "f1": 0.6667,
-          "support": 25
+          "precision": 0.7059,
+          "recall": 0.5,
+          "f1": 0.5854,
+          "support": 24
         },
         "HARDWARE_AUDIO_DISPLAY": {
-          "precision": 0.8,
-          "recall": 0.64,
-          "f1": 0.7111,
-          "support": 25
+          "precision": 0.45,
+          "recall": 0.5,
+          "f1": 0.4737,
+          "support": 18
         },
         "ACCOUNT_APPLE_ID_ICLOUD": {
           "precision": 0.8148,
-          "recall": 0.88,
-          "f1": 0.8462,
-          "support": 25
+          "recall": 0.7857,
+          "f1": 0.8,
+          "support": 28
         },
         "STORE_ORDER_BILLING": {
-          "precision": 0.7857,
-          "recall": 0.44,
-          "f1": 0.5641,
+          "precision": 0.6429,
+          "recall": 0.36,
+          "f1": 0.4615,
           "support": 25
         },
         "CONNECTIVITY_SYNC": {
-          "precision": 0.8824,
-          "recall": 0.6,
-          "f1": 0.7143,
-          "support": 25
+          "precision": 0.6471,
+          "recall": 0.4783,
+          "f1": 0.55,
+          "support": 23
         },
         "THIRD_PARTY_APP_ISSUES": {
-          "precision": 1.0,
-          "recall": 0.48,
-          "f1": 0.6486,
-          "support": 25
+          "precision": 0.3333,
+          "recall": 0.2857,
+          "f1": 0.3077,
+          "support": 14
         },
         "GENERAL_FEEDBACK_RANT": {
-          "precision": 0.6923,
-          "recall": 0.72,
-          "f1": 0.7059,
-          "support": 25
+          "precision": 0.3077,
+          "recall": 0.3636,
+          "f1": 0.3333,
+          "support": 22
         }
       },
       "confusion_matrix": [
         [
-          24,
+          25,
           0,
+          5,
+          1,
           0,
-          0,
-          0,
-          0,
-          0,
-          1
+          1,
+          3,
+          11
         ],
         [
-          11,
-          14,
+          12,
+          12,
           0,
           0,
           0,
@@ -256,64 +256,64 @@
           0
         ],
         [
-          7,
-          0,
-          16,
-          0,
-          0,
+          5,
+          3,
+          9,
           0,
           0,
-          2
+          0,
+          1,
+          0
         ],
         [
-          3,
           0,
+          1,
           0,
           22,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          6,
-          0,
-          1,
-          4,
-          11,
-          1,
-          0,
-          2
-        ],
-        [
-          4,
-          0,
           1,
           1,
-          1,
-          15,
           0,
           3
         ],
         [
-          10,
+          7,
+          0,
           1,
+          3,
+          9,
+          2,
+          0,
+          3
+        ],
+        [
+          6,
           1,
+          3,
+          1,
+          0,
+          11,
+          0,
+          1
+        ],
+        [
+          8,
           0,
           1,
           0,
-          12,
+          1,
+          0,
+          4,
           0
         ],
         [
-          2,
-          2,
-          1,
+          4,
           0,
           1,
-          1,
           0,
-          18
+          3,
+          2,
+          4,
+          8
         ]
       ],
       "intents": [
@@ -328,16 +328,16 @@
       ]
     },
     "escalation": {
-      "accuracy": 0.95,
-      "escalate_precision": 0.9,
-      "escalate_recall": 0.5,
-      "escalate_f1": 0.6429,
-      "true_positives_escalated": 9,
-      "false_positives_over_escalated": 1,
-      "false_negatives_missed_escalated": 9,
-      "true_negatives_auto_handled": 181,
-      "total_cost_penalty": 46.0,
-      "cost_per_query": 0.23
+      "accuracy": 0.885,
+      "escalate_precision": 0.8,
+      "escalate_recall": 0.2759,
+      "escalate_f1": 0.4103,
+      "true_positives_escalated": 8,
+      "false_positives_over_escalated": 2,
+      "false_negatives_missed_escalated": 21,
+      "true_negatives_auto_handled": 169,
+      "total_cost_penalty": 107.0,
+      "cost_per_query": 0.535
     },
     "reply": {
       "rouge1_f1": 0.2709,
@@ -347,85 +347,85 @@
       "char_limit_compliance_rate": 0.995
     },
     "judge": {
-      "grounding": 3.86,
+      "grounding": 3.52,
       "tone": 4.74,
       "actionability": 3.46,
-      "escalation": 4.81,
-      "composite": 4.22
+      "escalation": 4.56,
+      "composite": 4.07
     },
-    "avg_latency_ms": 15.61
+    "avg_latency_ms": 13.07
   },
   "Proposed System: Grounded AI Agent": {
     "intent": {
-      "accuracy": 0.66,
-      "macro_precision": 0.7696,
-      "macro_recall": 0.66,
-      "macro_f1": 0.6723,
-      "weighted_f1": 0.6723,
+      "accuracy": 0.5,
+      "macro_precision": 0.5343,
+      "macro_recall": 0.4771,
+      "macro_f1": 0.4943,
+      "weighted_f1": 0.5058,
       "per_class": {
         "SOFTWARE_UPDATE_OS": {
-          "precision": 0.3582,
-          "recall": 0.96,
-          "f1": 0.5217,
-          "support": 25
+          "precision": 0.3731,
+          "recall": 0.5435,
+          "f1": 0.4425,
+          "support": 46
         },
         "BATTERY_PERFORMANCE": {
-          "precision": 0.8235,
-          "recall": 0.56,
-          "f1": 0.6667,
-          "support": 25
+          "precision": 0.7059,
+          "recall": 0.5,
+          "f1": 0.5854,
+          "support": 24
         },
         "HARDWARE_AUDIO_DISPLAY": {
-          "precision": 0.8,
-          "recall": 0.64,
-          "f1": 0.7111,
-          "support": 25
+          "precision": 0.45,
+          "recall": 0.5,
+          "f1": 0.4737,
+          "support": 18
         },
         "ACCOUNT_APPLE_ID_ICLOUD": {
           "precision": 0.8148,
-          "recall": 0.88,
-          "f1": 0.8462,
-          "support": 25
+          "recall": 0.7857,
+          "f1": 0.8,
+          "support": 28
         },
         "STORE_ORDER_BILLING": {
-          "precision": 0.7857,
-          "recall": 0.44,
-          "f1": 0.5641,
+          "precision": 0.6429,
+          "recall": 0.36,
+          "f1": 0.4615,
           "support": 25
         },
         "CONNECTIVITY_SYNC": {
-          "precision": 0.8824,
-          "recall": 0.6,
-          "f1": 0.7143,
-          "support": 25
+          "precision": 0.6471,
+          "recall": 0.4783,
+          "f1": 0.55,
+          "support": 23
         },
         "THIRD_PARTY_APP_ISSUES": {
-          "precision": 1.0,
-          "recall": 0.48,
-          "f1": 0.6486,
-          "support": 25
+          "precision": 0.3333,
+          "recall": 0.2857,
+          "f1": 0.3077,
+          "support": 14
         },
         "GENERAL_FEEDBACK_RANT": {
-          "precision": 0.6923,
-          "recall": 0.72,
-          "f1": 0.7059,
-          "support": 25
+          "precision": 0.3077,
+          "recall": 0.3636,
+          "f1": 0.3333,
+          "support": 22
         }
       },
       "confusion_matrix": [
         [
-          24,
+          25,
           0,
+          5,
+          1,
           0,
-          0,
-          0,
-          0,
-          0,
-          1
+          1,
+          3,
+          11
         ],
         [
-          11,
-          14,
+          12,
+          12,
           0,
           0,
           0,
@@ -434,64 +434,64 @@
           0
         ],
         [
-          7,
-          0,
-          16,
-          0,
-          0,
+          5,
+          3,
+          9,
           0,
           0,
-          2
+          0,
+          1,
+          0
         ],
         [
-          3,
           0,
+          1,
           0,
           22,
-          0,
-          0,
-          0,
-          0
-        ],
-        [
-          6,
-          0,
-          1,
-          4,
-          11,
-          1,
-          0,
-          2
-        ],
-        [
-          4,
-          0,
           1,
           1,
-          1,
-          15,
           0,
           3
         ],
         [
-          10,
+          7,
+          0,
           1,
+          3,
+          9,
+          2,
+          0,
+          3
+        ],
+        [
+          6,
           1,
+          3,
+          1,
+          0,
+          11,
+          0,
+          1
+        ],
+        [
+          8,
           0,
           1,
           0,
-          12,
+          1,
+          0,
+          4,
           0
         ],
         [
-          2,
-          2,
-          1,
+          4,
           0,
           1,
-          1,
           0,
-          18
+          3,
+          2,
+          4,
+          8
         ]
       ],
       "intents": [
@@ -506,16 +506,16 @@
       ]
     },
     "escalation": {
-      "accuracy": 0.94,
-      "escalate_precision": 0.7143,
-      "escalate_recall": 0.5556,
-      "escalate_f1": 0.625,
-      "true_positives_escalated": 10,
-      "false_positives_over_escalated": 4,
-      "false_negatives_missed_escalated": 8,
-      "true_negatives_auto_handled": 178,
-      "total_cost_penalty": 44.0,
-      "cost_per_query": 0.22
+      "accuracy": 0.865,
+      "escalate_precision": 0.5714,
+      "escalate_recall": 0.2759,
+      "escalate_f1": 0.3721,
+      "true_positives_escalated": 8,
+      "false_positives_over_escalated": 6,
+      "false_negatives_missed_escalated": 21,
+      "true_negatives_auto_handled": 165,
+      "total_cost_penalty": 111.0,
+      "cost_per_query": 0.555
     },
     "reply": {
       "rouge1_f1": 0.2246,
@@ -525,24 +525,24 @@
       "char_limit_compliance_rate": 1.0
     },
     "judge": {
-      "grounding": 3.8,
+      "grounding": 3.49,
       "tone": 4.88,
       "actionability": 4.08,
-      "escalation": 4.8,
-      "composite": 4.39
+      "escalation": 4.52,
+      "composite": 4.24
     },
-    "avg_latency_ms": 14.46
+    "avg_latency_ms": 12.38
   },
   "human_judge_agreement": {
     "sample_size": 30,
     "cohen_kappa": 0.0,
-    "pearson_r": -0.0612,
-    "pearson_p_value": 0.7481729084285076,
-    "spearman_rho": -0.1172,
-    "spearman_p_value": 0.5373831228152625,
-    "mean_absolute_error": 0.3123,
+    "pearson_r": -0.0704,
+    "pearson_p_value": 0.711627246899541,
+    "spearman_rho": -0.1113,
+    "spearman_p_value": 0.5581855227443461,
+    "mean_absolute_error": 0.599,
     "human_mean_score": 4.7,
-    "judge_mean_score": 4.46,
+    "judge_mean_score": 4.18,
     "detailed_sample": [
       {
         "case_id": 1,
@@ -569,8 +569,8 @@
         "case_id": 4,
         "query": "I\u2019ve been having problems with my SE since last month with 10.3.3. It uses a lot...",
         "human_composite": 4.62,
-        "judge_composite": 4.62,
-        "absolute_diff": 0.0
+        "judge_composite": 4.25,
+        "absolute_diff": 0.37
       },
       {
         "case_id": 5,
