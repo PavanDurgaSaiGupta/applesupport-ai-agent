@@ -1,0 +1,584 @@
+{
+  "Baseline 1: Trivial (Majority/Canned)": {
+    "intent": {
+      "accuracy": 0.125,
+      "macro_precision": 0.0156,
+      "macro_recall": 0.125,
+      "macro_f1": 0.0278,
+      "weighted_f1": 0.0278,
+      "per_class": {
+        "SOFTWARE_UPDATE_OS": {
+          "precision": 0.125,
+          "recall": 1.0,
+          "f1": 0.2222,
+          "support": 25
+        },
+        "BATTERY_PERFORMANCE": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 25
+        },
+        "HARDWARE_AUDIO_DISPLAY": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 25
+        },
+        "ACCOUNT_APPLE_ID_ICLOUD": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 25
+        },
+        "STORE_ORDER_BILLING": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 25
+        },
+        "CONNECTIVITY_SYNC": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 25
+        },
+        "THIRD_PARTY_APP_ISSUES": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 25
+        },
+        "GENERAL_FEEDBACK_RANT": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 25
+        }
+      },
+      "confusion_matrix": [
+        [
+          25,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          25,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          25,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          25,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          25,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          25,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          25,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          25,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "intents": [
+        "SOFTWARE_UPDATE_OS",
+        "BATTERY_PERFORMANCE",
+        "HARDWARE_AUDIO_DISPLAY",
+        "ACCOUNT_APPLE_ID_ICLOUD",
+        "STORE_ORDER_BILLING",
+        "CONNECTIVITY_SYNC",
+        "THIRD_PARTY_APP_ISSUES",
+        "GENERAL_FEEDBACK_RANT"
+      ]
+    },
+    "escalation": {
+      "accuracy": 0.735,
+      "escalate_precision": 0.4151,
+      "escalate_recall": 0.5,
+      "escalate_f1": 0.4536,
+      "true_positives_escalated": 22,
+      "false_positives_over_escalated": 31,
+      "false_negatives_missed_escalated": 22,
+      "true_negatives_auto_handled": 125,
+      "total_cost_penalty": 141.0,
+      "cost_per_query": 0.705
+    },
+    "reply": {
+      "rouge1_f1": 0.065,
+      "rouge2_f1": 0.0002,
+      "rougeL_f1": 0.054,
+      "bleu4": 0.0066,
+      "char_limit_compliance_rate": 1.0
+    },
+    "judge": {
+      "grounding": 2.73,
+      "tone": 5.0,
+      "actionability": 3.53,
+      "escalation": 4.25,
+      "composite": 3.88
+    },
+    "avg_latency_ms": 0.0
+  },
+  "Baseline 2: Simple (TF-IDF/Keyword)": {
+    "intent": {
+      "accuracy": 0.975,
+      "macro_precision": 0.9761,
+      "macro_recall": 0.975,
+      "macro_f1": 0.9749,
+      "weighted_f1": 0.9749,
+      "per_class": {
+        "SOFTWARE_UPDATE_OS": {
+          "precision": 0.96,
+          "recall": 0.96,
+          "f1": 0.96,
+          "support": 25
+        },
+        "BATTERY_PERFORMANCE": {
+          "precision": 0.9259,
+          "recall": 1.0,
+          "f1": 0.9615,
+          "support": 25
+        },
+        "HARDWARE_AUDIO_DISPLAY": {
+          "precision": 1.0,
+          "recall": 0.92,
+          "f1": 0.9583,
+          "support": 25
+        },
+        "ACCOUNT_APPLE_ID_ICLOUD": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 25
+        },
+        "STORE_ORDER_BILLING": {
+          "precision": 0.9615,
+          "recall": 1.0,
+          "f1": 0.9804,
+          "support": 25
+        },
+        "CONNECTIVITY_SYNC": {
+          "precision": 0.9615,
+          "recall": 1.0,
+          "f1": 0.9804,
+          "support": 25
+        },
+        "THIRD_PARTY_APP_ISSUES": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 25
+        },
+        "GENERAL_FEEDBACK_RANT": {
+          "precision": 1.0,
+          "recall": 0.92,
+          "f1": 0.9583,
+          "support": 25
+        }
+      },
+      "confusion_matrix": [
+        [
+          24,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          25,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          23,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          25,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          25,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          25,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          25,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          23
+        ]
+      ],
+      "intents": [
+        "SOFTWARE_UPDATE_OS",
+        "BATTERY_PERFORMANCE",
+        "HARDWARE_AUDIO_DISPLAY",
+        "ACCOUNT_APPLE_ID_ICLOUD",
+        "STORE_ORDER_BILLING",
+        "CONNECTIVITY_SYNC",
+        "THIRD_PARTY_APP_ISSUES",
+        "GENERAL_FEEDBACK_RANT"
+      ]
+    },
+    "escalation": {
+      "accuracy": 0.795,
+      "escalate_precision": 0.7143,
+      "escalate_recall": 0.1136,
+      "escalate_f1": 0.1961,
+      "true_positives_escalated": 5,
+      "false_positives_over_escalated": 2,
+      "false_negatives_missed_escalated": 39,
+      "true_negatives_auto_handled": 154,
+      "total_cost_penalty": 197.0,
+      "cost_per_query": 0.985
+    },
+    "reply": {
+      "rouge1_f1": 0.0718,
+      "rouge2_f1": 0.0039,
+      "rougeL_f1": 0.0624,
+      "bleu4": 0.0079,
+      "char_limit_compliance_rate": 1.0
+    },
+    "judge": {
+      "grounding": 4.05,
+      "tone": 4.75,
+      "actionability": 3.46,
+      "escalation": 4.2,
+      "composite": 4.11
+    },
+    "avg_latency_ms": 2.99
+  },
+  "Proposed System: Grounded AI Agent": {
+    "intent": {
+      "accuracy": 0.975,
+      "macro_precision": 0.9761,
+      "macro_recall": 0.975,
+      "macro_f1": 0.9749,
+      "weighted_f1": 0.9749,
+      "per_class": {
+        "SOFTWARE_UPDATE_OS": {
+          "precision": 0.96,
+          "recall": 0.96,
+          "f1": 0.96,
+          "support": 25
+        },
+        "BATTERY_PERFORMANCE": {
+          "precision": 0.9259,
+          "recall": 1.0,
+          "f1": 0.9615,
+          "support": 25
+        },
+        "HARDWARE_AUDIO_DISPLAY": {
+          "precision": 1.0,
+          "recall": 0.92,
+          "f1": 0.9583,
+          "support": 25
+        },
+        "ACCOUNT_APPLE_ID_ICLOUD": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 25
+        },
+        "STORE_ORDER_BILLING": {
+          "precision": 0.9615,
+          "recall": 1.0,
+          "f1": 0.9804,
+          "support": 25
+        },
+        "CONNECTIVITY_SYNC": {
+          "precision": 0.9615,
+          "recall": 1.0,
+          "f1": 0.9804,
+          "support": 25
+        },
+        "THIRD_PARTY_APP_ISSUES": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 25
+        },
+        "GENERAL_FEEDBACK_RANT": {
+          "precision": 1.0,
+          "recall": 0.92,
+          "f1": 0.9583,
+          "support": 25
+        }
+      },
+      "confusion_matrix": [
+        [
+          24,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          25,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          23,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          25,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          25,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          25,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          25,
+          0
+        ],
+        [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          23
+        ]
+      ],
+      "intents": [
+        "SOFTWARE_UPDATE_OS",
+        "BATTERY_PERFORMANCE",
+        "HARDWARE_AUDIO_DISPLAY",
+        "ACCOUNT_APPLE_ID_ICLOUD",
+        "STORE_ORDER_BILLING",
+        "CONNECTIVITY_SYNC",
+        "THIRD_PARTY_APP_ISSUES",
+        "GENERAL_FEEDBACK_RANT"
+      ]
+    },
+    "escalation": {
+      "accuracy": 0.99,
+      "escalate_precision": 0.9565,
+      "escalate_recall": 1.0,
+      "escalate_f1": 0.9778,
+      "true_positives_escalated": 44,
+      "false_positives_over_escalated": 2,
+      "false_negatives_missed_escalated": 0,
+      "true_negatives_auto_handled": 154,
+      "total_cost_penalty": 2.0,
+      "cost_per_query": 0.01
+    },
+    "reply": {
+      "rouge1_f1": 0.1057,
+      "rouge2_f1": 0.0119,
+      "rougeL_f1": 0.0864,
+      "bleu4": 0.0107,
+      "char_limit_compliance_rate": 1.0
+    },
+    "judge": {
+      "grounding": 4.27,
+      "tone": 4.88,
+      "actionability": 3.99,
+      "escalation": 4.98,
+      "composite": 4.53
+    },
+    "avg_latency_ms": 3.02
+  },
+  "human_judge_agreement": {
+    "sample_size": 30,
+    "cohen_kappa": 0.0,
+    "pearson_r": -0.2203,
+    "pearson_p_value": 0.24216142581026995,
+    "spearman_rho": -0.2607,
+    "spearman_p_value": 0.1640702235077673,
+    "mean_absolute_error": 0.2717,
+    "human_mean_score": 4.8,
+    "judge_mean_score": 4.85,
+    "detailed_sample": [
+      {
+        "case_id": 1,
+        "query": "Why does my iPhone replace the letter 'I' with a weird question mark box and let...",
+        "human_composite": 5.0,
+        "judge_composite": 5.0,
+        "absolute_diff": 0.0
+      },
+      {
+        "case_id": 4,
+        "query": "Updated to latest macOS High Sierra and now my Mac won't recognize my password a...",
+        "human_composite": 4.5,
+        "judge_composite": 5.0,
+        "absolute_diff": 0.5
+      },
+      {
+        "case_id": 26,
+        "query": "My iPhone 6s drops from 40% battery to 1% and turns off instantly whenever I ste...",
+        "human_composite": 4.75,
+        "judge_composite": 5.0,
+        "absolute_diff": 0.25
+      },
+      {
+        "case_id": 28,
+        "query": "My iPhone is getting burning hot while charging and the back glass is starting t...",
+        "human_composite": 5.0,
+        "judge_composite": 5.0,
+        "absolute_diff": 0.0
+      },
+      {
+        "case_id": 35,
+        "query": "Why does iOS throttle my phone CPU speed when the battery gets old? I feel like ...",
+        "human_composite": 4.5,
+        "judge_composite": 5.0,
+        "absolute_diff": 0.5
+      }
+    ]
+  }
+}

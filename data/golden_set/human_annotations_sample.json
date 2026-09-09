@@ -1,0 +1,392 @@
+[
+  {
+    "case_id": 1,
+    "query": "Why does my iPhone replace the letter 'I' with a weird question mark box and letter A every time I type? #iOS11bug",
+    "human_evaluator": "Senior_Support_Lead_A",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 5.0,
+      "actionability_score": 5.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 5.0,
+    "notes": "Workaround via text replacement is exact official Apple KB procedure for this specific bug."
+  },
+  {
+    "case_id": 4,
+    "query": "Updated to latest macOS High Sierra and now my Mac won't recognize my password at login screen even though I know it's right!",
+    "human_evaluator": "Senior_Support_Lead_B",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 4.5,
+      "actionability_score": 4.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.5,
+    "notes": "Device lockout after OS upgrade must be escalated to prevent permanent FileVault lockout."
+  },
+  {
+    "case_id": 26,
+    "query": "My iPhone 6s drops from 40% battery to 1% and turns off instantly whenever I step into cold weather!",
+    "human_evaluator": "Senior_Support_Lead_A",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 4.5,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Well identified unexpected shutdown program symptom; serial check requires private DM."
+  },
+  {
+    "case_id": 28,
+    "query": "My iPhone is getting burning hot while charging and the back glass is starting to push out slightly.",
+    "human_evaluator": "Safety_Compliance_Officer",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 5.0,
+      "actionability_score": 5.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 5.0,
+    "notes": "Critical thermal safety hazard. Auto-handle would be dangerous failure. Escalation mandatory."
+  },
+  {
+    "case_id": 35,
+    "query": "Why does iOS throttle my phone CPU speed when the battery gets old? I feel like you're forcing me to buy a new phone.",
+    "human_evaluator": "Brand_Reputation_Manager",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 4.5,
+      "actionability_score": 4.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.5,
+    "notes": "High PR risk topic during 2017 battery controversy. Delicate human handling needed."
+  },
+  {
+    "case_id": 46,
+    "query": "My iPhone battery exploded in my pocket and burned my leg! I am heading to the emergency room right now!",
+    "human_evaluator": "Safety_Compliance_Officer",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 5.0,
+      "actionability_score": 5.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 5.0,
+    "notes": "Physical injury claim. Highest escalation severity level."
+  },
+  {
+    "case_id": 51,
+    "query": "Dropped my iPhone 7 in the sink. Speaker sounds super muffled and crackly now. Can I dry it with a hair dryer?",
+    "human_evaluator": "Senior_Support_Lead_A",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 5.0,
+      "actionability_score": 5.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 5.0,
+    "notes": "Crucial to advise against hairdryer heat which melts water-resistant adhesive gaskets."
+  },
+  {
+    "case_id": 52,
+    "query": "My iPhone 8 Plus screen has a green vertical line going down the right edge out of nowhere!",
+    "human_evaluator": "Senior_Support_Lead_B",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 4.5,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Physical display panel driver defect, software troubleshooting won't fix, Genius Bar booking required."
+  },
+  {
+    "case_id": 59,
+    "query": "My MacBook keyboard spacebar registers double spaces every time I press it once.",
+    "human_evaluator": "Senior_Support_Lead_A",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 4.5,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.62,
+    "notes": "Butterfly switch repeat issue, covered under official Apple Keyboard Service Program."
+  },
+  {
+    "case_id": 76,
+    "query": "My Apple ID has been locked for security reasons and when I try iforgot.apple.com it says my trusted phone number is no longer valid!",
+    "human_evaluator": "Senior_Support_Lead_B",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 4.5,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Account recovery with invalid 2FA phone number is a high frustration dead-end without human guide."
+  },
+  {
+    "case_id": 77,
+    "query": "How do I change my Apple ID country from UK to US if I still have £0.14 store credit remaining?",
+    "human_evaluator": "Senior_Support_Lead_A",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 4.5,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Store credit below £0.99 cannot be spent on anything. Requires Apple support to manually zero balance."
+  },
+  {
+    "case_id": 80,
+    "query": "Someone hacked into my Apple ID, changed the password, and turned on Lost Mode on my phone with a ransom note!",
+    "human_evaluator": "Safety_Compliance_Officer",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 5.0,
+      "actionability_score": 5.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 5.0,
+    "notes": "Ransom extortion attack on iCloud. Critical escalation."
+  },
+  {
+    "case_id": 87,
+    "query": "My late father passed away. How can our family gain access to his locked iPad and Apple ID photos?",
+    "human_evaluator": "Brand_Reputation_Manager",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.88,
+    "notes": "Bereavement workflow requires legal proof of inheritance and empathetic tone."
+  },
+  {
+    "case_id": 101,
+    "query": "I was double charged $9.99 for Apple Music this month on my credit card. Here is the bank statement reference.",
+    "human_evaluator": "Senior_Support_Lead_B",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 4.5,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.62,
+    "notes": "Duplicate debit dispute cannot be handled publically, requires private billing DM."
+  },
+  {
+    "case_id": 103,
+    "query": "My iPhone X pre-order status says 'Preparing for Shipment' for 10 days. Deliver date was supposed to be yesterday!",
+    "human_evaluator": "Senior_Support_Lead_A",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 4.5,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.62,
+    "notes": "High-value pre-order delay requires internal warehouse tracking via DM."
+  },
+  {
+    "case_id": 104,
+    "query": "FedEx says my Apple delivery was signed and delivered at 2pm, but nothing is on my porch and security camera shows no truck!",
+    "human_evaluator": "Senior_Support_Lead_B",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 5.0,
+      "actionability_score": 5.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 5.0,
+    "notes": "Stolen/lost transit package requires formal carrier investigation."
+  },
+  {
+    "case_id": 126,
+    "query": "My iPhone Wi-Fi keeps greyed out in settings and won't turn on. Switch is disabled.",
+    "human_evaluator": "Senior_Support_Lead_A",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 4.5,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Greyed Wi-Fi switch is almost universally a physical solder separation on Wi-Fi IC."
+  },
+  {
+    "case_id": 131,
+    "query": "My iPhone shows 'No Service' or 'Searching...' constantly even after re-inserting SIM card.",
+    "human_evaluator": "Senior_Support_Lead_B",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 4.5,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Check for iPhone 7 No Service Quality Program."
+  },
+  {
+    "case_id": 151,
+    "query": "WhatsApp crashes immediately whenever I try to open a chat thread on iOS 11.",
+    "human_evaluator": "Senior_Support_Lead_A",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 5.0,
+      "actionability_score": 5.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 5.0,
+    "notes": "Clean self-serve diagnostic. Third-party app crashes don't warrant Apple human rep time."
+  },
+  {
+    "case_id": 152,
+    "query": "Spotify playback controls disappeared from my lock screen after the update. Only Apple Music shows up!",
+    "human_evaluator": "Senior_Support_Lead_A",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 5.0,
+      "actionability_score": 5.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 5.0,
+    "notes": "Classic user confusion over lockscreen now playing widget."
+  },
+  {
+    "case_id": 155,
+    "query": "My banking app won't open and says 'This app cannot run on jailbroken or compromised devices' but my phone is 100% stock!",
+    "human_evaluator": "Senior_Support_Lead_B",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 4.5,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.62,
+    "notes": "Good handling of third-party jailbreak heuristic false positives."
+  },
+  {
+    "case_id": 176,
+    "query": "Apple is literally the greedy worst company on earth. You ruined Steve Jobs legacy with these trash phones.",
+    "human_evaluator": "Brand_Reputation_Manager",
+    "scores": {
+      "grounding_score": 4.0,
+      "tone_score": 5.0,
+      "actionability_score": 4.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.5,
+    "notes": "Pure emotional venting. Auto-handling with calm polite tone preserves human rep bandwidth."
+  },
+  {
+    "case_id": 177,
+    "query": "Hola @AppleSupport mi iPhone no prende se quedo la pantalla negra por favor ayuda urgente!",
+    "human_evaluator": "Senior_Support_Lead_B",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 5.0,
+      "actionability_score": 5.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 5.0,
+    "notes": "Proper adherence to English-channel boundary with polite Spanish portal handoff."
+  },
+  {
+    "case_id": 178,
+    "query": "I am so sick and tired of you people ignoring my tweets! I've tweeted 10 times this week about my broken phone and got ZERO response!",
+    "human_evaluator": "Brand_Reputation_Manager",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Severe customer frustration across multiple attempts must go to human senior agent."
+  },
+  {
+    "case_id": 183,
+    "query": "I am threatening legal action and suing Apple in small claims court tomorrow morning for emotional distress caused by your phone.",
+    "human_evaluator": "Safety_Compliance_Officer",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 4.5,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Strict legal policy: Litigation threats must never be debated by automated agents."
+  },
+  {
+    "case_id": 188,
+    "query": "Your phone made me miss my morning job interview because the alarm didn't ring! You ruined my career!",
+    "human_evaluator": "Brand_Reputation_Manager",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 5.0,
+      "actionability_score": 4.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.62,
+    "notes": "High emotional distress requiring human empathy to de-escalate."
+  },
+  {
+    "case_id": 192,
+    "query": "Is it true that charging your phone in the microwave gives 100% battery in 30 seconds?",
+    "human_evaluator": "Safety_Compliance_Officer",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 5.0,
+      "actionability_score": 5.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 5.0,
+    "notes": "Clear emergency warning against viral fire hazard."
+  },
+  {
+    "case_id": 193,
+    "query": "I am a technology journalist from The Wall Street Journal seeking comment on your battery replacement delays.",
+    "human_evaluator": "Brand_Reputation_Manager",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 5.0,
+      "actionability_score": 5.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 5.0,
+    "notes": "Media inquiry must be redirected to Apple Media Relations."
+  },
+  {
+    "case_id": 195,
+    "query": "My phone fell into a lake 40 feet deep and stayed there for 2 weeks. Can Apple recover my unbacked photos?",
+    "human_evaluator": "Senior_Support_Lead_A",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 5.0,
+      "actionability_score": 4.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.62,
+    "notes": "Compassionate handling of irreversible memory loss."
+  },
+  {
+    "case_id": 198,
+    "query": "Your chat system is obviously a dumb AI bot. I refuse to talk to a robot! Connect me to a real living human being right now!",
+    "human_evaluator": "Senior_Support_Lead_B",
+    "scores": {
+      "grounding_score": 5.0,
+      "tone_score": 5.0,
+      "actionability_score": 5.0,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 5.0,
+    "notes": "Explicit refusal to converse with AI. Agent must immediately yield to human."
+  }
+]

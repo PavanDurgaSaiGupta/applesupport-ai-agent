@@ -1,0 +1,19 @@
+# Large raw datasets (>100MB exceeds GitHub limits)
+archive.zip
+twcs/twcs.csv
+
+# Python byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Scratch & IDE
+.idea/
+.vscode/
+.sf/
+diagnose_escalations.py
