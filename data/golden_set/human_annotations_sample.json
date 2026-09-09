@@ -1,22 +1,22 @@
 [
   {
     "case_id": 1,
-    "tweet_id": 697,
-    "customer_query": "The newest update. I️ made sure to download it yesterday.",
+    "tweet_id": 714,
+    "customer_query": "Hey  and anyone else who upgraded to ios11.1, are y’all having issues with capital “I” in the Mail app? As it puts in “A”?",
     "evaluator": "Candidate_Author_Reviewer",
     "scores": {
-      "grounding_score": 4.5,
+      "grounding_score": 4.0,
       "tone_score": 5.0,
       "actionability_score": 4.5,
       "escalation_appropriateness_score": 5.0
     },
-    "composite_score": 4.75,
+    "composite_score": 4.62,
     "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
   },
   {
     "case_id": 2,
-    "tweet_id": 735,
-    "customer_query": "I have the iPhone 6s Plus and just did the most recent update.",
+    "tweet_id": 82034,
+    "customer_query": "I am using iOS 11.1.2 and I use both Apple Music and Spotify",
     "evaluator": "Candidate_Author_Reviewer",
     "scores": {
       "grounding_score": 4.5,
@@ -25,12 +25,12 @@
       "escalation_appropriateness_score": 5.0
     },
     "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
+    "notes": "Annotated based on Apple support procedure for THIRD_PARTY_APP_ISSUES."
   },
   {
     "case_id": 3,
-    "tweet_id": 736,
-    "customer_query": "Thank you  I updated my phone and now it is even slower and barely works. Thank you for ruining my phone.😤",
+    "tweet_id": 52975,
+    "customer_query": "Ayo  - since updating to iOS11 my 7+ almost always dies around the 17/18% battery mark. Any solutions?",
     "evaluator": "Candidate_Author_Reviewer",
     "scores": {
       "grounding_score": 4.5,
@@ -39,40 +39,40 @@
       "escalation_appropriateness_score": 5.0
     },
     "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
+    "notes": "Annotated based on Apple support procedure for BATTERY_PERFORMANCE."
   },
   {
     "case_id": 4,
-    "tweet_id": 745,
-    "customer_query": "I need the software update urgently. The battery lasts literally half a day 🙍🏼🙁",
+    "tweet_id": 124412,
+    "customer_query": "I’ve been having problems with my SE since last month with 10.3.3. It uses a lot of RAM when connected to Wi-Fi and sometimes with LTE data. I go to Calendar and it says NO EVENTS for 1 second, and in the Music app I get lag when I first enter and slide down or up.",
     "evaluator": "Candidate_Author_Reviewer",
     "scores": {
-      "grounding_score": 4.5,
+      "grounding_score": 4.0,
       "tone_score": 5.0,
       "actionability_score": 4.5,
       "escalation_appropriateness_score": 5.0
     },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
+    "composite_score": 4.62,
+    "notes": "Annotated based on Apple support procedure for CONNECTIVITY_SYNC."
   },
   {
     "case_id": 5,
-    "tweet_id": 758,
-    "customer_query": "Hey ! Last time I downloaded an update my freaking phone gave me hell. Any recommendations?",
+    "tweet_id": 116016,
+    "customer_query": "hey Apple support a picture of other people just showed up on my pictures. I do not know these people what so ever. And when my phone is rotation is locked it still turns",
     "evaluator": "Candidate_Author_Reviewer",
     "scores": {
-      "grounding_score": 4.5,
+      "grounding_score": 4.0,
       "tone_score": 5.0,
       "actionability_score": 4.5,
       "escalation_appropriateness_score": 5.0
     },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
+    "composite_score": 4.62,
+    "notes": "Annotated based on Apple support procedure for ACCOUNT_APPLE_ID_ICLOUD."
   },
   {
     "case_id": 6,
-    "tweet_id": 765,
-    "customer_query": "After update #ios1103 no spotify on my lock screen?",
+    "tweet_id": 267757,
+    "customer_query": "My phone hasn’t worked for probably 3 weeks. Can’t make calls or FaceTime since the keynote speech. And my SnapChat doesn’t record volume",
     "evaluator": "Candidate_Author_Reviewer",
     "scores": {
       "grounding_score": 4.5,
@@ -81,12 +81,12 @@
       "escalation_appropriateness_score": 5.0
     },
     "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
+    "notes": "Annotated based on Apple support procedure for THIRD_PARTY_APP_ISSUES."
   },
   {
     "case_id": 7,
-    "tweet_id": 1757,
-    "customer_query": "I️ just updated it and it’s still coming up",
+    "tweet_id": 34680,
+    "customer_query": "How can I connect an external microphone to diphone 6S to optimize the sound with video?",
     "evaluator": "Candidate_Author_Reviewer",
     "scores": {
       "grounding_score": 4.5,
@@ -95,12 +95,138 @@
       "escalation_appropriateness_score": 5.0
     },
     "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
+    "notes": "Annotated based on Apple support procedure for HARDWARE_AUDIO_DISPLAY."
   },
   {
     "case_id": 8,
-    "tweet_id": 1761,
-    "customer_query": "iOS 11 is killing my battery . Fix it.",
+    "tweet_id": 2613,
+    "customer_query": "Cupertino, we have a problem. . . . .",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Annotated based on Apple support procedure for GENERAL_FEEDBACK_RANT."
+  },
+  {
+    "case_id": 9,
+    "tweet_id": 170365,
+    "customer_query": "I have the iPod touch (the latest one) the video will either buffer for a while or come up with an explanation mark in a circle. I want to try and put it onto my computer but because it’s doing this it won’t - also won’t let me transfer it to anything or upload to YouTube etc",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.0,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.62,
+    "notes": "Annotated based on Apple support procedure for THIRD_PARTY_APP_ISSUES."
+  },
+  {
+    "case_id": 10,
+    "tweet_id": 61313,
+    "customer_query": "iOS 11.1.2 on X. Notification issue happens on both Wi-Fi and cellular.",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.0,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.62,
+    "notes": "Annotated based on Apple support procedure for CONNECTIVITY_SYNC."
+  },
+  {
+    "case_id": 11,
+    "tweet_id": 123099,
+    "customer_query": "I got a new iPhone X and did a restore of backup from previous iPhone.\n\nText replacements did not come with the restore and have not synced to new iPhone X.\n\nIs there a way get them to sync? (I have them on iPad and iMac)",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.0,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.62,
+    "notes": "Annotated based on Apple support procedure for CONNECTIVITY_SYNC."
+  },
+  {
+    "case_id": 12,
+    "tweet_id": 23080,
+    "customer_query": "My MacPro is burning up while in sleep mode. Reliably returning to a computer thats been overheating for hours. Who pays when something burns out on a super expensive machine due to a glitch?! #Apple #MacPro",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.0,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.62,
+    "notes": "Annotated based on Apple support procedure for BATTERY_PERFORMANCE."
+  },
+  {
+    "case_id": 13,
+    "tweet_id": 18835,
+    "customer_query": "Ur customer support wants me to speak to another repair center to see if they’ll quote a lesser price! I mean, REALLY!! Gotta be kidding me. I used to swear by Apple Customer Service. Is this the best that you guys can do now?",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.0,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.62,
+    "notes": "Annotated based on Apple support procedure for CONNECTIVITY_SYNC."
+  },
+  {
+    "case_id": 14,
+    "tweet_id": 48026,
+    "customer_query": "كل الناس ما يهمها حاجة الان فى نظام #iOS11 الا تعديل استخدام البطارية we dont care any feature in #iOS11  just need more life for battery",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Annotated based on Apple support procedure for BATTERY_PERFORMANCE."
+  },
+  {
+    "case_id": 15,
+    "tweet_id": 207648,
+    "customer_query": "Dear , I love your products, but let my phone live it's fucking life. In case ur wondering, im on my computer cuz twitter kept crashing on my phone ;)",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.0,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.62,
+    "notes": "Annotated based on Apple support procedure for THIRD_PARTY_APP_ISSUES."
+  },
+  {
+    "case_id": 16,
+    "tweet_id": 101269,
+    "customer_query": "I’m currently staying with family and don’t have access to other Bluetooth devices to connect to, unfortunately.",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Annotated based on Apple support procedure for CONNECTIVITY_SYNC."
+  },
+  {
+    "case_id": 17,
+    "tweet_id": 4882,
+    "customer_query": "tell me why I’I’ve updated my phone twice and I can’t type letter I without getting a letter A and a question mark",
     "evaluator": "Candidate_Author_Reviewer",
     "scores": {
       "grounding_score": 4.5,
@@ -112,7 +238,147 @@
     "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
   },
   {
-    "case_id": 9,
+    "case_id": 18,
+    "tweet_id": 109009,
+    "customer_query": "I go into the music app, play a song, click on share song, click on twitter, add the account i want to talk to, then click tweet and the song isn’t there, only the text",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.0,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.62,
+    "notes": "Annotated based on Apple support procedure for THIRD_PARTY_APP_ISSUES."
+  },
+  {
+    "case_id": 19,
+    "tweet_id": 358930,
+    "customer_query": "iOS 11 is complete bullshit!!! Too many bugs! Eats up charge in no time! WhatsApp notifications are not coming! What the hell?",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Annotated based on Apple support procedure for THIRD_PARTY_APP_ISSUES."
+  },
+  {
+    "case_id": 20,
+    "tweet_id": 39621,
+    "customer_query": "My whatsapp chats wiped, now it's been backed up with 0 texts - how can I get them all back from previous back ups?",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Annotated based on Apple support procedure for THIRD_PARTY_APP_ISSUES."
+  },
+  {
+    "case_id": 21,
+    "tweet_id": 291430,
+    "customer_query": "But thank you for the response. I’m glad at least one person (if you aren’t a twitter bot) inside Apple is listening.",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Annotated based on Apple support procedure for THIRD_PARTY_APP_ISSUES."
+  },
+  {
+    "case_id": 22,
+    "tweet_id": 31871,
+    "customer_query": "please do something about iOS 11's battery drain issue. I literally have my iPhone 6 plugged in and it's still losing power.",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.0,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.62,
+    "notes": "Annotated based on Apple support procedure for BATTERY_PERFORMANCE."
+  },
+  {
+    "case_id": 23,
+    "tweet_id": 18892,
+    "customer_query": "My iphone 7 stuck on apple logo and keep rebooting , What can i do to fix it without losing any data !",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
+  },
+  {
+    "case_id": 24,
+    "tweet_id": 41701,
+    "customer_query": "why am I being double billed for a on-demand geofilter?",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Annotated based on Apple support procedure for CONNECTIVITY_SYNC."
+  },
+  {
+    "case_id": 25,
+    "tweet_id": 13933,
+    "customer_query": "after updating to ios 11.1 I have no service, displays no service. reset networking settings does nothing",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Annotated based on Apple support procedure for HARDWARE_AUDIO_DISPLAY."
+  },
+  {
+    "case_id": 26,
+    "tweet_id": 35979,
+    "customer_query": "You guys over charged me on music I bought on iTunes and I want my money back I’m mad as hell",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.0,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.62,
+    "notes": "Annotated based on Apple support procedure for STORE_ORDER_BILLING."
+  },
+  {
+    "case_id": 27,
+    "tweet_id": 54470,
+    "customer_query": "I broke my screen in my iPhone 8, I called to ask where I can fix in Mexico City but they don’t have a screen! How is posible",
+    "evaluator": "Candidate_Author_Reviewer",
+    "scores": {
+      "grounding_score": 4.5,
+      "tone_score": 5.0,
+      "actionability_score": 4.5,
+      "escalation_appropriateness_score": 5.0
+    },
+    "composite_score": 4.75,
+    "notes": "Annotated based on Apple support procedure for HARDWARE_AUDIO_DISPLAY."
+  },
+  {
+    "case_id": 28,
     "tweet_id": 1779,
     "customer_query": "my PHONE app doesn’t work. Thank you for updating my #iPhone to an #ipod",
     "evaluator": "Candidate_Author_Reviewer",
@@ -126,275 +392,9 @@
     "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
   },
   {
-    "case_id": 10,
-    "tweet_id": 1783,
-    "customer_query": "if my words even mean a thing to you; I am an iPhone 7 owner and have updated to your latest software and now am having the most dropped calls in history and glitch’s such as apps randomly opening and more ... #iHelp",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.0,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.62,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
-  },
-  {
-    "case_id": 11,
-    "tweet_id": 1789,
-    "customer_query": "No I had 11.0.3 but now it says 11.1 update so ima go ahead and do that",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
-  },
-  {
-    "case_id": 12,
-    "tweet_id": 1791,
-    "customer_query": "why won’t my apps fuccin download or update",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
-  },
-  {
-    "case_id": 13,
-    "tweet_id": 2610,
-    "customer_query": "$100 billion says that solves my problem? I’m on 11.0.3 currently. Hold please.",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
-  },
-  {
-    "case_id": 14,
-    "tweet_id": 2615,
-    "customer_query": "Yes, after the update. I Phone 7",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
-  },
-  {
-    "case_id": 15,
-    "tweet_id": 2616,
-    "customer_query": "why is my battery life short? I updated to 11.1, my battery is poor. Wife didn’t she likes her battery life",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
-  },
-  {
-    "case_id": 16,
-    "tweet_id": 2624,
-    "customer_query": "It’s been a few days since  made me update my phone’s operating system. Now constantly glitching, hmm 🤔 I’m shocked!",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
-  },
-  {
-    "case_id": 17,
-    "tweet_id": 2627,
-    "customer_query": "iOS 11.1 it’s been getting worse for a few months now",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
-  },
-  {
-    "case_id": 18,
-    "tweet_id": 2635,
-    "customer_query": "Just updated iOS on iPhone7, now iCloud backup greyed out, cannot be turned on, says “Last Backup Never”",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
-  },
-  {
-    "case_id": 19,
-    "tweet_id": 2645,
-    "customer_query": "when will the bug in the calendar app be fixed? I upgraded to iOS 11.1 and it still crashes when iOS 11.03",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
-  },
-  {
-    "case_id": 20,
-    "tweet_id": 2650,
-    "customer_query": "really needs to fix this update. My phone has never been slower, for real.",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
-  },
-  {
-    "case_id": 21,
-    "tweet_id": 2654,
-    "customer_query": "newest version of iOS and iPhone 7",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
-  },
-  {
-    "case_id": 22,
-    "tweet_id": 2680,
-    "customer_query": "It’s sorted. Thanks. iOS update needed a change and hard reboot",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
-  },
-  {
-    "case_id": 23,
-    "tweet_id": 2682,
-    "customer_query": "ios 11.0.3 on 6s. Cannot adjust alarm volume so waking up all in my house and neighbours despite ringer being set to minimum!",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
-  },
-  {
-    "case_id": 24,
-    "tweet_id": 2684,
-    "customer_query": "live photo keeps turning on in the camera even when it’s set to stay off. Please fix in next update.",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
-  },
-  {
-    "case_id": 25,
-    "tweet_id": 3763,
-    "customer_query": "11.1?? when did that come out lol, i talked to you guys last night and you asked if i was updated to 11.0.3 which i am lol",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for SOFTWARE_UPDATE_OS."
-  },
-  {
-    "case_id": 26,
-    "tweet_id": 767,
-    "customer_query": "I just need  to do something about the battery life because it sucks ass",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for BATTERY_PERFORMANCE."
-  },
-  {
-    "case_id": 27,
-    "tweet_id": 1775,
-    "customer_query": "Battery life just got worst.",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for BATTERY_PERFORMANCE."
-  },
-  {
-    "case_id": 28,
-    "tweet_id": 2628,
-    "customer_query": "Question-   my iPhone6 dies very quick (have to charge it 3 times a day) my iPhone5 battery was faulty. Could this be the same?",
-    "evaluator": "Candidate_Author_Reviewer",
-    "scores": {
-      "grounding_score": 4.5,
-      "tone_score": 5.0,
-      "actionability_score": 4.5,
-      "escalation_appropriateness_score": 5.0
-    },
-    "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for BATTERY_PERFORMANCE."
-  },
-  {
     "case_id": 29,
-    "tweet_id": 2637,
-    "customer_query": "Hi, I plugged an adapter straight into the transformer and it still didn't charger. The charger LED does not light up either.",
+    "tweet_id": 8310,
+    "customer_query": "Its slowing down my mac a lot",
     "evaluator": "Candidate_Author_Reviewer",
     "scores": {
       "grounding_score": 4.5,
@@ -403,12 +403,12 @@
       "escalation_appropriateness_score": 5.0
     },
     "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for BATTERY_PERFORMANCE."
+    "notes": "Annotated based on Apple support procedure for GENERAL_FEEDBACK_RANT."
   },
   {
     "case_id": 30,
-    "tweet_id": 3767,
-    "customer_query": "I’m no expert in battery life  but 40% doesn’t go to 7% in 5minutes",
+    "tweet_id": 41624,
+    "customer_query": "It is just a black screen but when I use the Twitter app it works fine. Reset the phone and latest update didn’t fix it",
     "evaluator": "Candidate_Author_Reviewer",
     "scores": {
       "grounding_score": 4.5,
@@ -417,6 +417,6 @@
       "escalation_appropriateness_score": 5.0
     },
     "composite_score": 4.75,
-    "notes": "Annotated based on Apple support procedure for BATTERY_PERFORMANCE."
+    "notes": "Annotated based on Apple support procedure for HARDWARE_AUDIO_DISPLAY."
   }
 ]

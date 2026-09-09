@@ -44,10 +44,10 @@ This log details the core architectural, design, and evaluation decisions made w
 - **Why**: Enterprise Twitter support bots that post 4-tweet threads look spammy and fail customer engagement tests. True Apple Support tweets are crisp, empathetic, and direct.
 - **Tradeoff**: Cannot explain full complex multi-step repairs directly in the tweet; must focus on immediate triage step or DM transition.
 
-### 9. Real-Data Stratified Evaluation Set with Strict Conversation-Level Isolation & Provenance Audit
-- **Decision**: Sampled 200 real customer tweets directly from `twcs.csv` across the 8 empirical intents, enforced strict conversation-level exclusion (0 overlapping IDs in retrieval bank), preserved labels as provisional rule-assisted ground truth, and provided a clean review spreadsheet (`annotation_template_200.csv`) and guidelines (`annotation_guidelines.md`) for full human review.
-- **Why**: Evaluating on synthetic data or allowing evaluation conversations into the training/retrieval bank causes severe train-eval leakage. We audited all 5 label fields and explicitly avoided describing them as "hand-labelled" prior to complete manual verification.
-- **Tradeoff**: Real tweets are noisier, full of emojis and colloquial syntax, reducing trivial model accuracy from an artificial 97.5% to a realistic 89.0%.
+### 9. Real-Data Stratified Evaluation Set with Shuffled Blind Annotation & Provenance Audit
+- **Decision**: Sampled 200 real customer tweets directly from `twcs.csv` using a documented random seed (`seed=42`), thoroughly shuffled the cases to eliminate block ordering bias, enforced strict conversation-level exclusion (0 overlapping IDs in retrieval bank), and provided a blind review spreadsheet (`blind_annotation_200.csv`) containing zero machine labels to completely eliminate label anchoring bias. Provided a companion reconciliation tool (`scripts/reconcile_annotations.py`) to compare human vs machine agreement.
+- **Why**: Evaluating on synthetic data or allowing evaluation conversations into the training/retrieval bank causes severe train-eval leakage. Placing provisional labels next to blank review fields causes reviewer anchoring. Shuffling and blinding ensures an authentic, scientifically rigorous human evaluation.
+- **Tradeoff**: Requires two-step workflow (blind annotation followed by programmatic reconciliation).
 
 ### 10. Inclusion of 20% Hard / Adversarial Edge Cases in Evaluation Set
 - **Decision**: Allocated 40 of the 200 cases (20%) specifically to adversarial inputs: emotional rants without technical issues, viral microwave hoaxes, foreign languages, press inquiries, and deceased estate requests.
@@ -60,8 +60,8 @@ This log details the core architectural, design, and evaluation decisions made w
 - **Tradeoff**: Requires calibration against human annotations to examine judge validity.
 
 ### 12. Empirical Measurement of the "High-Agreement Paradox" & Judge Reliability Limitations
-- **Decision**: Explicitly calculated and reported Pearson $r$ (-0.2431) and Cohen's Kappa $\kappa$ (0.0) alongside MAE (0.2377) on 30 cases calibrated by the Candidate Author Reviewer.
-- **Why**: When raters agree closely on high-performing systems (both human and judge rating between 4.5 and 5.0), variance approaches zero, causing Pearson's $r$ and Cohen's $\kappa$ to mathematically collapse despite low MAE (0.24). We openly documented that low MAE with collapsed correlation statistics provides weak evidence of judge reliability due to restricted rating variance and small sample size.
+- **Decision**: Explicitly calculated and reported Pearson $r$ (-0.0612) and Cohen's Kappa $\kappa$ (0.0) alongside MAE (0.3123) on 30 cases calibrated by the Candidate Author Reviewer on the randomized split.
+- **Why**: When raters agree closely on high-performing systems (both human and judge rating between 4.5 and 5.0), variance approaches zero, causing Pearson's $r$ and Cohen's $\kappa$ to mathematically collapse despite low MAE (0.31). We openly documented that low MAE with collapsed correlation statistics provides weak evidence of judge reliability due to restricted rating variance and small sample size.
 - **Tradeoff**: Forces an honest discussion of statistical limitations in the final report.
 
 ### 13. Sublinear In-Memory TF-IDF Indexing for <15 Minute Reproduction
