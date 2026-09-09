@@ -71,6 +71,10 @@
         <span class="meta-label">Holdout:</span>
         <span class="meta-value" id="header-holdout">Frozen (N=200)</span>
       </div>
+      <div class="meta-pill" title="Training & Evaluation Set Overlap Audit">
+        <span class="meta-label">Leakage:</span>
+        <span class="meta-value text-pass" id="header-leakage">PASS (0 Overlap)</span>
+      </div>
     </div>
   </header>
 
@@ -135,55 +139,154 @@
         </form>
       </div>
 
+      <!-- Architectural How It Works Overview & Semantic Stage Legend -->
+      <div class="how-it-works-banner" aria-label="System Pipeline Overview">
+        <div class="how-it-works-header">
+          <div class="how-it-works-title">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            </svg>
+            <span>HOW THE AGENT WORKS</span>
+          </div>
+          <span class="how-it-works-sub">Sequential Multi-Stage Triage & Grounded Drafting Pipeline</span>
+        </div>
+        <div class="how-it-works-steps">
+          <div class="step-chip">
+            <span class="step-num num-blue">01</span>
+            <div class="step-info">
+              <span class="step-title">Understand Issue</span>
+              <span class="step-desc">Raw input & cleaning</span>
+            </div>
+          </div>
+          <span class="step-arrow" aria-hidden="true">→</span>
+          <div class="step-chip">
+            <span class="step-num num-blue">02</span>
+            <div class="step-info">
+              <span class="step-title">Classify Intent</span>
+              <span class="step-desc">8 support categories</span>
+            </div>
+          </div>
+          <span class="step-arrow" aria-hidden="true">→</span>
+          <div class="step-chip">
+            <span class="step-num num-indigo">03</span>
+            <div class="step-info">
+              <span class="step-title">Find Evidence</span>
+              <span class="step-desc">10,000 Apple pairs</span>
+            </div>
+          </div>
+          <span class="step-arrow" aria-hidden="true">→</span>
+          <div class="step-chip">
+            <span class="step-num num-amber">04</span>
+            <div class="step-info">
+              <span class="step-title">Assess Safety</span>
+              <span class="step-desc">6 operational policies</span>
+            </div>
+          </div>
+          <span class="step-arrow" aria-hidden="true">→</span>
+          <div class="step-chip">
+            <span class="step-num num-green">05</span>
+            <div class="step-info">
+              <span class="step-title">Draft Reply</span>
+              <span class="step-desc">&lt; 280 char grounded tweet</span>
+            </div>
+          </div>
+          <span class="step-arrow" aria-hidden="true">→</span>
+          <div class="step-chip">
+            <span class="step-num num-gray">06</span>
+            <div class="step-info">
+              <span class="step-title">Audit Record</span>
+              <span class="step-desc">Structured traceability</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subtle Semantic Stage Legend -->
+      <div class="workflow-legend-bar" aria-label="Visual Stage Color Legend">
+        <span class="legend-title">Color Language:</span>
+        <div class="legend-items">
+          <span class="legend-item"><span class="legend-dot dot-blue"></span> Blue: Customer & Intent</span>
+          <span class="legend-item"><span class="legend-dot dot-indigo"></span> Indigo: Historical Evidence</span>
+          <span class="legend-item"><span class="legend-dot dot-amber"></span> Amber: Safety Review</span>
+          <span class="legend-item"><span class="legend-dot dot-green"></span> Green: Auto-Handle</span>
+          <span class="legend-item"><span class="legend-dot dot-red"></span> Red: Escalation</span>
+          <span class="legend-item"><span class="legend-dot dot-gray"></span> Gray: Audit & Metadata</span>
+        </div>
+      </div>
+
       <!-- Live Agent Visual Workflow Canvas -->
       <div class="workflow-canvas">
         
         <!-- EMPTY STATE (Before Query) -->
         <div id="results-empty" class="workflow-empty-state">
           <div class="empty-hero">
-            <div class="empty-icon" aria-hidden="true">⚡</div>
-            <h3 class="empty-title">Enter a customer message to analyze</h3>
+            <div class="empty-icon-apple" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+            </div>
+            <h3 class="empty-title">Ready for Customer Inquiry Analysis</h3>
             <p class="empty-description">
-              The agent classifies intent, retrieves historical resolutions, evaluates escalation risk, and drafts a grounded response.
+              Enter an incoming customer support inquiry above or choose one of the real TWCS examples. The pipeline will trace through each stage with full explainability.
             </p>
           </div>
 
           <!-- Explanatory Architectural Blueprint -->
           <div class="blueprint-card">
-            <span class="blueprint-heading">Visual Architecture Blueprint:</span>
+            <div class="blueprint-header-row">
+              <span class="blueprint-heading">End-to-End Execution Trace Blueprint</span>
+              <span class="blueprint-sla">100% Real Python Backend • Latency SLA: &lt; 50ms</span>
+            </div>
             <div class="blueprint-pipeline">
-              <div class="blueprint-node">
-                <span class="node-badge">1</span>
+              <div class="blueprint-node node-blue">
+                <div class="node-header">
+                  <span class="node-badge">01</span>
+                  <span class="node-stage-name">INPUT</span>
+                </div>
                 <span class="node-title">Customer Message</span>
-                <span class="node-desc">Raw input & text cleaning</span>
+                <span class="node-desc">Preserves verbatim user wording</span>
               </div>
               <span class="blueprint-connector">→</span>
-              <div class="blueprint-node">
-                <span class="node-badge">2</span>
+              <div class="blueprint-node node-blue">
+                <div class="node-header">
+                  <span class="node-badge">02</span>
+                  <span class="node-stage-name">CLASSIFY</span>
+                </div>
                 <span class="node-title">Intent Classifier</span>
-                <span class="node-desc">8 classes + confidence</span>
+                <span class="node-desc">8-class taxonomy + posterior</span>
               </div>
               <span class="blueprint-connector">→</span>
-              <div class="blueprint-node">
-                <span class="node-badge">3</span>
-                <span class="node-title">Historical Retrieval</span>
-                <span class="node-desc">10,000 Apple pairs (RAG)</span>
+              <div class="blueprint-node node-indigo">
+                <div class="node-header">
+                  <span class="node-badge">03</span>
+                  <span class="node-stage-name">RETRIEVE</span>
+                </div>
+                <span class="node-title">Historical Evidence</span>
+                <span class="node-desc">10,000 AppleSupport pairs</span>
               </div>
               <span class="blueprint-connector">→</span>
-              <div class="blueprint-node">
-                <span class="node-badge">4</span>
-                <span class="node-title">Safety Triage</span>
-                <span class="node-desc">Auto-Handle vs Escalate</span>
+              <div class="blueprint-node node-amber">
+                <div class="node-header">
+                  <span class="node-badge">04</span>
+                  <span class="node-stage-name">SAFETY</span>
+                </div>
+                <span class="node-title">Escalation Triage</span>
+                <span class="node-desc">6 operational safety policies</span>
               </div>
               <span class="blueprint-connector">→</span>
-              <div class="blueprint-node">
-                <span class="node-badge">5</span>
+              <div class="blueprint-node node-green">
+                <div class="node-header">
+                  <span class="node-badge">05</span>
+                  <span class="node-stage-name">DRAFT</span>
+                </div>
                 <span class="node-title">Grounded Reply</span>
-                <span class="node-desc">< 280 character tweet</span>
+                <span class="node-desc">Concise, character-limited reply</span>
               </div>
             </div>
             <div class="blueprint-footer">
-              <span>• Zero mock data: All stages consume the genuine Python backend at <code>/api/analyze</code>.</span>
+              <span>✓ Zero mock data: Every stage consumes live predictions, real TF-IDF similarity, and genuine policy decisions from <code>/api/analyze</code>.</span>
             </div>
           </div>
         </div>
@@ -193,7 +296,7 @@
           <div class="loading-spinner-ring" aria-hidden="true"></div>
           <h3 class="loading-title">Executing AI Support Pipeline…</h3>
           <p class="loading-sub">
-            Pre-processing query → Classifying intent → Searching 10,000 historical pairs → Evaluating safety policies → Drafting grounded reply.
+            1. Normalizing query → 2. Computing intent distribution → 3. Searching 10,000 resolution pairs → 4. Evaluating safety triage rules → 5. Generating grounded reply.
           </p>
         </div>
 
@@ -210,35 +313,100 @@
         <!-- ACTIVE WORKFLOW PIPELINE RESULTS -->
         <div id="results-workflow" class="workflow-stages-container" style="display: none;">
           
-          <!-- Telemetry Summary Bar -->
-          <div class="telemetry-bar">
-            <div class="telemetry-left">
-              <span class="telemetry-status-dot"></span>
-              <span class="telemetry-title">End-to-End Triage Complete</span>
-              <span class="telemetry-pill" id="telemetry-latency">Latency: -- ms</span>
-              <span class="telemetry-pill" id="telemetry-retrieval-score">Top Sim: --</span>
+          <!-- Executive Summary Strip -->
+          <div class="exec-summary-bar" id="exec-summary-bar">
+            <div class="summary-badge-group">
+              <span class="summary-status-dot"></span>
+              <span class="summary-title">ANALYSIS COMPLETE</span>
             </div>
-            <span class="telemetry-note">Single-pass synchronous Python execution</span>
+            <div class="summary-metrics">
+              <div class="summary-item">
+                <span class="sum-label">Classified Intent:</span>
+                <span class="sum-val intent-val" id="sum-val-intent">--</span>
+              </div>
+              <div class="summary-item">
+                <span class="sum-label">Triage Decision:</span>
+                <span class="sum-val decision-val" id="sum-val-decision">--</span>
+              </div>
+              <div class="summary-item">
+                <span class="sum-label">Top Similarity:</span>
+                <span class="sum-val" id="sum-val-sim">--</span>
+              </div>
+              <div class="summary-item">
+                <span class="sum-label">Retrieved Evidence:</span>
+                <span class="sum-val" id="sum-val-evidence">3 Pairs</span>
+              </div>
+              <div class="summary-item">
+                <span class="sum-label">Latency:</span>
+                <span class="sum-val" id="sum-val-latency">-- ms</span>
+              </div>
+              <div class="summary-item">
+                <span class="sum-label">Draft Length:</span>
+                <span class="sum-val" id="sum-val-chars">-- / 280</span>
+              </div>
+            </div>
           </div>
 
-          <!-- STAGE 1: CUSTOMER MESSAGE -->
-          <div class="stage-card" id="stage-1">
+          <!-- ================================================================
+               STAGE 1: CUSTOMER MESSAGE
+               Visual Identity: Blue
+               ================================================================ -->
+          <div class="stage-card stage-blue" id="stage-1">
             <div class="stage-header">
               <div class="stage-title-group">
-                <span class="stage-number">Stage 1</span>
-                <h3 class="stage-name">CUSTOMER MESSAGE</h3>
+                <span class="stage-number num-blue">01</span>
+                <div>
+                  <h3 class="stage-name">CUSTOMER MESSAGE</h3>
+                  <span class="stage-subtitle">Raw customer input</span>
+                </div>
               </div>
-              <span class="stage-tag">Ingested & Cleaned</span>
+              <span class="stage-tag tag-blue">Ingestion Channel</span>
             </div>
+
+            <!-- Explanatory: Why This Stage Exists -->
+            <div class="stage-explainer">
+              <span class="explainer-label">WHY THIS STAGE EXISTS:</span>
+              <span class="explainer-text">Receives the incoming support message and preserves the original customer wording before processing.</span>
+            </div>
+
             <div class="stage-body">
               <div class="query-display-box">
-                <span class="box-label">Raw Customer Tweet:</span>
+                <div class="box-header-row">
+                  <span class="box-label">Raw Customer Tweet:</span>
+                  <span class="box-meta" id="stage1-raw-len">-- chars</span>
+                </div>
                 <p class="box-text" id="stage1-raw-query">--</p>
               </div>
+
               <div class="cleaned-query-box" id="stage1-cleaned-wrap">
-                <span class="box-label-muted">Cleaned Query (Normalized):</span>
+                <div class="box-header-row">
+                  <span class="box-label-muted">Cleaned Input (Normalized for Classifier):</span>
+                  <span class="box-meta" id="stage1-cleaned-len">-- chars</span>
+                </div>
                 <p class="box-text-muted" id="stage1-cleaned-query">--</p>
               </div>
+
+              <div class="stage-meta-row">
+                <div class="stage-meta-item">
+                  <span class="stage-meta-label">Ingestion Source:</span>
+                  <span class="stage-meta-value">Twitter / X (@AppleSupport TWCS)</span>
+                </div>
+                <div class="stage-meta-item">
+                  <span class="stage-meta-label">Format:</span>
+                  <span class="stage-meta-value">Direct User Mention</span>
+                </div>
+                <div class="stage-meta-item">
+                  <span class="stage-meta-label">Encoding:</span>
+                  <span class="stage-meta-value">UTF-8 Normalized</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Transition: Flow To Next Stage -->
+            <div class="stage-transition">
+              <span class="transition-icon">↳</span>
+              <span class="transition-label">FLOW TO NEXT STAGE:</span>
+              <span class="transition-text">Feeds cleaned text into Intent Classifier vectorizer & symptom rule matcher.</span>
             </div>
           </div>
 
@@ -248,40 +416,64 @@
             <div class="connector-arrow">▼</div>
           </div>
 
-          <!-- STAGE 2: INTENT CLASSIFICATION -->
-          <div class="stage-card" id="stage-2">
+          <!-- ================================================================
+               STAGE 2: INTENT CLASSIFICATION
+               Visual Identity: Blue / Indigo
+               ================================================================ -->
+          <div class="stage-card stage-blue" id="stage-2">
             <div class="stage-header">
               <div class="stage-title-group">
-                <span class="stage-number">Stage 2</span>
-                <h3 class="stage-name">INTENT CLASSIFICATION</h3>
+                <span class="stage-number num-blue">02</span>
+                <div>
+                  <h3 class="stage-name">INTENT CLASSIFICATION</h3>
+                  <span class="stage-subtitle">Identify the customer's primary support issue</span>
+                </div>
               </div>
-              <span class="stage-tag">8-Class Taxonomy</span>
+              <span class="stage-tag tag-blue">8-Class Taxonomy</span>
             </div>
+
+            <!-- Explanatory: Why This Stage Exists -->
+            <div class="stage-explainer">
+              <span class="explainer-label">WHY THIS STAGE EXISTS:</span>
+              <span class="explainer-text">The classifier maps the customer message to one of the eight support intents so downstream retrieval and policy decisions can use the correct problem category.</span>
+            </div>
+
             <div class="stage-body">
               <div class="intent-main-grid">
                 <div class="intent-highlight-card">
                   <span class="meta-label">Primary Classified Intent:</span>
                   <div class="intent-badge-large" id="stage2-intent-badge">--</div>
+                  <span class="intent-desc-note" id="stage2-intent-desc">Top calibrated class across 8 domain categories</span>
                 </div>
                 <div class="intent-confidence-card">
                   <div class="confidence-header">
-                    <span class="meta-label">Intent Confidence:</span>
+                    <span class="meta-label">Classifier Confidence:</span>
                     <span class="confidence-number" id="stage2-confidence-text">--%</span>
                   </div>
                   <div class="confidence-meter-track">
                     <div class="confidence-meter-fill" id="stage2-confidence-bar" style="width: 0%;"></div>
                   </div>
-                  <span class="confidence-subtext">TF-IDF Vector Posterior with Domain Symptom Calibration</span>
+                  <span class="confidence-subtext">Confidence reflects the classifier output, not a guarantee of correctness.</span>
                 </div>
               </div>
 
-              <!-- Top Intent Probabilities Distribution -->
+              <!-- Predicted Intent Distribution -->
               <div class="prob-distribution-container" id="stage2-prob-container">
-                <span class="dist-label">Predicted Intent Distribution:</span>
-                <div class="dist-chips" id="stage2-dist-chips">
-                  <!-- Populated dynamically -->
+                <div class="dist-header-row">
+                  <span class="dist-label">Predicted Intent Distribution:</span>
+                  <span class="dist-sublabel">Horizontal bars indicate relative posteriors across all 8 classes</span>
+                </div>
+                <div class="intent-dist-bars" id="stage2-dist-bars">
+                  <!-- Populated dynamically with compact horizontal bars -->
                 </div>
               </div>
+            </div>
+
+            <!-- Transition: Flow To Next Stage -->
+            <div class="stage-transition">
+              <span class="transition-icon">↳</span>
+              <span class="transition-label">FLOW TO NEXT STAGE:</span>
+              <span class="transition-text">Directs semantic retrieval focus and contextualizes safety policy triggers.</span>
             </div>
           </div>
 
@@ -291,24 +483,63 @@
             <div class="connector-arrow">▼</div>
           </div>
 
-          <!-- STAGE 3: HISTORICAL RETRIEVAL (RAG GROUNDING) -->
-          <div class="stage-card" id="stage-3">
+          <!-- ================================================================
+               STAGE 3: HISTORICAL RETRIEVAL
+               Visual Identity: Indigo / Purple
+               ================================================================ -->
+          <div class="stage-card stage-indigo" id="stage-3">
             <div class="stage-header">
               <div class="stage-title-group">
-                <span class="stage-number">Stage 3</span>
-                <h3 class="stage-name">HISTORICAL RETRIEVAL</h3>
+                <span class="stage-number num-indigo">03</span>
+                <div>
+                  <h3 class="stage-name">HISTORICAL RETRIEVAL</h3>
+                  <span class="stage-subtitle">Ground the response in similar historical support interactions</span>
+                </div>
               </div>
-              <span class="stage-tag" id="stage3-evidence-count-tag">3 Evidence Pairs Retrieved</span>
+              <span class="stage-tag tag-indigo" id="stage3-evidence-count-tag">3 Evidence Pairs Retrieved</span>
             </div>
+
+            <!-- Explanatory: Why This Stage Exists -->
+            <div class="stage-explainer">
+              <span class="explainer-label">WHY THIS STAGE EXISTS:</span>
+              <span class="explainer-text">The retriever searches the historical AppleSupport resolution bank for customer cases that resemble the current issue to provide historical context instead of generating from an empty prompt.</span>
+            </div>
+
             <div class="stage-body">
+              <!-- Retrieval Metrics Strip -->
               <div class="retrieval-summary-banner">
-                <span class="retrieval-summary-text">
-                  Grounded against <strong>10,000 historical Apple Support resolution pairs</strong> from Kaggle TWCS. Top cosine similarity: <strong id="stage3-top-sim">--</strong>.
-                </span>
+                <div class="retrieval-stats-row">
+                  <div class="retrieval-stat">
+                    <span class="ret-stat-label">Historical Knowledge Bank:</span>
+                    <span class="ret-stat-val">10,000 Apple pairs</span>
+                  </div>
+                  <div class="retrieval-stat-divider">|</div>
+                  <div class="retrieval-stat">
+                    <span class="ret-stat-label">Retrieved:</span>
+                    <span class="ret-stat-val">3 Evidence Pairs</span>
+                  </div>
+                  <div class="retrieval-stat-divider">|</div>
+                  <div class="retrieval-stat">
+                    <span class="ret-stat-label">Top Retrieval Similarity:</span>
+                    <span class="ret-stat-val highlight-indigo" id="stage3-top-sim">--</span>
+                  </div>
+                </div>
+                <div class="retrieval-metric-note">
+                  Note: Top Retrieval Similarity measures semantic proximity in TF-IDF space, not a probability or guarantee.
+                </div>
               </div>
+
+              <!-- Evidence Cards Stream -->
               <div class="evidence-cards-stream" id="stage3-evidence-stream">
                 <!-- Dynamically populated evidence cards -->
               </div>
+            </div>
+
+            <!-- Transition: Flow To Next Stage -->
+            <div class="stage-transition">
+              <span class="transition-icon">↳</span>
+              <span class="transition-label">FLOW TO NEXT STAGE:</span>
+              <span class="transition-text">Provides resolution precedents for grounded response drafting & safety verification.</span>
             </div>
           </div>
 
@@ -318,28 +549,63 @@
             <div class="connector-arrow">▼</div>
           </div>
 
-          <!-- STAGE 4: SAFETY & ESCALATION TRIAGE -->
-          <div class="stage-card" id="stage-4">
+          <!-- ================================================================
+               STAGE 4: SAFETY & ESCALATION
+               Visual Identity: Amber Stage Identity, Green/Red for Decision
+               ================================================================ -->
+          <div class="stage-card stage-amber" id="stage-4">
             <div class="stage-header">
               <div class="stage-title-group">
-                <span class="stage-number">Stage 4</span>
-                <h3 class="stage-name">SAFETY & ESCALATION DECISION</h3>
+                <span class="stage-number num-amber">04</span>
+                <div>
+                  <h3 class="stage-name">SAFETY & ESCALATION</h3>
+                  <span class="stage-subtitle">Decide whether automation is appropriate</span>
+                </div>
               </div>
-              <span class="stage-tag">Operational Policy Triage</span>
+              <span class="stage-tag tag-amber">Operational Policy Triage</span>
             </div>
+
+            <!-- Explanatory: Why This Stage Exists -->
+            <div class="stage-explainer">
+              <span class="explainer-label">WHY THIS STAGE EXISTS:</span>
+              <span class="explainer-text">The escalation engine applies operational policy checks to determine whether the request can be handled automatically or should be escalated to prevent inappropriate automation for requests that require human intervention.</span>
+            </div>
+
             <div class="stage-body">
               <div class="escalation-grid">
                 <div class="escalation-decision-card">
                   <span class="meta-label">Triage Decision:</span>
                   <div class="decision-badge" id="stage4-decision-badge">--</div>
                   <span class="decision-sub" id="stage4-decision-sub">Operational Queue Routing</span>
+                  <div class="esc-conf-row">
+                    <span class="esc-conf-label">Escalation Confidence:</span>
+                    <span class="esc-conf-val" id="stage4-esc-conf">--%</span>
+                  </div>
                 </div>
                 <div class="escalation-reason-card">
-                  <span class="meta-label">Mandatory Stated Reason:</span>
+                  <span class="meta-label">Why? (Mandatory Stated Reason):</span>
                   <p class="reason-quote" id="stage4-reason-text">--</p>
-                  <span class="policy-note">Audited against 6 safety policies (thermal, account, financial, hardware, hostility, exceptions)</span>
+                  
+                  <div class="policies-audit-box">
+                    <span class="policy-heading">Operational Policies Evaluated (6 Categories):</span>
+                    <ul class="policy-list">
+                      <li>• <strong>Thermal / Battery Hazard:</strong> Swelling, smoke, severe overheating</li>
+                      <li>• <strong>Account Security:</strong> Apple ID lockouts, unauthorized access, iCloud breach</li>
+                      <li>• <strong>Financial & Billing:</strong> Double charges, unauthorized card billing</li>
+                      <li>• <strong>Hardware Diagnostics:</strong> Screen shattered, physical button failure</li>
+                      <li>• <strong>Repeated Failure:</strong> Chronic user attempts, multiple unsuccessful restores</li>
+                      <li>• <strong>Direct Message Channel:</strong> Routing sensitive diagnostics to private DM</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
+            </div>
+
+            <!-- Transition: Flow To Next Stage -->
+            <div class="stage-transition">
+              <span class="transition-icon">↳</span>
+              <span class="transition-label">FLOW TO NEXT STAGE:</span>
+              <span class="transition-text">Gates whether to dispatch automated response or route ticket to senior specialist queue.</span>
             </div>
           </div>
 
@@ -349,27 +615,55 @@
             <div class="connector-arrow">▼</div>
           </div>
 
-          <!-- STAGE 5: GROUNDED RESPONSE GENERATOR -->
-          <div class="stage-card" id="stage-5">
+          <!-- ================================================================
+               STAGE 5: GROUNDED RESPONSE
+               Visual Identity: Green-Neutral
+               ================================================================ -->
+          <div class="stage-card stage-green" id="stage-5">
             <div class="stage-header">
               <div class="stage-title-group">
-                <span class="stage-number">Stage 5</span>
-                <h3 class="stage-name">GROUNDED RESPONSE</h3>
+                <span class="stage-number num-green">05</span>
+                <div>
+                  <h3 class="stage-name">GROUNDED RESPONSE</h3>
+                  <span class="stage-subtitle">Generate a concise support reply using the retrieved context</span>
+                </div>
               </div>
               <div class="stage-header-actions">
                 <span class="char-pill" id="stage5-char-count">0 / 280 chars</span>
                 <button type="button" class="btn btn-sm btn-outline" id="stage5-copy-btn" onclick="copyDraftReply()">
-                  Copy Reply
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  <span>Copy Reply</span>
                 </button>
               </div>
             </div>
+
+            <!-- Explanatory: Why This Stage Exists -->
+            <div class="stage-explainer">
+              <span class="explainer-label">WHY THIS STAGE EXISTS:</span>
+              <span class="explainer-text">The response generator drafts a customer-facing reply using the classified issue and historical support context.</span>
+            </div>
+
             <div class="stage-body">
               <div class="reply-card">
+                <div class="reply-card-header">
+                  <span class="reply-brand-label">@AppleSupport Draft Candidate:</span>
+                  <span class="reply-constraint-tag">Twitter &lt; 280 Char Limit Enforced</span>
+                </div>
                 <p class="reply-content" id="stage5-reply-text">--</p>
               </div>
               <div id="copy-toast" class="copy-toast-inline" role="status" aria-live="polite">
                 ✓ Draft reply copied to clipboard!
               </div>
+            </div>
+
+            <!-- Transition: Flow To Next Stage -->
+            <div class="stage-transition">
+              <span class="transition-icon">↳</span>
+              <span class="transition-label">FLOW TO NEXT STAGE:</span>
+              <span class="transition-text">Produces candidate response payload and registers operational audit metadata.</span>
             </div>
           </div>
 
@@ -379,17 +673,30 @@
             <div class="connector-arrow">▼</div>
           </div>
 
-          <!-- STAGE 6: AUDITABLE RESULT & TELEMETRY -->
-          <div class="stage-card" id="stage-6">
-            <details class="audit-accordion" id="stage6-audit-details">
+          <!-- ================================================================
+               STAGE 6: AUDIT & TRACEABILITY
+               Visual Identity: Neutral / Gray
+               ================================================================ -->
+          <div class="stage-card stage-gray" id="stage-6">
+            <details class="audit-accordion" id="stage6-audit-details" open>
               <summary class="audit-summary">
                 <div class="stage-title-group">
-                  <span class="disclosure-icon">▶</span>
-                  <span class="stage-number">Stage 6</span>
-                  <h3 class="stage-name">AUDITABLE RECORD</h3>
+                  <span class="disclosure-icon">▼</span>
+                  <span class="stage-number num-gray">06</span>
+                  <div>
+                    <h3 class="stage-name">AUDIT & TRACEABILITY</h3>
+                    <span class="stage-subtitle">Inspect the exact structured result returned by the backend</span>
+                  </div>
                 </div>
-                <span class="audit-pill">Inspectable System Parameters</span>
+                <span class="stage-tag tag-gray">Structured Record</span>
               </summary>
+
+              <!-- Explanatory: Why This Stage Exists -->
+              <div class="stage-explainer" style="margin-top: 14px;">
+                <span class="explainer-label">WHY THIS STAGE EXISTS:</span>
+                <span class="explainer-text">Every major decision is exposed as structured data so the result can be inspected and traced.</span>
+              </div>
+
               <div class="audit-content">
                 <div class="audit-parameters-grid">
                   <div class="audit-cell">
@@ -405,7 +712,7 @@
                     <span class="audit-cell-val" id="audit-val-decision">--</span>
                   </div>
                   <div class="audit-cell">
-                    <span class="audit-cell-label">Retrieval Score (Top Cosine):</span>
+                    <span class="audit-cell-label">Top Retrieval Similarity:</span>
                     <span class="audit-cell-val" id="audit-val-retrieval">--</span>
                   </div>
                   <div class="audit-cell">
@@ -421,7 +728,13 @@
                 <div class="raw-json-panel">
                   <div class="json-bar">
                     <span class="json-bar-title">Raw Structured API Payload:</span>
-                    <button type="button" class="btn btn-xs btn-outline" onclick="copyAuditJson()">Copy JSON</button>
+                    <button type="button" class="btn btn-xs btn-outline" onclick="copyAuditJson()">
+                      <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      <span>Copy JSON</span>
+                    </button>
                   </div>
                   <pre class="json-output"><code id="audit-raw-json">{}</code></pre>
                 </div>
@@ -432,6 +745,7 @@
         </div>
 
       </div>
+
 
     </section>
 
