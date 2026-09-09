@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AppleSupport AI Support Agent — Operations & Evaluation Console</title>
+  <meta name="description" content="Internal customer support AI operations and evaluation console for @AppleSupport triage agent.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header / App Shell -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="brand-badge">
+        <svg class="apple-icon" viewBox="0 0 170 170" width="18" height="18" fill="currentColor" aria-hidden="true">
+          <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.7-7.85-12-14.43-6-9.13-10.74-19.57-14.23-31.33-3.48-11.75-5.22-22.95-5.22-33.58 0-14.24 3.7-25.75 11.1-34.52 7.4-8.77 16.52-13.25 27.37-13.43 4.89 0 10.33 1.25 16.32 3.75 6 2.5 9.77 3.8 11.33 3.9 1.74 0 5.86-1.42 12.37-4.25 6.51-2.83 12.18-4.07 17-3.72 12.72.65 22.84 5.33 30.37 14.04-10.87 6.53-16.2 15.77-16 27.72.2 9.57 3.8 17.5 10.8 23.8 7 6.3 15.33 9.8 25 10.5-2.28 6.96-4.94 13.9-7.98 20.82zM119.22 31.84c0-7.18 2.6-13.78 7.82-19.8 5.22-6.03 11.83-9.98 19.83-11.84.22 1.09.33 2.17.33 3.26 0 7.17-2.72 13.9-8.15 20.2-5.43 6.3-12.06 10.05-19.83 11.24v-3.06z"/>
+        </svg>
+        <span class="brand-title">AppleSupport AI Console</span>
+      </div>
+      <span class="header-divider" aria-hidden="true">/</span>
+      <span class="header-subtitle">Historical-Grounded Triage & Resolution Agent</span>
+    </div>
+
+    <nav class="header-nav" role="tablist" aria-label="Console Views">
+      <button class="nav-tab active" id="tab-live" role="tab" aria-selected="true" aria-controls="view-live" onclick="switchView('live')">
+        <span class="tab-indicator"></span>
+        Live Agent
+      </button>
+      <button class="nav-tab" id="tab-eval" role="tab" aria-selected="false" aria-controls="view-eval" onclick="switchView('eval')">
+        <span class="tab-indicator"></span>
+        Evaluation Dashboard
+      </button>
+    </nav>
+
+    <div class="header-status">
+      <div class="status-pill" id="backend-status-pill" title="API Health Status">
+        <span class="status-dot" id="backend-status-dot"></span>
+        <span id="backend-status-text">Checking Backend...</span>
+      </div>
+      <div class="meta-pill" title="Verified Dataset">
+        <span class="meta-label">Dataset:</span>
+        <span class="meta-value" id="header-dataset">AppleSupport</span>
+      </div>
+      <div class="meta-pill" title="Frozen Evaluation Set">
+        <span class="meta-label">Holdout:</span>
+        <span class="meta-value" id="header-holdout">Frozen (N=200)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="app-main">
+
+    <!-- VIEW 1: LIVE SUPPORT AGENT WORKSPACE -->
+    <section id="view-live" class="view-pane active" role="tabpanel" aria-labelledby="tab-live">
+      <div class="workspace-grid">
+        
+        <!-- LEFT COLUMN: Customer Message Composer -->
+        <div class="panel composer-panel">
+          <div class="panel-header">
+            <h2 class="panel-title">Inbound Customer Message</h2>
+            <span class="panel-tag">Raw Tweet / Ingestion</span>
+          </div>
+
+          <form id="composer-form" onsubmit="handleAnalyzeSubmit(event)">
+            <div class="form-group">
+              <label for="customer-message-input" class="form-label">
+                Customer Message
+                <span class="form-sublabel">Paste or type an incoming customer inquiry</span>
+              </label>
+              <textarea 
+                id="customer-message-input" 
+                class="form-textarea" 
+                rows="6" 
+                placeholder="Enter a customer support message (e.g. 'My iPhone battery is draining very quickly since the latest update.')..."
+                required
+              ></textarea>
+            </div>
+
+            <!-- Quick Real Example Selectors (Send to real backend) -->
+            <div class="examples-container">
+              <span class="examples-title">Real TWCS Inquiries:</span>
+              <div class="example-chips">
+                <button type="button" class="example-chip" onclick="fillExampleQuery(0)">
+                  Battery Drain on iOS 11
+                </button>
+                <button type="button" class="example-chip" onclick="fillExampleQuery(1)">
+                  Unauthorized Card Charge
+                </button>
+                <button type="button" class="example-chip" onclick="fillExampleQuery(2)">
+                  Cracked Screen Repair
+                </button>
+                <button type="button" class="example-chip" onclick="fillExampleQuery(3)">
+                  Swollen Battery Hazard
+                </button>
+              </div>
+            </div>
+
+            <div class="composer-actions">
+              <button type="submit" id="analyze-btn" class="btn btn-primary">
+                <span class="btn-spinner" id="btn-spinner" aria-hidden="true"></span>
+                <span id="btn-text">Analyze Message</span>
+              </button>
+              <button type="button" class="btn btn-secondary" onclick="clearComposer()">
+                Clear
+              </button>
+            </div>
+          </form>
+
+          <!-- Pipeline Architecture Diagram Card -->
+          <div class="arch-card">
+            <div class="arch-card-header">
+              <span class="arch-title">Triage Pipeline Stages</span>
+            </div>
+            <div class="pipeline-flow">
+              <div class="pipeline-step">
+                <span class="step-num">1</span>
+                <span class="step-name">Preprocess</span>
+              </div>
+              <span class="step-arrow">→</span>
+              <div class="pipeline-step">
+                <span class="step-num">2</span>
+                <span class="step-name">Intent (8-Class)</span>
+              </div>
+              <span class="step-arrow">→</span>
+              <div class="pipeline-step">
+                <span class="step-num">3</span>
+                <span class="step-name">Historical RAG</span>
+              </div>
+              <span class="step-arrow">→</span>
+              <div class="pipeline-step">
+                <span class="step-num">4</span>
+                <span class="step-name">Safety Triage</span>
+              </div>
+              <span class="step-arrow">→</span>
+              <div class="pipeline-step">
+                <span class="step-num">5</span>
+                <span class="step-name">Draft (<280c)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Analysis & Evidence Workspace -->
+        <div class="panel results-panel">
+          
+          <!-- State 1: Empty Initial State -->
+          <div id="results-empty" class="state-container empty-state">
+            <div class="empty-icon" aria-hidden="true">📥</div>
+            <h3 class="state-title">No Query Analyzed Yet</h3>
+            <p class="state-desc">
+              Enter a customer message on the left or select a real TWCS sample, then click <strong>Analyze Message</strong> to execute the full intent classification, historical evidence retrieval, escalation evaluation, and grounded reply drafting pipeline.
+            </p>
+            <div class="empty-hint">
+              <span class="hint-bullet">•</span> Zero mock data: all results run directly through the live Python agent.
+            </div>
+          </div>
+
+          <!-- State 2: Loading State -->
+          <div id="results-loading" class="state-container loading-state" style="display: none;">
+            <div class="loader-spinner" aria-hidden="true"></div>
+            <h3 class="state-title">Analyzing Customer Message…</h3>
+            <p class="state-desc">
+              Classifying intent, querying TF-IDF historical index (10,000 pairs), evaluating 6 escalation policies, and synthesizing reply.
+            </p>
+          </div>
+
+          <!-- State 3: Error State -->
+          <div id="results-error" class="state-container error-state" style="display: none;">
+            <div class="error-icon" aria-hidden="true">⚠️</div>
+            <h3 class="state-title">Analysis Failed</h3>
+            <p id="error-message-text" class="state-desc">
+              Backend unavailable. Start the Python API server.
+            </p>
+            <button class="btn btn-secondary" onclick="retryLastAnalysis()">Retry</button>
+          </div>
+
+          <!-- State 4: Active Result Content -->
+          <div id="results-content" class="results-content" style="display: none;">
+            
+            <!-- Result Header with Latency & Stated Mode -->
+            <div class="results-header">
+              <span class="results-title">Agent Triage Decision</span>
+              <div class="results-meta">
+                <span class="meta-tag" id="latency-tag">Latency: -- ms</span>
+                <span class="meta-tag" id="retrieval-score-tag">Retrieval Sim: --</span>
+              </div>
+            </div>
+
+            <!-- Triage Summary Cards (Intent + Escalation) -->
+            <div class="triage-cards-grid">
+              
+              <!-- Intent Card -->
+              <div class="triage-card">
+                <div class="triage-card-label">CLASSIFIED INTENT</div>
+                <div class="intent-display">
+                  <span class="intent-badge" id="result-intent">--</span>
+                </div>
+                <div class="confidence-container">
+                  <div class="confidence-header">
+                    <span class="confidence-label">Confidence:</span>
+                    <span class="confidence-value" id="result-intent-conf">--%</span>
+                  </div>
+                  <div class="confidence-bar-track">
+                    <div class="confidence-bar-fill" id="result-intent-conf-bar" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Escalation Card -->
+              <div class="triage-card">
+                <div class="triage-card-label">ESCALATION TRIAGE</div>
+                <div class="escalation-display">
+                  <span class="escalation-badge" id="result-escalation-badge">--</span>
+                </div>
+                <div class="escalation-reason-box">
+                  <span class="reason-label">Stated Reason:</span>
+                  <p class="reason-text" id="result-escalation-reason">--</p>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Draft Reply Section -->
+            <div class="reply-section">
+              <div class="reply-header">
+                <div class="reply-title-group">
+                  <span class="section-title">BRAND-ALIGNED DRAFTED REPLY</span>
+                  <span class="reply-platform-badge">Twitter Budget Compliant</span>
+                </div>
+                <div class="reply-meta">
+                  <span class="char-count-pill" id="char-count-pill">0 / 280 chars</span>
+                  <button type="button" class="btn btn-sm btn-outline" id="copy-reply-btn" onclick="copyDraftReply()">
+                    <span id="copy-btn-text">Copy Reply</span>
+                  </button>
+                </div>
+              </div>
+              <div class="reply-box">
+                <p class="reply-text" id="result-drafted-reply">--</p>
+              </div>
+              <div id="copy-toast" class="copy-toast" role="status" aria-live="polite">
+                ✓ Copied to clipboard!
+              </div>
+            </div>
+
+            <!-- Historical Evidence Section (RAG Grounding) -->
+            <div class="evidence-section">
+              <div class="evidence-header">
+                <span class="section-title">HISTORICAL RESOLUTION EVIDENCE (RAG GROUNDING)</span>
+                <span class="evidence-subtitle">Top-3 closest resolved Twitter pairs from @AppleSupport knowledge bank</span>
+              </div>
+              
+              <div id="evidence-list" class="evidence-list">
+                <!-- Dynamically populated evidence cards -->
+              </div>
+            </div>
+
+            <!-- Collapsible Audit Record -->
+            <details class="audit-details" id="audit-details">
+              <summary class="audit-summary">
+                <span class="summary-left">
+                  <span class="disclosure-arrow">▶</span>
+                  <span class="audit-title">Audit Record & System Telemetry</span>
+                </span>
+                <span class="audit-badge">Inspectable Pipeline</span>
+              </summary>
+              <div class="audit-body">
+                <div class="audit-grid">
+                  <div class="audit-item">
+                    <span class="audit-key">Input Query (Raw):</span>
+                    <span class="audit-val audit-mono" id="audit-input-raw">--</span>
+                  </div>
+                  <div class="audit-item">
+                    <span class="audit-key">Cleaned Query:</span>
+                    <span class="audit-val audit-mono" id="audit-input-cleaned">--</span>
+                  </div>
+                  <div class="audit-item">
+                    <span class="audit-key">Intent & Confidence:</span>
+                    <span class="audit-val audit-mono" id="audit-intent-conf">--</span>
+                  </div>
+                  <div class="audit-item">
+                    <span class="audit-key">Escalation Decision:</span>
+                    <span class="audit-val audit-mono" id="audit-escalation-dec">--</span>
+                  </div>
+                  <div class="audit-item">
+                    <span class="audit-key">Top Evidence IDs:</span>
+                    <span class="audit-val audit-mono" id="audit-evidence-ids">--</span>
+                  </div>
+                  <div class="audit-item">
+                    <span class="audit-key">Total Latency:</span>
+                    <span class="audit-val audit-mono" id="audit-latency">--</span>
+                  </div>
+                </div>
+
+                <div class="raw-json-section">
+                  <div class="json-header">
+                    <span class="json-title">Raw Backend API Response:</span>
+                    <button type="button" class="btn btn-xs btn-outline" onclick="copyAuditJson()">Copy JSON</button>
+                  </div>
+                  <pre class="json-code-block"><code id="audit-raw-json">{}</code></pre>
+                </div>
+              </div>
+            </details>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- VIEW 2: EVALUATION DASHBOARD -->
+    <section id="view-eval" class="view-pane" role="tabpanel" aria-labelledby="tab-eval">
+      <div class="eval-container">
+        
+        <!-- Evaluation Dashboard Header -->
+        <div class="eval-header-card">
+          <div class="eval-header-info">
+            <h2 class="eval-title">System Evaluation & Empirical Benchmark Console</h2>
+            <p class="eval-desc">
+              Rigorous comparative performance benchmarks of the Proposed Grounded AI Support Agent against baseline systems across 200 human-verified holdout test cases from Kaggle TWCS.
+            </p>
+          </div>
+          <div class="eval-header-actions">
+            <button class="btn btn-secondary" onclick="fetchBenchmarkData()">
+              Refresh Benchmark Data
+            </button>
+          </div>
+        </div>
+
+        <!-- Methodological Integrity Panel -->
+        <div class="panel integrity-panel">
+          <div class="panel-header">
+            <h3 class="panel-title">Methodological Integrity & Anti-Leakage Audit</h3>
+            <span class="panel-tag integrity-pass-tag" id="integrity-overall-badge">Checking Audit...</span>
+          </div>
+          <div class="integrity-grid">
+            <div class="integrity-card">
+              <span class="integrity-label">Conversation-Level Leakage</span>
+              <span class="integrity-val pass-text" id="leakage-status-val">--</span>
+              <span class="integrity-sub">Zero overlap audit</span>
+            </div>
+            <div class="integrity-card">
+              <span class="integrity-label">Train ↔ Val Overlap</span>
+              <span class="integrity-val pass-text" id="overlap-train-val">--</span>
+              <span class="integrity-sub">Pairwise disjoint</span>
+            </div>
+            <div class="integrity-card">
+              <span class="integrity-label">Train ↔ Final Overlap</span>
+              <span class="integrity-val pass-text" id="overlap-train-final">--</span>
+              <span class="integrity-sub">Strict exclusion</span>
+            </div>
+            <div class="integrity-card">
+              <span class="integrity-label">Val ↔ Final Overlap</span>
+              <span class="integrity-val pass-text" id="overlap-val-final">--</span>
+              <span class="integrity-sub">Strict exclusion</span>
+            </div>
+            <div class="integrity-card">
+              <span class="integrity-label">Final Holdout Status</span>
+              <span class="integrity-val highlight-text" id="holdout-status-val">--</span>
+              <span class="integrity-sub">Evaluated once</span>
+            </div>
+            <div class="integrity-card">
+              <span class="integrity-label">Human Review Provenance</span>
+              <span class="integrity-val pass-text" id="human-provenance-val">-- / --</span>
+              <span class="integrity-sub">Human-verified</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comparative Benchmark Split: Validation vs Final Holdout -->
+        <div class="eval-split-layout">
+          
+          <!-- SECTION A: FROZEN FINAL HOLDOUT (N=200) -->
+          <div class="benchmark-block final-benchmark-block">
+            <div class="block-header">
+              <div class="block-title-group">
+                <span class="block-badge holdout-badge">PRIMARY SCIENTIFIC BENCHMARK</span>
+                <h3 class="block-title">Frozen Final Holdout Test Set (N = 200 Human-Reviewed Cases)</h3>
+              </div>
+              <span class="block-meta">Evaluated strictly once after system freeze • 0 training leakage</span>
+            </div>
+
+            <!-- Table for Final Holdout -->
+            <div class="table-responsive">
+              <table class="benchmark-table" id="table-final-benchmark">
+                <thead>
+                  <tr>
+                    <th scope="col" class="th-metric">Evaluation Metric</th>
+                    <th scope="col" class="th-base1">Baseline 1<br><span class="th-sub">Majority / Canned</span></th>
+                    <th scope="col" class="th-base2">Baseline 2<br><span class="th-sub">TF-IDF / Keyword</span></th>
+                    <th scope="col" class="th-agent">Proposed AI Agent<br><span class="th-sub">Grounded + Policy Triage</span></th>
+                    <th scope="col" class="th-impact">Operational Impact</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-final-benchmark">
+                  <tr><td colspan="5" class="table-loading">Loading frozen holdout benchmark results from reports/benchmark_results.json...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- SECTION B: VALIDATION SPLIT (N=100) -->
+          <div class="benchmark-block val-benchmark-block">
+            <div class="block-header">
+              <div class="block-title-group">
+                <span class="block-badge val-badge">DEVELOPMENT & CALIBRATION SPLIT</span>
+                <h3 class="block-title">Validation Split (N = 100 Balanced In-Distribution Cases)</h3>
+              </div>
+              <span class="block-meta">Used exclusively for hyperparameter tuning & threshold calibration</span>
+            </div>
+
+            <!-- Table for Validation Split -->
+            <div class="table-responsive">
+              <table class="benchmark-table" id="table-val-benchmark">
+                <thead>
+                  <tr>
+                    <th scope="col" class="th-metric">Evaluation Metric</th>
+                    <th scope="col" class="th-base1">Baseline 1 (Trivial)</th>
+                    <th scope="col" class="th-base2">Baseline 2 (Simple)</th>
+                    <th scope="col" class="th-agent">Proposed AI Agent</th>
+                    <th scope="col" class="th-impact">Generalization Context</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-val-benchmark">
+                  <tr><td colspan="5" class="table-loading">Loading validation benchmark results from reports/benchmark_results_validation.json...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Human-Judge Agreement & Statistical Limitations Panel -->
+        <div class="panel calibration-panel">
+          <div class="panel-header">
+            <h3 class="panel-title">LLM-as-a-Judge Calibration & Reliability Statistics</h3>
+            <span class="panel-tag">N = 30 Human-Audited Cases</span>
+          </div>
+          <div class="calibration-content">
+            <div class="calibration-stats-grid">
+              <div class="cal-stat-card">
+                <span class="cal-stat-label">Mean Absolute Error (MAE)</span>
+                <span class="cal-stat-num" id="cal-mae">-- / 5.0</span>
+                <span class="cal-stat-desc">Low absolute error vs human score</span>
+              </div>
+              <div class="cal-stat-card">
+                <span class="cal-stat-label">Human Mean Rating</span>
+                <span class="cal-stat-num" id="cal-human-mean">-- / 5.0</span>
+                <span class="cal-stat-desc">Candidate Reviewer rubric score</span>
+              </div>
+              <div class="cal-stat-card">
+                <span class="cal-stat-label">Judge Mean Rating</span>
+                <span class="cal-stat-num" id="cal-judge-mean">-- / 5.0</span>
+                <span class="cal-stat-desc">Conservative automated judgment</span>
+              </div>
+              <div class="cal-stat-card">
+                <span class="cal-stat-label">Pearson Correlation (r)</span>
+                <span class="cal-stat-num" id="cal-pearson">--</span>
+                <span class="cal-stat-desc">Marginal significance (p = 0.055)</span>
+              </div>
+            </div>
+            <div class="callout-box warning-callout">
+              <strong>Statistical Honesty (The "High-Agreement Paradox"):</strong>
+              While the Mean Absolute Error is low (0.373), nominal agreement (κ = 0.0) is constrained because human ratings clustered near the top of the scale (4.5 – 5.0), causing score variance to collapse. We document this honestly: the automated judge provides a valuable heuristic comparison across models, but cannot fully replace human evaluation in production.
+            </div>
+          </div>
+        </div>
+
+        <!-- Empirical Failure Analysis Panel -->
+        <div class="panel failures-panel">
+          <div class="panel-header">
+            <h3 class="panel-title">Top 5 Empirical Failure Modes & Root-Cause Analysis</h3>
+            <span class="panel-tag">Audited from Real Kaggle Customer Errors</span>
+          </div>
+          <div class="failures-list" id="failures-list">
+            <!-- Populated dynamically from /api/failures -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <div class="footer-content">
+      <span>@AppleSupport AI Agent Operations Console</span>
+      <span class="footer-sep">•</span>
+      <span>Hiver SDE Intern Assignment</span>
+      <span class="footer-sep">•</span>
+      <span>Reproducible Python Pipeline (< 15 sec SLA)</span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

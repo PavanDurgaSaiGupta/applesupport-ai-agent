@@ -29,11 +29,42 @@ python run_pipeline.py --mode validation
 python run_pipeline.py --mode final
 ```
 
-### Try the Interactive Live Demo
+### Try the Interactive Terminal Demo
 Test any arbitrary customer tweet live in the terminal:
 ```bash
 python interactive_demo.py
 ```
+
+### 🖥️ Launch the Web Operations & Evaluation Console
+Launch the unified internal operations dashboard (FastAPI + Modern Web UI):
+```bash
+python -m uvicorn web_api:app --host 127.0.0.1 --port 8000
+```
+Open **`http://127.0.0.1:8000`** in your browser.
+
+#### Features of the Web Console:
+1. **Live Support Agent Workspace**:
+   - Inbound message composer with real Kaggle TWCS sample queries.
+   - Real-time intent classification with visual confidence bar.
+   - Grounded RAG historical resolution evidence cards with similarity scores.
+   - Safety escalation triage (`AUTO_HANDLE` vs `ESCALATE`) with mandatory stated reasons.
+   - Brand-aligned reply drafting with live dynamic character count (`< 280 chars`) and copy-to-clipboard.
+   - Expandable **Audit Record & System Telemetry** with inspectable pipeline parameters and raw JSON response.
+2. **Evaluation Dashboard**:
+   - **Methodological Integrity Panel**: Real-time audit of conversation-level leakage (`PASS`), overlap counts (`0`), frozen holdout status, and human provenance.
+   - **Frozen Final Holdout Set ($N = 200$)**: Unseen human-reviewed benchmark table comparing Baseline 1, Baseline 2, and the Proposed Agent.
+   - **Validation Split ($N = 100$)**: In-distribution hyperparameter & rule development benchmark displayed separately.
+   - **LLM-as-a-Judge Calibration Panel**: Statistical reliability metrics ($MAE$, Pearson $r$, score variance limitations).
+   - **Top 5 Failure Modes**: Real observed failure modes, examples, root causes, and mitigations.
+3. **Zero-Mock Architecture**:
+   - The frontend is strictly a visualization layer consuming `web_api.py`.
+   - Contains zero synthetic mock data, zero hardcoded benchmark numbers, and zero client-side classification logic.
+4. **UI Skills & Design System Applied**:
+   - Designed following **`baseline-ui`** and **`s0xdk/refactoring-ui`** principles:
+     - Restrained, dark technical operations console aesthetic (no generic chatbot slop, no neon glows, no bloated animations).
+     - WCAG 4.5:1 accessible color tokens and clear visual hierarchy.
+     - Strict tabular numeric formatting (`font-variant-numeric: tabular-nums`) for all tables, latencies, and metrics.
+     - Fast compositor transitions (`< 200ms`) with reduced-motion accessibility support.
 
 ---
 

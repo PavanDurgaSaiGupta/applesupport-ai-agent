@@ -105,3 +105,7 @@ class AppleSupportAgent:
             "retrieved_contexts": retrieved_contexts,
             "latency_ms": latency_ms
         }
+
+    def process_query(self, raw_customer_tweet: str) -> Dict[str, Any]:
+        """Alias for process() for API compatibility."""
+        return self.process(raw_customer_tweet)
